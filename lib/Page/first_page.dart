@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -10,36 +11,59 @@ import 'package:travel_app/Dimension/dimension.dart';
 import 'package:travel_app/convert/convert.dart';
 
 class Splast_Page extends StatelessWidget {
-  const Splast_Page({super.key});
+  Splast_Page({Key? key});
+
+  List<String> imageList = [
+    'lib/assets/image/mountain.jpg',
+    'lib/assets/image/lake.jpg',
+    // 'lib/assets/image/lake2.jpg',
+    'lib/assets/image/mountain2.jpg',
+    'lib/assets/image/image.jpg'
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder:(context, contrast){
-        SizeConfig().init(contrast);
-        return Scaffold(
-          body: Container(
-            height: SizeConfig.screenHeight,
-            width: SizeConfig.screenWidth,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('lib/assets/image/mountain.jpg'),
-                fit: BoxFit.cover
-              )
-            ),
-            child: Stack(
+    return Stack(
+      children: [
+        CarouselSlider(
+          options: CarouselOptions(
+            autoPlay: true,
+            autoPlayInterval: Duration(seconds: 3),
+            autoPlayAnimationDuration: Duration(milliseconds: 800),
+            autoPlayCurve: Curves.fastOutSlowIn,
+            enableInfiniteScroll: true,
+            viewportFraction: 1.0,
+            aspectRatio: MediaQuery.of(context).size.width / MediaQuery.of(context).size.height,
+          ),
+          items: imageList.map((imageUrl) {
+            return Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(imageUrl),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            SizeConfig().init(constraints);
+            return Stack(
               children: [
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Column(
                     children: [
                       SizedBox(
-                        height: SizeConfig.screenHeight*0.2,
+                        height: MediaQuery.of(context).size.height * 0.2,
                       ),
                       Container(
-                        padding: EdgeInsets.only(left: SizeConfig.screenWidth * 0.02),
+                        padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.02),
                         alignment: Alignment.topLeft,
-                        width: SizeConfig.screenWidth * 0.5,
+                        width: MediaQuery.of(context).size.width * 0.5,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -47,21 +71,25 @@ class Splast_Page extends StatelessWidget {
                               'Share',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: Converts.c56
+                                fontSize: Converts.c56,
+                                decoration: TextDecoration.none // Size của text không cần sử dụng từ Convert
                               ),
                             ),
                             SizedBox(
-                              height: SizeConfig.screenHeight*0.01,
+                              height: MediaQuery.of(context).size.height * 0.01,
                             ),
                             DefaultTextStyle(
                               style:TextStyle(
                                 color: Colors.white,
-                                fontSize: Converts.c48
+                                fontSize: 48, // Size của text không cần sử dụng từ Convert
                               ),
                               child: AnimatedTextKit(
+                                repeatForever: true,
                                 animatedTexts: [
-                                  TyperAnimatedText('your travels, inspire the world', speed: Duration(milliseconds: 100)),
-                                  TyperAnimatedText('the joy of travel, one story at a time', speed: Duration(milliseconds: 100))
+                                  FadeAnimatedText('your travels, inspire the world', duration: Duration(milliseconds: 3000)),
+                                  FadeAnimatedText('the joy of travel, one story at a time', duration: Duration(milliseconds: 2000)),
+                                  FadeAnimatedText('your adventures, ignite wanderlust', duration: Duration(milliseconds: 2000)),
+                                  FadeAnimatedText('your journeys, create memories', duration: Duration(milliseconds: 2000))
                                 ],
                               ),
                             ),
@@ -77,20 +105,21 @@ class Splast_Page extends StatelessWidget {
                     child: BackdropFilter(
                       filter: ImageFilter.blur(sigmaY: 10, sigmaX: 10),
                       child: Container(
-                        height: SizeConfig.screenHeight * 0.3,
+                        height: MediaQuery.of(context).size.height * 0.3,
                         decoration: BoxDecoration(
                           color: Colors.transparent.withOpacity(0.2),
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(15),
-                            topRight: Radius.circular(15))
+                            topRight: Radius.circular(15)
+                          ),
                         ),
                         child: Column(
                           children: [
                             SizedBox(
-                              height: SizeConfig.screenHeight*0.03,
+                              height: MediaQuery.of(context).size.height * 0.03,
                             ),
                             Container(
-                              width: SizeConfig.screenWidth,
+                              width: MediaQuery.of(context).size.width,
                               alignment: Alignment.center,
                               child: Wrap(
                                 alignment: WrapAlignment.spaceBetween,
@@ -98,8 +127,8 @@ class Splast_Page extends StatelessWidget {
                                 spacing: 20,
                                 children: <Widget>[
                                   Container(
-                                    width: SizeConfig.screenWidth * 0.4,
-                                    height: SizeConfig.screenHeight *0.08,
+                                    width: MediaQuery.of(context).size.width * 0.4,
+                                    height: MediaQuery.of(context).size.height * 0.08,
                                     child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.blueAccent.withOpacity(0.2),                                        
@@ -109,25 +138,25 @@ class Splast_Page extends StatelessWidget {
                                         'Login now',
                                         style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: Converts.c24
+                                          fontSize: 24, // Size của text không cần sử dụng từ Convert
                                         ),
                                       ),
                                     ),
                                   ),
                                   Container(
-                                    width: SizeConfig.screenWidth * 0.4,
-                                    height: SizeConfig.screenHeight *0.08,
+                                    width: MediaQuery.of(context).size.width * 0.4,
+                                    height: MediaQuery.of(context).size.height * 0.08,
                                     child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.white24.withOpacity(0.2),
-                                        padding: EdgeInsets.all(15)
+                                        padding: EdgeInsets.all(15),
                                       ),
                                       onPressed: (){},
                                       child: Text(
                                         'Join now',
                                         style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: Converts.c24
+                                          fontSize: 24, // Size của text không cần sử dụng từ Convert
                                         ),
                                       ),
                                     ),
@@ -136,17 +165,18 @@ class Splast_Page extends StatelessWidget {
                               ),
                             ),
                             SizedBox(
-                              height: SizeConfig.screenHeight * 0.02,
+                              height: MediaQuery.of(context).size.height * 0.02,
                             ),
                             Text(
                               'Or login with',
                               style: TextStyle(
-                                fontSize: Converts.c20,
-                                color: Colors.white
+                                fontSize: Converts.c20, 
+                                color: Colors.white,
+                                decoration: TextDecoration.none
                               ),
                             ),
                             SizedBox(
-                              height: SizeConfig.screenHeight * 0.02,
+                              height: SizeConfig.screenHeight * 0.03,
                             ),
                             Wrap(
                               alignment: WrapAlignment.spaceBetween,
@@ -154,11 +184,11 @@ class Splast_Page extends StatelessWidget {
                               spacing: 20,
                               children: <Widget>[
                                 Container(
-                                  height: SizeConfig.screenHeight * 0.07,
-                                  width: SizeConfig.screenWidth * 0.16,
+                                  height: MediaQuery.of(context).size.height * 0.07,
+                                  width: MediaQuery.of(context).size.width * 0.16,
                                   decoration: BoxDecoration(
                                     color: Colors.white.withOpacity(0.2),
-                                    borderRadius: BorderRadius.circular(10)
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: IconButton(
                                     onPressed: (){}, 
@@ -170,11 +200,11 @@ class Splast_Page extends StatelessWidget {
                                   ),
                                 ),
                                 Container(
-                                  height: SizeConfig.screenHeight * 0.07,
-                                  width: SizeConfig.screenWidth * 0.16,
+                                  height: MediaQuery.of(context).size.height * 0.07,
+                                  width: MediaQuery.of(context).size.width * 0.16,
                                   decoration: BoxDecoration(
                                     color: Colors.white.withOpacity(0.2),
-                                    borderRadius: BorderRadius.circular(10)
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: IconButton(
                                     onPressed: (){}, 
@@ -194,10 +224,10 @@ class Splast_Page extends StatelessWidget {
                   )
                 )
               ]
-            ),
-          ),
-        );
-      }
+            );
+          },
+        ),
+      ]
     );
   }
 }
