@@ -8,6 +8,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:travel_app/Dimension/dimension.dart';
+import 'package:travel_app/Widgets/small_text.dart';
 import 'package:travel_app/convert/convert.dart';
 
 class Splast_Page extends StatelessWidget {
@@ -133,14 +134,17 @@ class Splast_Page extends StatelessWidget {
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.blueAccent.withOpacity(0.2),                                        
                                       ),
-                                      onPressed: (){},
-                                      child: Text(
-                                        'Login now',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 24, // Size của text không cần sử dụng từ Convert
-                                        ),
-                                      ),
+                                      onPressed: (){
+                                        Navigator.pushNamed(
+                                          context,
+                                          '/login'
+                                        );
+                                      },
+                                      child: SmallText(
+                                        text: 'Login now',
+                                        size: 24,
+                                        color: Colors.white,
+                                      )
                                     ),
                                   ),
                                   Container(
@@ -151,14 +155,14 @@ class Splast_Page extends StatelessWidget {
                                         backgroundColor: Colors.white24.withOpacity(0.2),
                                         padding: EdgeInsets.all(15),
                                       ),
-                                      onPressed: (){},
-                                      child: Text(
-                                        'Join now',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 24, // Size của text không cần sử dụng từ Convert
-                                        ),
-                                      ),
+                                      onPressed: (){
+                                        Navigator.pushNamed(context, '/sign_up');
+                                      },
+                                      child: SmallText(
+                                        text: 'Join now',
+                                        size: 24,
+                                        color: Colors.white,
+                                      )
                                     ),
                                   )
                                 ],

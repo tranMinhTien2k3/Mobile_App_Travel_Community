@@ -5,6 +5,7 @@ import 'package:travel_app/Page/forgot_pass_page.dart';
 import 'package:travel_app/Page/home_page.dart';
 import 'package:travel_app/Page/login_page.dart';
 import 'package:travel_app/Page/sign_up_page.dart';
+import 'package:travel_app/repositories/route_transition.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,13 +25,14 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         initialRoute: '/',
-        routes: {
-          '/':(context) => Splast_Page(),
-          '/login': (context) =>  Login_Page(),
-          '/sign_up': (context) =>  Sign_up(),
-          '/home_page': (context) => const Home_Page(),
-          '/forgot_pass': (context) => const Forgot_pass()
-        },
+        onGenerateRoute: generateRoute,
+        // routes: {
+        //   '/':(context) => Splast_Page(),
+        //   '/login': (context) =>  Login_Page(),
+        //   '/sign_up': (context) =>  Sign_up(),
+        //   '/home_page': (context) => const Home_Page(),
+        //   '/forgot_pass': (context) => const Forgot_pass()
+        // },
       
       ),
     );
