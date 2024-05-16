@@ -6,9 +6,19 @@ import 'package:travel_app/Page/home_page.dart';
 import 'package:travel_app/Page/login_page.dart';
 import 'package:travel_app/Page/sign_up_page.dart';
 import 'package:travel_app/repositories/route_transition.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:travel_app/services/firebase_options.dart';
 
-void main() {
-  runApp(const MyApp());
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
