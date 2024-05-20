@@ -7,11 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:travel_app/Dimension/dimension.dart';
 import 'package:travel_app/Widgets/small_text.dart';
 import 'package:travel_app/convert/convert.dart';
+import 'package:travel_app/repositories/auth_provider.dart';
 
-class Splast_Page extends StatelessWidget {
+class Splast_Page extends HookConsumerWidget {
   Splast_Page({Key? key});
 
   List<String> imageList = [
@@ -23,7 +25,31 @@ class Splast_Page extends StatelessWidget {
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+
+    ref.listen(authNotifierProvider, (previous, next) {
+      next.maybeWhen(
+        orElse: () => null,
+        authenticated: (user) {
+          Navigator.pushNamed(context, '/home_page');
+          // Navigate to any screen
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('User Logged In'),
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        },
+        unauthenticated: (message) =>
+            ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(message!),
+            behavior: SnackBarBehavior.floating,
+          ),
+        ),
+      );
+    });
+
     return Stack(
       children: [
         CarouselSlider(
@@ -195,7 +221,9 @@ class Splast_Page extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: IconButton(
-                                    onPressed: (){}, 
+                                    onPressed: () async {
+                                      ref.read(authNotifierProvider.notifier).continueWithGoogle();
+                                    }, 
                                     icon: const FaIcon(
                                       FontAwesomeIcons.google,
                                       size: 40,
