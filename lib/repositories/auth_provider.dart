@@ -74,6 +74,15 @@ class AuthNotifier extends StateNotifier<AuthenticationState>{
       (response) => AuthenticationState.authenticated(user: response!)
     ); 
   }
+
+  Future<void> forgotPass({required String email}) async{
+    state = const AuthenticationState.loading();
+    final response = await _controller.forgotPass(email: email);
+    state = response.fold(
+      (error) => AuthenticationState.unauthenticated(message: error),
+      (response) => AuthenticationState.authenticated(user: response)
+    );
+  }
 }
 
 final authControllerProvider = Provider<AuthController>(

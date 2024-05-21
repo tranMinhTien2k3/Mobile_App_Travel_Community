@@ -123,5 +123,14 @@ class AuthController{
       return left(e.message ?? 'Unknow Error');
     }
   }
+
+  Future<Either<String, User>> forgotPass({required String email}) async{
+    try{
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
+      return right( _firebaseAuth.currentUser!);
+    } on FirebaseAuthException catch (e){
+      return left(e.message ?? 'Unknown Error');
+    }
+  }
 }
 
