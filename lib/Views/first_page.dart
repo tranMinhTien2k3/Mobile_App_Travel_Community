@@ -7,11 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:travel_app/Dimension/dimension.dart';
 import 'package:travel_app/Widgets/small_text.dart';
 import 'package:travel_app/convert/convert.dart';
+import 'package:travel_app/repositories/auth_provider.dart';
 
-class Splast_Page extends StatelessWidget {
+class Splast_Page extends HookConsumerWidget {
   Splast_Page({Key? key});
 
   List<String> imageList = [
@@ -23,7 +25,31 @@ class Splast_Page extends StatelessWidget {
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+
+    ref.listen(authNotifierProvider, (previous, next) {
+      next.maybeWhen(
+        orElse: () => null,
+        authenticated: (user) {
+          Navigator.pushNamed(context, '/home_page');
+          // Navigate to any screen
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('User Logged In'),
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        },
+        unauthenticated: (message) =>
+            ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(message!),
+            behavior: SnackBarBehavior.floating,
+          ),
+        ),
+      );
+    });
+
     return Stack(
       children: [
         CarouselSlider(
@@ -106,7 +132,7 @@ class Splast_Page extends StatelessWidget {
                     child: BackdropFilter(
                       filter: ImageFilter.blur(sigmaY: 10, sigmaX: 10),
                       child: Container(
-                        height: MediaQuery.of(context).size.height * 0.3,
+                        height: MediaQuery.of(context).size.height * 0.2,
                         decoration: BoxDecoration(
                           color: Colors.transparent.withOpacity(0.2),
                           borderRadius: BorderRadius.only(
@@ -171,56 +197,6 @@ class Splast_Page extends StatelessWidget {
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.02,
                             ),
-                            Text(
-                              'Or login with',
-                              style: TextStyle(
-                                fontSize: Converts.c20, 
-                                color: Colors.white,
-                                decoration: TextDecoration.none
-                              ),
-                            ),
-                            SizedBox(
-                              height: SizeConfig.screenHeight * 0.03,
-                            ),
-                            Wrap(
-                              alignment: WrapAlignment.spaceBetween,
-                              runSpacing: 12,
-                              spacing: 20,
-                              children: <Widget>[
-                                Container(
-                                  height: MediaQuery.of(context).size.height * 0.07,
-                                  width: MediaQuery.of(context).size.width * 0.16,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.2),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: IconButton(
-                                    onPressed: (){}, 
-                                    icon: const FaIcon(
-                                      FontAwesomeIcons.google,
-                                      size: 40,
-                                      color: Colors.white,
-                                    )
-                                  ),
-                                ),
-                                Container(
-                                  height: MediaQuery.of(context).size.height * 0.07,
-                                  width: MediaQuery.of(context).size.width * 0.16,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.2),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: IconButton(
-                                    onPressed: (){}, 
-                                    icon: const FaIcon(
-                                      FontAwesomeIcons.facebookF,
-                                      size: 40,
-                                      color: Colors.white,
-                                    )
-                                  ),
-                                )    
-                              ],
-                            )
                           ],
                         )
                       ),

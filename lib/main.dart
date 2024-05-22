@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:travel_app/Page/first_page.dart';
-import 'package:travel_app/Page/forgot_pass_page.dart';
-import 'package:travel_app/Page/home_page.dart';
-import 'package:travel_app/Page/login_page.dart';
-import 'package:travel_app/Page/sign_up_page.dart';
+import 'package:travel_app/Views/first_page.dart';
+import 'package:travel_app/Views/forgot_pass_page.dart';
+import 'package:travel_app/Views/home_page.dart';
+import 'package:travel_app/Views/login_page.dart';
+import 'package:travel_app/Views/sign_up_page.dart';
 import 'package:travel_app/repositories/route_transition.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:travel_app/services/firebase_options.dart';

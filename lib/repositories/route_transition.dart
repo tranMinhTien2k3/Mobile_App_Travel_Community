@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:travel_app/Page/first_page.dart';
-import 'package:travel_app/Page/forgot_pass_page.dart';
-import 'package:travel_app/Page/home_page.dart';
-import 'package:travel_app/Page/login_page.dart';
-import 'package:travel_app/Page/sign_up_page.dart';
+import 'package:travel_app/Views/first_page.dart';
+import 'package:travel_app/Views/forgot_pass_page.dart';
+import 'package:travel_app/Views/home_page.dart';
+import 'package:travel_app/Views/login_page.dart';
+import 'package:travel_app/Views/sign_up_page.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   WidgetBuilder builder;
