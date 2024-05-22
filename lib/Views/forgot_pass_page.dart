@@ -1,86 +1,92 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
-import 'package:travel_app/Widgets/form_container.dart';
-import 'package:travel_app/Widgets/notify.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:travel_app/Components/custom_button.dart';
+import 'package:travel_app/Components/text_form_field.dart';
+import 'package:travel_app/repositories/auth_provider.dart';
 
-class Forgot_pass extends StatefulWidget {
+class Forgot_pass extends HookConsumerWidget {
   const Forgot_pass({super.key});
 
-  @override
-  State<Forgot_pass> createState() => _ForgotPWState();
-}
-
-class _ForgotPWState extends State<Forgot_pass> {
-  TextEditingController _emailController = TextEditingController();
-  @override
-  void dispose() {
-    _emailController.dispose();
-    super.dispose();
-  }
-
-  Future passwordReset() async {
-    if (_emailController.text.trim().isEmpty) {
-      showToast(message: "Vui lòng nhập địa chỉ email của bạn");
-      return;
-    }
-    try {
-      await FirebaseAuth.instance
-          .sendPasswordResetEmail(email: _emailController.text.trim());
-      showToast(message: "Đã xác nhận! ");
-    } on FirebaseAuthException catch (e) {
-      print(e);
-      showToast(message: "some error occured $e");
-    }
-  }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+
+    final email = useTextEditingController();
+
+    ref.listen(authNotifierProvider, (previous, next) {
+      next.maybeWhen(
+        orElse: () => null,
+        authenticated: (user) {
+          Navigator.pushNamed(context, '/login');
+          // Navigate to any screen
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Email sended!'),
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        },
+        unauthenticated: (message) =>
+            ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(message!),
+            behavior: SnackBarBehavior.floating,
+          ),
+        ),
+      );
+    });
+
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green[100],
-        title: const Text('Lấy lại mật khẩu'),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pushNamed(context, "/login");
-          },
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('lib/assets/image/dark_mountain2.jpg'),
+            fit: BoxFit.cover
+          )
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(
-            20.0), // Thêm khoảng cách xung quanh các thành phần
-        child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.start, // Căn chỉnh theo chiều ngang
-          children: [
-            SizedBox(height: 20), // Thêm khoảng cách giữa các thành phần
-            Text(
-              'Nhập email của bạn:',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: Container(
+            height: 300,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+              color: Colors.black.withOpacity(0.5)
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(24.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CustomEmailTextFormField(
+                    controller: email, 
+                    labelText: 'Email', 
+                    icon: Icon(Icons.email_rounded, color: Colors.white,)
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  CustomButton(
+                  backgroundColor: Colors.white.withOpacity(0.7),
+                  isDisabled: false,
+                  title: 'Send email',
+                  width: 200,
+                  titleColor: Colors.black,
+                  loading: ref
+                      .watch(authNotifierProvider)
+                      .maybeWhen(orElse: () => false, loading: () => true),
+                  onPressed: () async {
+                    ref.read(authNotifierProvider.notifier).forgotPass(
+                            email: email.text,
+                    );            
+                  }
+                ),
+                ],
               ),
             ),
-            SizedBox(height: 10),
-            FormContainerWidget(
-              controller: _emailController,
-              hintText: "Email",
-            ),
-            SizedBox(height: 20),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  passwordReset();
-                },
-                child: Text('Reset password'),
-              ),
-            ),
-          ],
-        ),
-      ),
+          )
+        )
+      )
     );
   }
 }

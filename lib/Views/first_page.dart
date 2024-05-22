@@ -132,7 +132,7 @@ class Splast_Page extends HookConsumerWidget {
                     child: BackdropFilter(
                       filter: ImageFilter.blur(sigmaY: 10, sigmaX: 10),
                       child: Container(
-                        height: MediaQuery.of(context).size.height * 0.3,
+                        height: MediaQuery.of(context).size.height * 0.2,
                         decoration: BoxDecoration(
                           color: Colors.transparent.withOpacity(0.2),
                           borderRadius: BorderRadius.only(
@@ -197,58 +197,6 @@ class Splast_Page extends HookConsumerWidget {
                             SizedBox(
                               height: MediaQuery.of(context).size.height * 0.02,
                             ),
-                            Text(
-                              'Or login with',
-                              style: TextStyle(
-                                fontSize: Converts.c20, 
-                                color: Colors.white,
-                                decoration: TextDecoration.none
-                              ),
-                            ),
-                            SizedBox(
-                              height: SizeConfig.screenHeight * 0.03,
-                            ),
-                            Wrap(
-                              alignment: WrapAlignment.spaceBetween,
-                              runSpacing: 12,
-                              spacing: 20,
-                              children: <Widget>[
-                                Container(
-                                  height: MediaQuery.of(context).size.height * 0.07,
-                                  width: MediaQuery.of(context).size.width * 0.16,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.2),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: IconButton(
-                                    onPressed: () async {
-                                      ref.read(authNotifierProvider.notifier).continueWithGoogle();
-                                    }, 
-                                    icon: const FaIcon(
-                                      FontAwesomeIcons.google,
-                                      size: 40,
-                                      color: Colors.white,
-                                    )
-                                  ),
-                                ),
-                                Container(
-                                  height: MediaQuery.of(context).size.height * 0.07,
-                                  width: MediaQuery.of(context).size.width * 0.16,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.2),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: IconButton(
-                                    onPressed: (){}, 
-                                    icon: const FaIcon(
-                                      FontAwesomeIcons.facebookF,
-                                      size: 40,
-                                      color: Colors.white,
-                                    )
-                                  ),
-                                )    
-                              ],
-                            )
                           ],
                         )
                       ),

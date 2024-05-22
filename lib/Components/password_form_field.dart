@@ -1,31 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CustomEmailTextFormField extends StatelessWidget {
+class CustomPasswordFormField extends ConsumerStatefulWidget {
   final TextEditingController controller;
-  final TextInputType keyboardType;
   final String labelText;
-  final Widget icon;
   final String? Function(String?)? validator;
 
-  const CustomEmailTextFormField({
+  const CustomPasswordFormField({
     Key? key,
     required this.controller,
-    this.keyboardType = TextInputType.text,
     required this.labelText,
-    required this.icon,
     this.validator,
   }) : super(key: key);
 
   @override
+  _CustomPasswordFormFieldState createState() => _CustomPasswordFormFieldState();
+}
+
+class _CustomPasswordFormFieldState extends ConsumerState<CustomPasswordFormField> {
+  bool obscureText = true;
+
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: controller,
-      keyboardType: keyboardType,
+      controller: widget.controller,
       style: TextStyle(color: Colors.white),
       cursorColor: Colors.white,
       decoration: InputDecoration(
         labelStyle: TextStyle(color: Colors.white),
-        suffixIcon: icon,
+        suffixIcon: IconButton(
+          icon: Icon(
+            obscureText ? Icons.visibility : Icons.visibility_off,
+            color: Colors.white, // Màu mặc định cho biểu tượng
+          ),
+          onPressed: () {
+            setState(() {
+              obscureText = !obscureText;
+            });
+          },
+        ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20.0),
           borderSide: BorderSide(color: Colors.white),
@@ -42,16 +55,15 @@ class CustomEmailTextFormField extends StatelessWidget {
           borderRadius: BorderRadius.circular(20.0),
           borderSide: BorderSide(color: Colors.red),
         ),
-        labelText: labelText,
+        labelText: widget.labelText,
       ),
-      validator: validator ?? (value) {
+      obscureText: obscureText,
+      validator: widget.validator ?? (value) {
         if (value == null || value.isEmpty) {
-          return 'Please enter your $labelText';
+          return 'Please enter your ${widget.labelText.toLowerCase()}';
         }
         return null;
       },
     );
   }
 }
-
-

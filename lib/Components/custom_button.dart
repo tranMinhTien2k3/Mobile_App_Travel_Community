@@ -8,6 +8,7 @@ class CustomButton extends StatelessWidget {
     this.title,
     this.onPressed,
     this.titleStyle,
+    this.titleColor = Colors.white,
     this.backgroundColor = Colors.red,
     this.shape,
     this.width = 140,
@@ -32,22 +33,25 @@ class CustomButton extends StatelessWidget {
   /// [titleStyle] is used to style the button text
   final TextStyle? titleStyle;
 
+  /// [titleColor] is used to color the button text
+  final Color titleColor;
+
   /// [gradient] for enabled state of button
   final Color backgroundColor;
 
   /// [shape] is used to apply border radius on button,
   final ShapeBorder? shape;
 
-  /// [width] button width, defaults is 140
+  /// [width] button width, default is 140
   final double width;
 
-  /// [height] button height, defaults is 44
+  /// [height] button height, default is 50
   final double height;
 
   /// [loading] is used to display circular progress indicator on loading event, default is false
   final bool loading;
 
-  /// [isDisabled] is used to disable to button, default is true
+  /// [isDisabled] is used to disable the button, default is true
   final bool isDisabled;
 
   final Color? splashColor;
@@ -82,32 +86,32 @@ class CustomButton extends StatelessWidget {
         child: ConstrainedBox(
           constraints: _constraints,
           child: Ink(
-              decoration: ShapeDecoration(
-                shape: _shape,
-                color:
-                    isDisabled ? Colors.red.withOpacity(.6) : backgroundColor,
-              ),
-              child: loading
-                  ? const Center(
-                      child: SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 2,
-                        ),
+            decoration: ShapeDecoration(
+              shape: _shape,
+              color: isDisabled ? Colors.red.withOpacity(.6) : backgroundColor,
+            ),
+            child: loading
+                ? const Center(
+                    child: SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2,
                       ),
-                    )
-                  : (title != null)
-                      ? Center(
-                          child: Text(
-                            title!,
-                            style: titleStyle ??
-                                const TextStyle(
-                                    color: Colors.white, fontSize: 18),
-                          ),
-                        )
-                      : Container()),
+                    ),
+                  )
+                : (title != null)
+                    ? Center(
+                        child: Text(
+                          title!,
+                          style: titleStyle ??
+                              TextStyle(
+                                  color: titleColor, fontSize: 18),
+                        ),
+                      )
+                    : Container(),
+          ),
         ),
       ),
     );
