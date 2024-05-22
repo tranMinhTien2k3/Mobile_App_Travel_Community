@@ -21,6 +21,9 @@ class Login_Form extends HookConsumerWidget {
     final passwordController = useTextEditingController();
     final formKey = useMemoized(() => GlobalKey<FormState>());
     final obscureText = ref.watch(obscureTextProvider);
+    final focusNode = useFocusNode();
+
+    
 
     ref.listen(authNotifierProvider, (previous, next) {
       next.maybeWhen(
@@ -46,123 +49,135 @@ class Login_Form extends HookConsumerWidget {
 
     return Padding(
       padding: const EdgeInsets.all(24.0),
-      child: SingleChildScrollView(
-        child: Form(
-          key: formKey,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: BigText(
-                  text: 'Welcome back!',
-                  size: 45,
-                  color: Colors.white,
-                ),
-              ),
-              SizedBox(height: 50),
-              CustomEmailTextFormField( // email textfield
-                controller: emailController,
-                keyboardType: TextInputType.emailAddress,
-                labelText: 'Email',
-                icon: const Icon(Icons.email_rounded, color: Colors.white,),
-                validator: (value){
-                  if(value == null || value.isEmpty){
-                    return 'Please enter your email';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 30),
-              CustomPasswordFormField(
-                controller: passwordController, 
-                labelText: 'Password'
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () => Navigator.pushNamed(context, '/forgot_pass'),
-                  child: SmallText(
-                    text: 'Forgot password?',
+      child: GestureDetector(
+        onTap: (){
+          FocusScope.of(context).unfocus();
+        },
+        child: SingleChildScrollView(
+          child: Form(
+            key: formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: BigText(
+                    text: 'Welcome back!',
+                    size: 45,
                     color: Colors.white,
-                    size: 16,
-                  )
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              CustomButton(
-                backgroundColor: Colors.white.withOpacity(0.6),
-                isDisabled: false,
-                title: 'Login',
-                splashColor: Colors.white,
-                titleColor: Colors.black,
-                width: 200,
-                loading: ref
-                    .watch(authNotifierProvider)
-                    .maybeWhen(orElse: () => false, loading: () => true),
-                onPressed: () async {
-                  if (formKey.currentState?.validate() ?? false) {
-                    ref.read(authNotifierProvider.notifier).login(
-                      email: emailController.text,
-                      password: passwordController.text,
-                    );
-                  }
-                },
-              ),
-              SizedBox(height: 40),
-              SmallText(
-                text: 'Or continue with',
-                color: Colors.white,
-                size: 16,
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Wrap(
-                alignment: WrapAlignment.spaceBetween,
-                runSpacing: 12,
-                spacing: 20,
-                children: <Widget>[
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.07,
-                    width: MediaQuery.of(context).size.width * 0.16,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: IconButton(
-                      onPressed: () async {
-                        ref.read(authNotifierProvider.notifier).continueWithGoogle();
-                      }, 
-                      icon: const FaIcon(
-                        FontAwesomeIcons.google,
-                        size: 40,
-                        color: Colors.white,
-                      )
-                    ),
                   ),
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.07,
-                    width: MediaQuery.of(context).size.width * 0.16,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(10),
+                ),
+                SizedBox(height: 50),
+                CustomEmailTextFormField( // email textfield
+                  controller: emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  labelText: 'Email',
+                  focusNode: focusNode,
+                  icon: const Icon(Icons.email_rounded, color: Colors.white,),
+                  validator: (value){
+                    if(value == null || value.isEmpty){
+                      return 'Please enter your email';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 30),
+                CustomPasswordFormField(
+                  controller: passwordController, 
+                  labelText: 'Password',
+                  validator: (value){
+                    if(value == null || value.isEmpty){
+                      return 'Please enter your password';
+                    }
+                    return null;
+                  },
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () => Navigator.pushNamed(context, '/forgot_pass'),
+                    child: SmallText(
+                      text: 'Forgot password?',
+                      color: Colors.white,
+                      size: 16,
+                    )
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                CustomButton(
+                  backgroundColor: Colors.white.withOpacity(0.6),
+                  isDisabled: false,
+                  title: 'Login',
+                  splashColor: Colors.white,
+                  titleColor: Colors.black,
+                  width: 200,
+                  loading: ref
+                      .watch(authNotifierProvider)
+                      .maybeWhen(orElse: () => false, loading: () => true),
+                  onPressed: () async {
+                    if (formKey.currentState?.validate() ?? false) {
+                      ref.read(authNotifierProvider.notifier).login(
+                        email: emailController.text,
+                        password: passwordController.text,
+                      );
+                    }
+                  },
+                ),
+                SizedBox(height: 40),
+                SmallText(
+                  text: 'Or continue with',
+                  color: Colors.white,
+                  size: 16,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Wrap(
+                  alignment: WrapAlignment.spaceBetween,
+                  runSpacing: 12,
+                  spacing: 20,
+                  children: <Widget>[
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.07,
+                      width: MediaQuery.of(context).size.width * 0.16,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: IconButton(
+                        onPressed: () async {
+                          ref.read(authNotifierProvider.notifier).continueWithGoogle();
+                        }, 
+                        icon: const FaIcon(
+                          FontAwesomeIcons.google,
+                          size: 40,
+                          color: Colors.white,
+                        )
+                      ),
                     ),
-                    child: IconButton(
-                      onPressed: (){}, 
-                      icon: const FaIcon(
-                        FontAwesomeIcons.facebookF,
-                        size: 40,
-                        color: Colors.white,
-                      )
-                    ),
-                  )    
-                ],
-              )
-            ],
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.07,
+                      width: MediaQuery.of(context).size.width * 0.16,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: IconButton(
+                        onPressed: (){}, 
+                        icon: const FaIcon(
+                          FontAwesomeIcons.facebookF,
+                          size: 40,
+                          color: Colors.white,
+                        )
+                      ),
+                    )    
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),

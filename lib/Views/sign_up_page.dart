@@ -217,6 +217,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:travel_app/Views/sign_up_form.dart';
 
 class Sign_up extends StatelessWidget {
   const Sign_up({super.key});
@@ -225,11 +226,14 @@ class Sign_up extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('lib/assets/image/mountain1.jpg'),
+        decoration: const BoxDecoration(
+          image:  DecorationImage(
+            image: AssetImage('lib/assets/image/dark_mountain1.jpg'),
             fit: BoxFit.cover
-          )
+          ),
+        ),
+        child: Center(
+          child: SignUpForm(),
         ),
       ),
     );

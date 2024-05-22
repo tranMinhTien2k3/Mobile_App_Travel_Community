@@ -6,6 +6,7 @@ class CustomEmailTextFormField extends StatelessWidget {
   final String labelText;
   final Widget icon;
   final String? Function(String?)? validator;
+  final FocusNode? focusNode;
 
   const CustomEmailTextFormField({
     Key? key,
@@ -14,6 +15,7 @@ class CustomEmailTextFormField extends StatelessWidget {
     required this.labelText,
     required this.icon,
     this.validator,
+    this.focusNode
   }) : super(key: key);
 
   @override

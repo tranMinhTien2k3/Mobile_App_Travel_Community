@@ -5,12 +5,14 @@ class CustomPasswordFormField extends ConsumerStatefulWidget {
   final TextEditingController controller;
   final String labelText;
   final String? Function(String?)? validator;
+  final FocusNode? focusNode;
 
   const CustomPasswordFormField({
     Key? key,
     required this.controller,
     required this.labelText,
     this.validator,
+    this.focusNode,
   }) : super(key: key);
 
   @override
@@ -24,6 +26,7 @@ class _CustomPasswordFormFieldState extends ConsumerState<CustomPasswordFormFiel
   Widget build(BuildContext context) {
     return TextFormField(
       controller: widget.controller,
+      focusNode: widget.focusNode,
       style: TextStyle(color: Colors.white),
       cursorColor: Colors.white,
       decoration: InputDecoration(

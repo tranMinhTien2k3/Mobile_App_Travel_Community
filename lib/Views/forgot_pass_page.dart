@@ -13,6 +13,8 @@ class Forgot_pass extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
 
     final email = useTextEditingController();
+        final formKey = useMemoized(() => GlobalKey<FormState>());
+
 
     ref.listen(authNotifierProvider, (previous, next) {
       next.maybeWhen(
@@ -55,33 +57,43 @@ class Forgot_pass extends HookConsumerWidget {
             ),
             child: Padding(
               padding: EdgeInsets.all(24.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CustomEmailTextFormField(
-                    controller: email, 
-                    labelText: 'Email', 
-                    icon: Icon(Icons.email_rounded, color: Colors.white,)
+              child: Form(
+                child: Column(
+                  key: formKey ,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CustomEmailTextFormField(
+                      controller: email, 
+                      labelText: 'Email', 
+                      icon: Icon(Icons.email_rounded, color: Colors.white,),
+                      validator: (value){
+                        if(value == null || value.isEmpty){
+                          return 'Please enter your email';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    CustomButton(
+                    backgroundColor: Colors.white.withOpacity(0.7),
+                    isDisabled: false,
+                    title: 'Send email',
+                    width: 200,
+                    titleColor: Colors.black,
+                    loading: ref
+                        .watch(authNotifierProvider)
+                        .maybeWhen(orElse: () => false, loading: () => true),
+                    onPressed: () async {
+                      
+                      ref.read(authNotifierProvider.notifier).forgotPass(
+                              email: email.text,
+                      );            
+                    }
                   ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  CustomButton(
-                  backgroundColor: Colors.white.withOpacity(0.7),
-                  isDisabled: false,
-                  title: 'Send email',
-                  width: 200,
-                  titleColor: Colors.black,
-                  loading: ref
-                      .watch(authNotifierProvider)
-                      .maybeWhen(orElse: () => false, loading: () => true),
-                  onPressed: () async {
-                    ref.read(authNotifierProvider.notifier).forgotPass(
-                            email: email.text,
-                    );            
-                  }
+                  ],
                 ),
-                ],
               ),
             ),
           )
