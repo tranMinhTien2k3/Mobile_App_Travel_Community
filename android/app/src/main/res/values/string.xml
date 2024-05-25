@@ -1,0 +1,7 @@
+<!-- res/values/strings.xml -->
+<resources>
+    <string name="app_name">Travel App</string>
+    <string name="facebook_app_id">758302823123721</string>
+    <string name="fb_login_protocol_scheme">fb758302823123721</string>
+    <string name="facebook_client_token">151590b55bdc4caa7ff21d2c60d72533</string>
+</resources>

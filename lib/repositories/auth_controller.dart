@@ -141,12 +141,13 @@ class AuthController {
       } else if (result.status == LoginStatus.failed) {
         return left('Login failed: ${result.message}');
       } else {
-        return left('Unknown error');
+        return left('Unknown error 1');
       }
     } on FirebaseAuthException catch (e) {
-      return left(e.message ?? 'Unknown error');
+      return left(e.message ?? 'Unknown error 2');
     } catch (e) {
-      return left('Unknown error');
+      print('Error: $e');
+      return left('Unknown error 3');
     }
   }
 
