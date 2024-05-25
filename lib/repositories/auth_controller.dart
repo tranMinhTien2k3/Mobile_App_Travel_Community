@@ -45,7 +45,7 @@
 
 //         // Sử dụng Provider từ AuthProvider để đăng nhập
 //         await context.read(authWithGoogle).signInWithCredential(credential);
-        
+
 //         // Điều hướng sau khi đăng nhập thành công
 //         Navigator.pushNamed(_context, "/home_page");
 //       }
@@ -70,67 +70,92 @@
 //   }
 // }
 
-
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:travel_app/repositories/auth_provider.dart';
 
-class AuthController{
+class AuthController {
   final FirebaseAuth _firebaseAuth;
   final Ref _ref;
 
   AuthController(this._firebaseAuth, this._ref);
 
-  Future<Either<String, User>> signUp({required String email, required String password}) async{
-    try{
-      final response = await _firebaseAuth.createUserWithEmailAndPassword
-      (email: email, password: password);
+  Future<Either<String, User>> signUp(
+      {required String email, required String password}) async {
+    try {
+      final response = await _firebaseAuth.createUserWithEmailAndPassword(
+          email: email, password: password);
       return right(response.user!);
-    }on FirebaseAuthException catch(e){
+    } on FirebaseAuthException catch (e) {
       return left(e.message ?? 'Failed to Signup');
     }
   }
 
-  Future<Either<String, User>> login({required String email, required String password}) async{
-    try{
+  Future<Either<String, User>> login(
+      {required String email, required String password}) async {
+    try {
       final response = await _firebaseAuth.signInWithEmailAndPassword(
-        email: email, password: password);
+          email: email, password: password);
       return right(response.user!);
-    }on FirebaseAuthException catch (e){
+    } on FirebaseAuthException catch (e) {
       return left(e.message ?? 'Failed to login');
     }
   }
 
-  Future<Either<String, User>> continueWithGoogle() async{
-    try{
-      final googleSignIn  = GoogleSignIn();
+  Future<Either<String, User>> continueWithGoogle() async {
+    try {
+      final googleSignIn = GoogleSignIn();
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-      if(googleUser != null){
-        final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      if (googleUser != null) {
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
         final AuthCredential credential = GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken,
           idToken: googleAuth.idToken,
         );
         final response = await _firebaseAuth.signInWithCredential(credential);
         return right(response.user!);
-      }else{
+      } else {
         return left('Unknow Error');
       }
-    } on FirebaseAuthException catch (e){
+    } on FirebaseAuthException catch (e) {
       return left(e.message ?? 'Unknow Error');
     }
   }
 
-  Future<Either<String, User>> forgotPass({required String email}) async{
-    try{
+  Future<Either<String, User>> continueWithFacebook() async {
+    try {
+      final LoginResult result = await FacebookAuth.instance.login();
+      if (result.status == LoginStatus.success) {
+        final OAuthCredential credential =
+            FacebookAuthProvider.credential(result.accessToken!.tokenString);
+        final UserCredential response =
+            await _firebaseAuth.signInWithCredential(credential);
+        return right(response.user!);
+      } else if (result.status == LoginStatus.cancelled) {
+        return left('Login cancelled');
+      } else if (result.status == LoginStatus.failed) {
+        return left('Login failed: ${result.message}');
+      } else {
+        return left('Unknown error');
+      }
+    } on FirebaseAuthException catch (e) {
+      return left(e.message ?? 'Unknown error');
+    } catch (e) {
+      return left('Unknown error');
+    }
+  }
+
+  Future<Either<String, User>> forgotPass({required String email}) async {
+    try {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
-      return right( _firebaseAuth.currentUser!);
-    } on FirebaseAuthException catch (e){
+      return right(_firebaseAuth.currentUser!);
+    } on FirebaseAuthException catch (e) {
       return left(e.message ?? 'Unknown Error');
     }
   }
 }
-

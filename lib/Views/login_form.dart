@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -22,8 +21,6 @@ class Login_Form extends HookConsumerWidget {
     final formKey = useMemoized(() => GlobalKey<FormState>());
     final obscureText = ref.watch(obscureTextProvider);
     final focusNode = useFocusNode();
-
-    
 
     ref.listen(authNotifierProvider, (previous, next) {
       next.maybeWhen(
@@ -50,7 +47,7 @@ class Login_Form extends HookConsumerWidget {
     return Padding(
       padding: const EdgeInsets.all(24.0),
       child: GestureDetector(
-        onTap: (){
+        onTap: () {
           FocusScope.of(context).unfocus();
         },
         child: SingleChildScrollView(
@@ -69,14 +66,18 @@ class Login_Form extends HookConsumerWidget {
                   ),
                 ),
                 SizedBox(height: 50),
-                CustomEmailTextFormField( // email textfield
+                CustomEmailTextFormField(
+                  // email textfield
                   controller: emailController,
                   keyboardType: TextInputType.emailAddress,
                   labelText: 'Email',
                   focusNode: focusNode,
-                  icon: const Icon(Icons.email_rounded, color: Colors.white,),
-                  validator: (value){
-                    if(value == null || value.isEmpty){
+                  icon: const Icon(
+                    Icons.email_rounded,
+                    color: Colors.white,
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
                       return 'Please enter your email';
                     }
                     return null;
@@ -84,10 +85,10 @@ class Login_Form extends HookConsumerWidget {
                 ),
                 SizedBox(height: 30),
                 CustomPasswordFormField(
-                  controller: passwordController, 
+                  controller: passwordController,
                   labelText: 'Password',
-                  validator: (value){
-                    if(value == null || value.isEmpty){
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
                       return 'Please enter your password';
                     }
                     return null;
@@ -96,13 +97,13 @@ class Login_Form extends HookConsumerWidget {
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                    onPressed: () => Navigator.pushNamed(context, '/forgot_pass'),
-                    child: SmallText(
-                      text: 'Forgot password?',
-                      color: Colors.white,
-                      size: 16,
-                    )
-                  ),
+                      onPressed: () =>
+                          Navigator.pushNamed(context, '/forgot_pass'),
+                      child: SmallText(
+                        text: 'Forgot password?',
+                        color: Colors.white,
+                        size: 16,
+                      )),
                 ),
                 SizedBox(
                   height: 10,
@@ -120,9 +121,9 @@ class Login_Form extends HookConsumerWidget {
                   onPressed: () async {
                     if (formKey.currentState?.validate() ?? false) {
                       ref.read(authNotifierProvider.notifier).login(
-                        email: emailController.text,
-                        password: passwordController.text,
-                      );
+                            email: emailController.text,
+                            password: passwordController.text,
+                          );
                     }
                   },
                 ),
@@ -148,15 +149,16 @@ class Login_Form extends HookConsumerWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: IconButton(
-                        onPressed: () async {
-                          ref.read(authNotifierProvider.notifier).continueWithGoogle();
-                        }, 
-                        icon: const FaIcon(
-                          FontAwesomeIcons.google,
-                          size: 40,
-                          color: Colors.white,
-                        )
-                      ),
+                          onPressed: () async {
+                            ref
+                                .read(authNotifierProvider.notifier)
+                                .continueWithGoogle();
+                          },
+                          icon: const FaIcon(
+                            FontAwesomeIcons.google,
+                            size: 40,
+                            color: Colors.white,
+                          )),
                     ),
                     Container(
                       height: MediaQuery.of(context).size.height * 0.07,
@@ -166,14 +168,17 @@ class Login_Form extends HookConsumerWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: IconButton(
-                        onPressed: (){}, 
-                        icon: const FaIcon(
-                          FontAwesomeIcons.facebookF,
-                          size: 40,
-                          color: Colors.white,
-                        )
-                      ),
-                    )    
+                          onPressed: () async {
+                            ref
+                                .read(authNotifierProvider.notifier)
+                                .continueWithFacebook();
+                          },
+                          icon: const FaIcon(
+                            FontAwesomeIcons.facebookF,
+                            size: 40,
+                            color: Colors.white,
+                          )),
+                    )
                   ],
                 )
               ],
