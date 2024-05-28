@@ -129,7 +129,9 @@ class AuthController {
 
   Future<Either<String, User>> continueWithFacebook() async {
     try {
-      final LoginResult result = await FacebookAuth.instance.login();
+      final LoginResult result = await FacebookAuth.instance.login(
+        permissions: ['public_profile', 'email'],
+      );
       if (result.status == LoginStatus.success) {
         final OAuthCredential credential =
             FacebookAuthProvider.credential(result.accessToken!.tokenString);
@@ -146,7 +148,6 @@ class AuthController {
     } on FirebaseAuthException catch (e) {
       return left(e.message ?? 'Unknown error 2');
     } catch (e) {
-      print('Error: $e');
       return left('Unknown error 3');
     }
   }
