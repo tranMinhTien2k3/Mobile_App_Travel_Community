@@ -1,4 +1,3 @@
-
 // import 'package:flutter/material.dart';
 // import 'package:hooks_riverpod/hooks_riverpod.dart';
 // // ignore: depend_on_referenced_packages
@@ -69,7 +68,7 @@
 //                     ref.read(authNotifierProvider.notifier).login(
 //                             email: email.text,
 //                             password: password.text,
-//                     );            
+//                     );
 //                   }
 //                 ),
 //               ),
@@ -100,7 +99,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:travel_app/Views/login_form.dart';
+import 'package:travel_app/form/login_form.dart';
 import 'package:travel_app/Widgets/big_text.dart';
 
 class Login_Page extends HookConsumerWidget {
@@ -109,17 +108,14 @@ class Login_Page extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
+        body: Container(
+      decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('lib/assets/image/dark_mountain.jpg'),
-            fit: BoxFit.cover
-          )
-        ),
-        child: Center(
-          child: Login_Form(),
-        ),
-      )
-    );
+              image: AssetImage('lib/assets/image/dark_mountain.jpg'),
+              fit: BoxFit.cover)),
+      child: Center(
+        child: Login_Form(),
+      ),
+    ));
   }
 }

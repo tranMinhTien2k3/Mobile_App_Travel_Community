@@ -129,8 +129,34 @@ class Login_Form extends HookConsumerWidget {
                 ),
                 SizedBox(height: 40),
                 SmallText(
+                  text: "you don't have an account",
+                  color: Color.fromARGB(219, 255, 255, 255),
+                  size: 16,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SmallText(
+                      text: "please",
+                      color: Color.fromARGB(219, 255, 255, 255),
+                      size: 16,
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                          onPressed: () =>
+                              Navigator.pushNamed(context, '/sign_up'),
+                          child: SmallText(
+                            text: 'Register',
+                            color: Colors.white,
+                            size: 16,
+                          )),
+                    ),
+                  ],
+                ),
+                SmallText(
                   text: 'Or continue with',
-                  color: Colors.white,
+                  color: Color.fromARGB(219, 255, 255, 255),
                   size: 16,
                 ),
                 SizedBox(
@@ -180,7 +206,7 @@ class Login_Form extends HookConsumerWidget {
                           )),
                     )
                   ],
-                )
+                ),
               ],
             ),
           ),

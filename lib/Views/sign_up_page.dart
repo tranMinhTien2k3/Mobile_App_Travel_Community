@@ -215,9 +215,8 @@
 //   }
 // }
 
-
 import 'package:flutter/material.dart';
-import 'package:travel_app/Views/sign_up_form.dart';
+import 'package:travel_app/form/sign_up_form.dart';
 
 class Sign_up extends StatelessWidget {
   const Sign_up({super.key});
@@ -227,10 +226,9 @@ class Sign_up extends StatelessWidget {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          image:  DecorationImage(
-            image: AssetImage('lib/assets/image/dark_mountain1.jpg'),
-            fit: BoxFit.cover
-          ),
+          image: DecorationImage(
+              image: AssetImage('lib/assets/image/dark_mountain1.jpg'),
+              fit: BoxFit.cover),
         ),
         child: Center(
           child: SignUpForm(),
