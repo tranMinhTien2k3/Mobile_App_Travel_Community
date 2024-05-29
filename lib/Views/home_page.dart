@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:travel_app/Components/drawer_home.dart';
+import 'package:travel_app/repositories/get_api.dart';
 
 class Home_Page extends StatelessWidget {
   const Home_Page({super.key});
@@ -11,7 +12,7 @@ class Home_Page extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       drawer: DrawerHome(),
-      body: Container(),
+      body:CityListPage() ,
     );
   }
 }

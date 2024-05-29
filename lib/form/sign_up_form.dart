@@ -174,17 +174,12 @@ class SignUpForm extends HookConsumerWidget {
                     }
                   },
                 ),
-                SizedBox(height: 40),
-                SmallText(
-                  text: "you have an account",
-                  color: Color.fromARGB(219, 255, 255, 255),
-                  size: 16,
-                ),
+                SizedBox(height: 30),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SmallText(
-                      text: "Go to the",
+                      text: "Go to ",
                       color: Color.fromARGB(219, 255, 255, 255),
                       size: 16,
                     ),
@@ -198,11 +193,6 @@ class SignUpForm extends HookConsumerWidget {
                             color: Colors.white,
                             size: 16,
                           )),
-                    ),
-                    SmallText(
-                      text: "page",
-                      color: Color.fromARGB(219, 255, 255, 255),
-                      size: 16,
                     ),
                   ],
                 ),
