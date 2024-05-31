@@ -23,7 +23,6 @@ mixin _$City {
   String get name => throw _privateConstructorUsedError;
   String get country => throw _privateConstructorUsedError;
   String get population => throw _privateConstructorUsedError;
-  String get history => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +34,7 @@ abstract class $CityCopyWith<$Res> {
   factory $CityCopyWith(City value, $Res Function(City) then) =
       _$CityCopyWithImpl<$Res, City>;
   @useResult
-  $Res call({String name, String country, String population, String history});
+  $Res call({String name, String country, String population});
 }
 
 /// @nodoc
@@ -54,7 +53,6 @@ class _$CityCopyWithImpl<$Res, $Val extends City>
     Object? name = null,
     Object? country = null,
     Object? population = null,
-    Object? history = null,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -69,10 +67,6 @@ class _$CityCopyWithImpl<$Res, $Val extends City>
           ? _value.population
           : population // ignore: cast_nullable_to_non_nullable
               as String,
-      history: null == history
-          ? _value.history
-          : history // ignore: cast_nullable_to_non_nullable
-              as String,
     ) as $Val);
   }
 }
@@ -84,7 +78,7 @@ abstract class _$$CityImplCopyWith<$Res> implements $CityCopyWith<$Res> {
       __$$CityImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, String country, String population, String history});
+  $Res call({String name, String country, String population});
 }
 
 /// @nodoc
@@ -100,7 +94,6 @@ class __$$CityImplCopyWithImpl<$Res>
     Object? name = null,
     Object? country = null,
     Object? population = null,
-    Object? history = null,
   }) {
     return _then(_$CityImpl(
       name: null == name
@@ -115,10 +108,6 @@ class __$$CityImplCopyWithImpl<$Res>
           ? _value.population
           : population // ignore: cast_nullable_to_non_nullable
               as String,
-      history: null == history
-          ? _value.history
-          : history // ignore: cast_nullable_to_non_nullable
-              as String,
     ));
   }
 }
@@ -127,10 +116,7 @@ class __$$CityImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$CityImpl implements _City {
   const _$CityImpl(
-      {required this.name,
-      required this.country,
-      required this.population,
-      required this.history});
+      {required this.name, required this.country, required this.population});
 
   factory _$CityImpl.fromJson(Map<String, dynamic> json) =>
       _$$CityImplFromJson(json);
@@ -141,12 +127,10 @@ class _$CityImpl implements _City {
   final String country;
   @override
   final String population;
-  @override
-  final String history;
 
   @override
   String toString() {
-    return 'City(name: $name, country: $country, population: $population, history: $history)';
+    return 'City(name: $name, country: $country, population: $population)';
   }
 
   @override
@@ -157,14 +141,12 @@ class _$CityImpl implements _City {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.country, country) || other.country == country) &&
             (identical(other.population, population) ||
-                other.population == population) &&
-            (identical(other.history, history) || other.history == history));
+                other.population == population));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, name, country, population, history);
+  int get hashCode => Object.hash(runtimeType, name, country, population);
 
   @JsonKey(ignore: true)
   @override
@@ -184,8 +166,7 @@ abstract class _City implements City {
   const factory _City(
       {required final String name,
       required final String country,
-      required final String population,
-      required final String history}) = _$CityImpl;
+      required final String population}) = _$CityImpl;
 
   factory _City.fromJson(Map<String, dynamic> json) = _$CityImpl.fromJson;
 
@@ -195,8 +176,6 @@ abstract class _City implements City {
   String get country;
   @override
   String get population;
-  @override
-  String get history;
   @override
   @JsonKey(ignore: true)
   _$$CityImplCopyWith<_$CityImpl> get copyWith =>

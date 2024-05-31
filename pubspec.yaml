@@ -55,6 +55,8 @@ dependencies:
   flutter_facebook_auth: ^7.0.0
   dotenv: ^4.2.0
   flutter_dotenv: ^5.1.0
+  http: ^1.2.1
+  json_annotation: ^4.9.0
 
 dev_dependencies:
   flutter_test:

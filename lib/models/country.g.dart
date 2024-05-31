@@ -1,20 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'city_model.dart';
+part of 'country.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$CityImpl _$$CityImplFromJson(Map<String, dynamic> json) => _$CityImpl(
+_$CountryImpl _$$CountryImplFromJson(Map<String, dynamic> json) =>
+    _$CountryImpl(
+      iso2: json['iso2'] as String,
       name: json['name'] as String,
-      country: json['country'] as String,
-      population: json['population'] as String,
     );
 
-Map<String, dynamic> _$$CityImplToJson(_$CityImpl instance) =>
+Map<String, dynamic> _$$CountryImplToJson(_$CountryImpl instance) =>
     <String, dynamic>{
+      'iso2': instance.iso2,
       'name': instance.name,
-      'country': instance.country,
-      'population': instance.population,
     };
