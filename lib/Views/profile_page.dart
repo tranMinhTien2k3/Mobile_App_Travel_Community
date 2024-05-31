@@ -122,8 +122,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     }
-                    Map<String, dynamic>? data =
-                        snapshot.data?.snapshot.value as Map<String, dynamic>?;
+                    Map<dynamic, dynamic>? data =
+                        snapshot.data!.snapshot.value as Map<dynamic, dynamic>;
+                    Map<String, dynamic> convertedData =
+                        Map<String, dynamic>.from(data);
                     if (data == null || data.isEmpty) {
                       usersRef.child(documentId).set({
                         'first name': '',
