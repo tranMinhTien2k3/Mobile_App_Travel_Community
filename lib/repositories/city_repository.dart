@@ -31,20 +31,7 @@ final countryProvider = FutureProvider.autoDispose<List<CountryModel>>((ref) {
   });
 });
 
-final countryProvider2 = FutureProvider.autoDispose<List<Country>>((ref){
-  return ref.read(apiProvider).getCountry2().then((countries){
-    final List<Country> countryList2 = [];
-    for(var i = 0; i < 227; i++){
-      countryList2.add(
-        Country(
-          iso2: countries[i]['iso2'], 
-          name: countries[i]['country']
-        )
-      );
-    }
-    return countryList2;
-  });
-});
+
 
 // final dioProvider = Provider((ref) => Dio());
 

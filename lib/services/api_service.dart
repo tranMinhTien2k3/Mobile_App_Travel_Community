@@ -43,31 +43,44 @@ class ApiService {
     }
   }
 
-  
+  // Future<List<City>> getCities(String iso2) async {
+  //   final url = 'https://api.api-ninjas.com/v1/city?country=$iso2';
 
-//   Future<Map<String, dynamic>> getCities() async {
-//     var headers = {
-//       'X-Api-Key': apiKey,
-//     };
-//     List<dynamic> countries = await getCountry2();
-//     final url = 'https://api.api-ninjas.com/v1/city?country=$countries';
+  //   try {
+  //     final response = await dio.get(url, options: Options(
+  //       headers: {
+  //         'X-Api-Key': apiKey,
+  //       },
+  //     ));
+  //     List<dynamic> data = response.data;
+  //     return data.map<City>((city) => City.fromJson(city)).toList();
+  //   } catch (e) {
+  //     throw Exception('Failed to load cities for $iso2: $e');
+  //   }
+  // }
 
-//     try {
-//       final response = await dio.get(
-//         url,
-//         options: Options(
-//           headers: headers
-//         )
-//       );
-//       if (response.statusCode == 200) {
-//         return response.data;
-//       }
-//     } catch (e) {
-//       throw Exception('Failed to load cities for country: $countries');
-//     }
-//     throw Exception('Failed to load cities');
-//   }
+ Future<List<City>> getCities(String iso2) async {
+    final url = 'https://api.api-ninjas.com/v1/city?country=$iso2&limit=30';
 
+    try {
+      print('Requesting URL: $url'); // Debug log
+      final response = await dio.get(url, options: Options(
+        headers: {
+          'X-Api-Key': apiKey,
+        },
+      ));
+      print('Response status: ${response.statusCode}'); // Debug log
+      print('Response data: ${response.data}'); // Debug log
 
-
+      if (response.statusCode == 200) {
+        List<dynamic> data = response.data;
+        return data.map<City>((city) => City.fromJson(city)).toList();
+      } else {
+        throw Exception('Failed to load cities for $iso2 with status code ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error: $e'); // Debug log
+      throw Exception('Failed to load cities for $iso2: $e');
+    }
+  }
 }
