@@ -8,13 +8,9 @@ part of 'city_model.dart';
 
 _$CityImpl _$$CityImplFromJson(Map<String, dynamic> json) => _$CityImpl(
       name: json['name'] as String,
-      country: json['country'] as String,
-      population: (json['population'] as num).toInt(),
     );
 
 Map<String, dynamic> _$$CityImplToJson(_$CityImpl instance) =>
     <String, dynamic>{
       'name': instance.name,
-      'country': instance.country,
-      'population': instance.population,
     };

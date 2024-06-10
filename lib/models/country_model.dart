@@ -14,7 +14,7 @@ class CountryModel with _$CountryModel{
     required String iso2,
     required String name,
     required String region,
-
+    
 
   }) = _CountryModel;
 

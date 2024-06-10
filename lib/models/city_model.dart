@@ -34,8 +34,8 @@ String _cityToJson(City data) => json.encode(data.toJson());
 class City with _$City {
   const factory City({
     required String name,
-    required String country,
-    required int population,
+    // required String country,
+    // required int population,
   }) = _City;
 
   factory City.fromJson(Map<String, dynamic> json) => _$CityFromJson(json);

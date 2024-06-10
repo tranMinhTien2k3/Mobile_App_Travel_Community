@@ -57,6 +57,8 @@ dependencies:
   flutter_dotenv: ^5.1.0
   http: ^1.2.1
   json_annotation: ^4.9.0
+  hero_animation: ^1.1.4
+  unorm_dart: ^0.3.0
 
 dev_dependencies:
   flutter_test:
