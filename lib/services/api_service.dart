@@ -1,15 +1,11 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:travel_app/models/city_model.dart';
 import 'package:travel_app/models/country.dart';
-import 'package:travel_app/models/country2.dart';
-import 'package:travel_app/models/country_model.dart';
-import 'package:travel_app/models/photo_model.dart';
-import 'package:travel_app/models/wiki_model.dart';
 
 
+// AcessKey cua cac Api, luu o .env
 final String apiKey = dotenv.env['NINJA_API_KEY']!;
 final String countryApiKey = dotenv.env['COUNTRY_API_KEY']!;
 final String unsplashAccessKey = dotenv.env['UNSPLASH_ACCESS_KEY']!;
@@ -79,22 +75,26 @@ class ApiService {
     try {
       final response = await dio.get('https://en.wikipedia.org/api/rest_v1/page/summary/$cityName');
       if (response.statusCode == 200) {
+        // Tra ve data neu ket noi thanh cong
         return response.data;
       } else {
         throw Exception('Failed to load data: ${response.statusCode}');
       }
     } catch (error) {
+      // In ra loi va tra ve map trong
       print('Error: $error');
       return {}; // Trả về một Map trống
     }
   }
 
   Future<String> getImage(String name) async {
+    // Duong dan url den api, tham so name la ten cua thanh pho
     final url = 'https://api.unsplash.com/search/photos?query=$name&client_id=$unsplashAccessKey&per_page=1';
     try {
       final response = await dio.get(url);
 
       if (response.statusCode == 200) {
+        // tra ve data neu ket noi thanh cong
         final data = response.data;
         if ((data['results'] as List).isNotEmpty) {
           final photoUrl = data['results'][0]['urls']['regular'];

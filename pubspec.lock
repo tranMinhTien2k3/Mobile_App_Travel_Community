@@ -430,6 +430,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.6.0"
+  flutter_rating_bar:
+    dependency: "direct main"
+    description:
+      name: flutter_rating_bar
+      sha256: d2af03469eac832c591a1eba47c91ecc871fe5708e69967073c043b2d775ed93
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.1"
+  flutter_rating_stars:
+    dependency: "direct main"
+    description:
+      name: flutter_rating_stars
+      sha256: "09dfa831aac2e5128fe70c5a8bd63ff4463180d5ff8545f7379c5b209d22ce1d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   flutter_riverpod:
     dependency: "direct main"
     description:
@@ -696,6 +712,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
+  like_button:
+    dependency: "direct main"
+    description:
+      name: like_button
+      sha256: "08e6a45b78888412df5d351786c550205ad3a677e72a0820d5bbc0b063c8a463"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.5"
   lints:
     dependency: transitive
     description:
@@ -752,6 +776,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+  palette_generator:
+    dependency: "direct main"
+    description:
+      name: palette_generator
+      sha256: eb7082b4b97487ebc65b3ad3f6f0b7489b96e76840381ed0e06a46fe7ffd4068
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.3+3"
   path:
     dependency: transitive
     description:

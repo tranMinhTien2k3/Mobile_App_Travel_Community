@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:travel_app/Views/country_infor.dart';
+import 'package:travel_app/Views/country_list.dart';
 import 'package:travel_app/Views/first_page.dart';
 import 'package:travel_app/Views/forgot_pass_page.dart';
 import 'package:travel_app/Views/home_page.dart';

@@ -59,6 +59,10 @@ dependencies:
   json_annotation: ^4.9.0
   hero_animation: ^1.1.4
   unorm_dart: ^0.3.0
+  palette_generator: ^0.3.3+3
+  like_button: ^2.0.5
+  flutter_rating_stars: ^1.1.0
+  flutter_rating_bar: ^4.0.1
 
 dev_dependencies:
   flutter_test:
