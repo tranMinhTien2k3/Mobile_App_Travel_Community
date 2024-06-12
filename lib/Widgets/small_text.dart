@@ -7,6 +7,7 @@ class SmallText extends StatelessWidget {
   final double height;
   final FontWeight? fontWeight;
   final bool softWrap; // Thêm thuộc tính softWrap vào SmallText
+  final TextAlign textAlign;
 
   SmallText({
     Key? key,
@@ -16,13 +17,14 @@ class SmallText extends StatelessWidget {
     this.height = 1.2,
     this.fontWeight,
     this.softWrap = true, // Khởi tạo softWrap mặc định là true
+    this.textAlign = TextAlign.start
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
-      maxLines: 1,
+      textAlign: TextAlign.justify,
       softWrap: softWrap, // Sử dụng softWrap ở đây
       style: TextStyle(
         color: color,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:travel_app/Views/country_list.dart';
+import 'package:travel_app/Views/cities_list.dart';
+import 'package:travel_app/Views/city_detail.dart';
+import 'package:travel_app/Views/country_detail.dart';
 import 'package:travel_app/Views/first_page.dart';
 import 'package:travel_app/Views/forgot_pass_page.dart';
 import 'package:travel_app/Views/home_page.dart';
@@ -24,9 +26,17 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case '/forgot_pass':
       builder = (BuildContext context) => const Forgot_pass();
       break;
-    // case '/country_infor':
-    //   builder = (BuildContext context) =>  CountryInfor(countryName: '',);
-    //   break;
+    case '/city_list':
+      final countryName = settings.arguments as String;
+      final iso2 = settings.arguments as String;
+      builder = (BuildContext context) => CityListScreen(name: countryName, iso2: iso2 );
+      break;
+    case '/city_detail':
+      builder = (BuildContext context) => CityDetailsScreen(city: '');
+      break;
+    case '/country_infor':
+      builder = (BuildContext context) =>  CountryDetail(name: '', iso2: '',);
+      break;
     default:
       throw Exception('Invalid route: ${settings.name}');
   }

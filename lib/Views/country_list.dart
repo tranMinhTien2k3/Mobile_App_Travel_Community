@@ -23,7 +23,7 @@ class CountryListScreen extends ConsumerWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CountryDetail( name: country.name,),
+                      builder: (context) => CountryDetail( name: country.name, iso2: country.iso2,),
                     ),
                   );
                 },

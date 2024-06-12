@@ -3,6 +3,8 @@ import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:like_button/like_button.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:travel_app/Components/custom_button.dart';
+import 'package:travel_app/Views/cities_list.dart';
 import 'package:travel_app/Widgets/big_text.dart';
 import 'package:travel_app/Widgets/small_text.dart';
 import 'package:travel_app/Widgets/text_color.dart';
@@ -11,7 +13,8 @@ import 'package:travel_app/repositories/api_provider.dart';
 
 class CountryDetail extends ConsumerWidget {
   final String name;
-  const CountryDetail({required this.name});
+  final String iso2;
+  const CountryDetail({required this.name, required this.iso2});
 
 
   @override
@@ -104,19 +107,56 @@ class CountryDetail extends ConsumerWidget {
                               children: <Widget>[
                                 SmallText(
                                   text: 'Introducing:',
-                                  size: 18,
+                                  size: 20,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black,
                                 ),
+                                Divider(),
                                 Container(
-                                  width: screenWidht*0.8,
-                                  height: 600,
+                                  width: screenWidht - 40,
                                   child: SmallText(
-                                    text:  wikiData['extract'] != null ? wikiData['extract'] : 'No data available from Wikipedia',
-                                    size: 18,
-                                    softWrap: true,
-                                    color: Colors.black,
+                                      text:  wikiData['extract'] != null ? wikiData['extract'] : 'No data available from Wikipedia',
+                                      size: 18,
+                                      softWrap: true,
+                                      color: Colors.black,
+                                    ),
+                                ),
+                                const Divider(),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                GestureDetector(
+                                  onHorizontalDragUpdate: (details) {
+                                    // Kiểm tra nếu người dùng vuốt sang trái
+                                    if (details.delta.dx < 0) {
+                                      // Điều hướng sang trang mới
+                                      Navigator.pushNamed(context, '/city_list', arguments: iso2);
+                                    }
+                                  },
+                                  child: Container(
+                                    height: 50,
+                                    width: screenWidht-100,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      gradient: LinearGradient(
+                                        colors: [Color(0xFFA1C4FD), Color(0xFFC2E9FB)]
+                                      )
+                                    ),
+                                    child: ElevatedButton(
+                                      onPressed:() => Navigator.pushNamed(context, '/city_list', arguments: iso2),
+                                      child: SmallText(
+                                        text: '< Slide to see what city in $name',
+                                        color: Colors.black87,
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.transparent,
+                                        shadowColor: Colors.transparent
+                                      )
+                                    ),
                                   ),
+                                ),
+                                const SizedBox(
+                                  height: 20,
                                 )
                               ],
                             )
@@ -155,46 +195,51 @@ class CountryDetail extends ConsumerWidget {
                         children: [
                           Container(
                             padding: EdgeInsets.only(top: 20, bottom: 20),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                BigText(
-                                  text: '$name',
-                                  size: 20,
-                                  color: Colors.black,
-                                ),
-                                SizedBox(
-                                  height: 30,
-                                ),
-                                RatingStars(
-                                  onValueChanged: (v){
-
-                                  },
-                                  starBuilder: (index, color)=> Icon(
-                                    Icons.star,
-                                    color: color,
+                            child: Container(
+                              width: screenWidht-150,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  BigText(
+                                    text: '$name',
+                                    size: 28,
+                                    color: Colors.black,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  starCount: 5,
-                                  starSize: 20,
-                                  valueLabelColor: const Color(0xff9b9b9b),
-                                    valueLabelTextStyle: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w400,
-                                    fontStyle: FontStyle.normal,
-                                    fontSize: 12.0
+                                  SizedBox(
+                                    height: 30,
                                   ),
-                                  valueLabelRadius: 10,
-                                  starSpacing: 2,
-                                  // maxValueVisibility: true,
-                                  // valueLabelVisibility: true,
-                                  animationDuration: Duration(milliseconds: 1000),
-                                  valueLabelPadding:
-                                  const EdgeInsets.symmetric(vertical: 1, horizontal: 8),
-                                  valueLabelMargin: const EdgeInsets.only(right: 8),
-                                  starOffColor: const Color(0xffe7e8ea),
-                                  starColor: Colors.yellow,
-                                )
-                              ],
+                                  RatingStars(
+                                    onValueChanged: (v){
+                              
+                                    },
+                                    starBuilder: (index, color)=> Icon(
+                                      Icons.star,
+                                      color: color,
+                                    ),
+                                    starCount: 5,
+                                    starSize: 20,
+                                    valueLabelColor: const Color(0xff9b9b9b),
+                                      valueLabelTextStyle: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w400,
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 12.0
+                                    ),
+                                    valueLabelRadius: 10,
+                                    starSpacing: 2,
+                                    // maxValueVisibility: true,
+                                    // valueLabelVisibility: true,
+                                    animationDuration: Duration(milliseconds: 1000),
+                                    valueLabelPadding:
+                                    const EdgeInsets.symmetric(vertical: 1, horizontal: 8),
+                                    valueLabelMargin: const EdgeInsets.only(right: 8),
+                                    starOffColor: const Color(0xffe7e8ea),
+                                    starColor: Colors.yellow,
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                           Container(

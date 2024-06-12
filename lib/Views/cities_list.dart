@@ -11,11 +11,11 @@ class CityListScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final citiesAsyncValue = ref.watch(citiesProvider(iso2));
+    final citiesAsyncValue = ref.watch(citiesProvider(name));
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cities in $name'),
+        title: Text('City in $name'),
       ),
       body: citiesAsyncValue.when(
         data: (cities) {
