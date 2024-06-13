@@ -6,9 +6,11 @@ import 'package:palette_generator/palette_generator.dart';
 import 'package:travel_app/Components/custom_button.dart';
 import 'package:travel_app/Views/cities_list.dart';
 import 'package:travel_app/Widgets/big_text.dart';
+import 'package:travel_app/Widgets/notify.dart';
 import 'package:travel_app/Widgets/small_text.dart';
 import 'package:travel_app/Widgets/text_color.dart';
 import 'package:travel_app/repositories/api_provider.dart';
+import 'package:travel_app/repositories/favorite_provider.dart';
 
 
 class CountryDetail extends ConsumerWidget {
@@ -31,7 +33,7 @@ class CountryDetail extends ConsumerWidget {
       ref.read(imageProvider(name).future), // Đọc dữ liệu từ ImageProvider
     ]);
 
-    
+
 
     return Scaffold(
       body: FutureBuilder<List<dynamic>>(
@@ -47,7 +49,10 @@ class CountryDetail extends ConsumerWidget {
             final wikiData = combinedData[0] as Map<String, dynamic>;
             final imageUrl = combinedData[1] as String;
 
-            
+            final favoriteController = ref.watch(favoriteManagerProvider);
+
+
+
             return Stack(
               children: <Widget>[
                 Positioned(
@@ -190,67 +195,148 @@ class CountryDetail extends ConsumerWidget {
                     ),
                     child: Container(
                       padding: EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.only(top: 20, bottom: 20),
-                            child: Container(
-                              width: screenWidht-150,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  BigText(
-                                    text: '$name',
-                                    size: 28,
-                                    color: Colors.black,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  SizedBox(
-                                    height: 30,
-                                  ),
-                                  RatingStars(
-                                    onValueChanged: (v){
-                              
-                                    },
-                                    starBuilder: (index, color)=> Icon(
-                                      Icons.star,
-                                      color: color,
+                      child: FutureBuilder<bool>(
+                            future: favoriteController.isFavorite(name),
+                            builder: (context, snapshot) {                             
+                              if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              } else {
+                                final isFavorite = snapshot.data ?? false;
+                                return Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: 20),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          BigText(
+                                            text: '$name',
+                                            size: 28,
+                                          ),
+                                          const SizedBox(height: 10),
+                                          RatingStars(
+                                            onValueChanged: (v) {},
+                                            starBuilder: (index, color) =>
+                                                Icon(
+                                              Icons.star,
+                                              color: color,
+                                            ),
+                                            starCount: 5,
+                                            starSize: 20,
+                                            valueLabelColor:
+                                              const Color(0xff9b9b9b),
+                                            valueLabelTextStyle:
+                                                const TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 12.0,
+                                            ),
+                                            valueLabelRadius: 10,
+                                            starSpacing: 2,
+                                            animationDuration:
+                                              Duration(milliseconds: 1000),
+                                            valueLabelPadding: EdgeInsets.symmetric(
+                                                vertical: 1, horizontal: 8),
+                                            valueLabelMargin:
+                                              const EdgeInsets.only(right: 8),
+                                            starOffColor:
+                                              const Color(0xffe7e8ea),
+                                            starColor: Colors.yellow,
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    starCount: 5,
-                                    starSize: 20,
-                                    valueLabelColor: const Color(0xff9b9b9b),
-                                      valueLabelTextStyle: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w400,
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 12.0
+                                    LikeButton(
+                                      isLiked: isFavorite,
+                                      onTap: (isLiked) async {
+                                        if (!isLiked) {
+                                          ref
+                                            .watch(favoriteManagerProvider)
+                                            .addToFavorites(
+                                              name,
+                                              iso2,
+                                              imageUrl,
+                                              wikiData['extract']);
+                                          showToast(
+                                            message:
+                                              'Add $name to favorite complete');
+                                        } else {
+                                          ref
+                                            .read(favoriteManagerProvider)
+                                            .removeFromFavorite(name);
+                                          showToast(
+                                            message:
+                                              'Remove $name to favorites complete');
+                                        }
+                                        return !isLiked;
+                                      },
+                                      size: 40,
+                                      countPostion: CountPostion.bottom,
                                     ),
-                                    valueLabelRadius: 10,
-                                    starSpacing: 2,
-                                    // maxValueVisibility: true,
-                                    // valueLabelVisibility: true,
-                                    animationDuration: Duration(milliseconds: 1000),
-                                    valueLabelPadding:
-                                    const EdgeInsets.symmetric(vertical: 1, horizontal: 8),
-                                    valueLabelMargin: const EdgeInsets.only(right: 8),
-                                    starOffColor: const Color(0xffe7e8ea),
-                                    starColor: Colors.yellow,
-                                  )
-                                ],
-                              ),
-                            ),
+                                  ],
+                                );
+                              }
+                            },
                           ),
-                          Container(
-                            child: LikeButton(
-                              size: 40,
-                              likeCount: 0,
-                              countPostion: CountPostion.bottom,
-                            ),
-                          )
-                        ],
-                      ),
+                      // child: Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     // Container(
+                      //     //   padding: EdgeInsets.only(top: 20, bottom: 20),
+                      //     //   child: Container(
+                      //     //     width: screenWidht-150,
+                      //     //     child: Column(
+                      //     //       mainAxisAlignment: MainAxisAlignment.start,
+                      //     //       crossAxisAlignment: CrossAxisAlignment.start,
+                      //     //       children: [
+                      //     //         BigText(
+                      //     //           text: '$name',
+                      //     //           size: 28,
+                      //     //           color: Colors.black,
+                      //     //           overflow: TextOverflow.ellipsis,
+                      //     //         ),
+                      //     //         SizedBox(
+                      //     //           height: 30,
+                      //     //         ),
+                      //     //         RatingStars(
+                      //     //           onValueChanged: (v){
+                              
+                      //     //           },
+                      //     //           starBuilder: (index, color)=> Icon(
+                      //     //             Icons.star,
+                      //     //             color: color,
+                      //     //           ),
+                      //     //           starCount: 5,
+                      //     //           starSize: 20,
+                      //     //           valueLabelColor: const Color(0xff9b9b9b),
+                      //     //             valueLabelTextStyle: const TextStyle(
+                      //     //             color: Colors.white,
+                      //     //             fontWeight: FontWeight.w400,
+                      //     //             fontStyle: FontStyle.normal,
+                      //     //             fontSize: 12.0
+                      //     //           ),
+                      //     //           valueLabelRadius: 10,
+                      //     //           starSpacing: 2,
+                      //     //           // maxValueVisibility: true,
+                      //     //           // valueLabelVisibility: true,
+                      //     //           animationDuration: Duration(milliseconds: 1000),
+                      //     //           valueLabelPadding:
+                      //     //           const EdgeInsets.symmetric(vertical: 1, horizontal: 8),
+                      //     //           valueLabelMargin: const EdgeInsets.only(right: 8),
+                      //     //           starOffColor: const Color(0xffe7e8ea),
+                      //     //           starColor: Colors.yellow,
+                      //     //         )
+                      //     //       ],
+                      //     //     ),
+                      //     //   ),
+                      //     // ),
+                          
+                      //   ],
+                      // ),
                     )
                   ),
                 ),
@@ -262,3 +348,247 @@ class CountryDetail extends ConsumerWidget {
     );
   }
 }
+
+// import 'dart:async';
+
+// import 'package:flutter/material.dart';
+// import 'package:flutter_rating_stars/flutter_rating_stars.dart';
+// import 'package:hooks_riverpod/hooks_riverpod.dart';
+// import 'package:like_button/like_button.dart';
+// import 'package:travel_app/Widgets/big_text.dart';
+// import 'package:travel_app/Widgets/notify.dart';
+// import 'package:travel_app/Widgets/small_text.dart';
+// import 'package:travel_app/repositories/api_provider.dart';
+// import 'package:travel_app/repositories/favorite_provider.dart';
+
+// class CountryDetail extends ConsumerWidget {
+//   final String name;
+//   final String iso2;
+//   const CountryDetail({required this.name, required this.iso2});
+
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final double screenHeight = MediaQuery.of(context).size.height;
+//     final double screenWidth = MediaQuery.of(context).size.width;
+
+//     final combinedDataFuture = Future.wait([
+//       ref.watch(wikiProvider(name).future), // Đọc dữ liệu từ WikiProvider
+//       ref.watch(imageProvider(name).future), // Đọc dữ liệu từ ImageProvider
+//     ]);
+
+//     final favoriteController = ref.watch(favoriteManagerProvider);
+
+//     return Scaffold(
+//       body: FutureBuilder<List<dynamic>>(
+//         future: combinedDataFuture,
+//         builder: (context, snapshot) {
+//           if (snapshot.connectionState == ConnectionState.waiting) {
+//             return Center(child: CircularProgressIndicator());
+//           } else if (snapshot.hasError) {
+//             return Text('Error loading data: ${snapshot.error}');
+//           } else {
+//             final List<dynamic> combinedData = snapshot.data!;
+//             final wikiData = combinedData[0] as Map<String, dynamic>;
+//             final imageUrl = combinedData[1] as String;
+
+//             return Stack(
+//               children: <Widget>[
+//                 Positioned(
+//                   top: 0,
+//                   left: 0,
+//                   right: 0,
+//                   child: Image.asset(
+//                     'lib/assets/image/dark_mountain.jpg',
+//                     width: screenWidth,
+//                     height: screenHeight * 0.5,
+//                     fit: BoxFit.cover,
+//                   ),
+//                 ),
+//                 Positioned(
+//                   top: 0,
+//                   left: 0,
+//                   right: 0,
+//                   child: AppBar(
+//                     backgroundColor: Colors.transparent,
+//                     elevation: 0,
+//                     title: SmallText(
+//                       text: '$name',
+//                       size: 20,
+//                     ),
+//                   ),
+//                 ),
+//                 Positioned(
+//                   bottom: 0,
+//                   left: 0,
+//                   right: 0,
+//                   child: Container(
+//                     padding: EdgeInsets.only(top: 45),
+//                     height: screenHeight * 0.55,
+//                     width: screenWidth,
+//                     decoration: BoxDecoration(
+//                       color: Colors.white,
+//                       borderRadius: BorderRadius.only(
+//                         topLeft: Radius.circular(25),
+//                         topRight: Radius.circular(25),
+//                       ),
+//                     ),
+//                     child: SingleChildScrollView(
+//                       child: Container(
+//                         padding: EdgeInsets.symmetric(horizontal: 20),
+//                         child: Column(
+//                           crossAxisAlignment: CrossAxisAlignment.start,
+//                           children: [
+//                             SmallText(
+//                               text: 'Introducing:',
+//                               size: 20,
+//                               fontWeight: FontWeight.bold,
+//                             ),
+//                             Divider(),
+//                             Container(
+//                               width: screenWidth - 40,
+//                               child: SmallText(
+//                                 text: wikiData['extract'] != null
+//                                     ? wikiData['extract']
+//                                     : 'No data available from Wikipedia',
+//                                 size: 18,
+//                                 softWrap: true,
+//                               ),
+//                             ),
+//                             const Divider(),
+//                             const SizedBox(height: 20),
+//                             GestureDetector(
+//                               onHorizontalDragUpdate: (details) {
+//                                 if (details.delta.dx < 0) {
+//                                   Navigator.pushNamed(context, '/city_list',
+//                                       arguments: iso2);
+//                                 }
+//                               },
+//                               child: Container(
+//                                 height: 50,
+//                                 width: screenWidth - 100,
+//                                 decoration: BoxDecoration(
+//                                   borderRadius: BorderRadius.circular(15),
+//                                   gradient: LinearGradient(colors: [
+//                                     Color(0xFFA1C4FD),
+//                                     Color(0xFFC2E9FB),
+//                                   ]),
+//                                 ),
+//                                 child: ElevatedButton(
+//                                   onPressed: () => Navigator.pushNamed(
+//                                       context, '/city_list',
+//                                       arguments: iso2),
+//                                   child: SmallText(
+//                                     text:
+//                                         '< Slide to see what city in $name',
+//                                     color: Colors.black87,
+//                                   ),
+//                                   style: ElevatedButton.styleFrom(
+//                                       backgroundColor: Colors.transparent,
+//                                       shadowColor: Colors.transparent),
+//                                 ),
+//                               ),
+//                             ),
+//                             const SizedBox(height: 20),
+//                             FutureBuilder<bool>(
+//                               future: favoriteController.isFavorite(name),
+//                               builder: (context, snapshot) {
+//                                 if (snapshot.connectionState ==
+//                                     ConnectionState.waiting) {
+//                                   return CircularProgressIndicator();
+//                                 } else if (snapshot.hasError) {
+//                                   return Text('Error: ${snapshot.error}');
+//                                 } else {
+//                                   final isFavorite = snapshot.data ?? false;
+//                                   return Row(
+//                                     mainAxisAlignment: MainAxisAlignment.center,
+//                                     children: [
+//                                       Container(
+//                                         padding: EdgeInsets.symmetric(
+//                                             vertical: 20),
+//                                         child: Column(
+//                                           crossAxisAlignment:
+//                                               CrossAxisAlignment.start,
+//                                           children: [
+//                                             BigText(
+//                                               text: '$name',
+//                                               size: 28,
+//                                             ),
+//                                             const SizedBox(height: 10),
+//                                             RatingStars(
+//                                               onValueChanged: (v) {},
+//                                               starBuilder: (index, color) =>
+//                                                   Icon(
+//                                                 Icons.star,
+//                                                 color: color,
+//                                               ),
+//                                               starCount: 5,
+//                                               starSize: 20,
+//                                               valueLabelColor:
+//                                                   const Color(0xff9b9b9b),
+//                                               valueLabelTextStyle:
+//                                                   const TextStyle(
+//                                                 color: Colors.white,
+//                                                 fontWeight: FontWeight.w400,
+//                                                 fontSize: 12.0,
+//                                               ),
+//                                               valueLabelRadius: 10,
+//                                               starSpacing: 2,
+//                                               animationDuration:
+//                                                   Duration(milliseconds: 1000),
+//                                               valueLabelPadding: EdgeInsets.symmetric(
+//                                                   vertical: 1, horizontal: 8),
+//                                               valueLabelMargin:
+//                                                   const EdgeInsets.only(right: 8),
+//                                               starOffColor:
+//                                                   const Color(0xffe7e8ea),
+//                                               starColor: Colors.yellow,
+//                                             ),
+//                                           ],
+//                                         ),
+//                                       ),
+//                                       LikeButton(
+//                                         isLiked: isFavorite,
+//                                         onTap: (isLiked) async {
+//                                           if (isLiked) {
+//                                             ref
+//                                                 .watch(favoriteManagerProvider)
+//                                                 .addToFavorites(
+//                                                     name,
+//                                                     iso2,
+//                                                     imageUrl,
+//                                                     wikiData['extract']);
+//                                             showToast(
+//                                                 message:
+//                                                     'Add $name to favorite complete');
+//                                           } else {
+//                                             ref
+//                                                 .read(favoriteManagerProvider)
+//                                                 .removeFromFavorite(name);
+//                                             showToast(
+//                                                 message:
+//                                                     'Remove $name to favorites complete');
+//                                           }
+//                                           return !isLiked;
+//                                         },
+//                                         size: 40,
+//                                         countPostion: CountPostion.bottom,
+//                                       ),
+//                                     ],
+//                                   );
+//                                 }
+//                               },
+//                             ),
+//                           ],
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             );
+//           }
+//         },
+//       ),
+//     );
+//   }
+// }
