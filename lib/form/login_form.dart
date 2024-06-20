@@ -26,7 +26,7 @@ class Login_Form extends HookConsumerWidget {
       next.maybeWhen(
         orElse: () => null,
         authenticated: (user) {
-          Navigator.pushNamed(context, '/home_page');
+          Navigator.pushNamed(context, '/home_page'); // dieu huong den trang chu
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('User Logged In'),
@@ -65,9 +65,8 @@ class Login_Form extends HookConsumerWidget {
                     color: Colors.white,
                   ),
                 ),
-                SizedBox(height: 50),
+                const SizedBox(height: 50),
                 CustomEmailTextFormField(
-                  // email textfield
                   controller: emailController,
                   keyboardType: TextInputType.emailAddress,
                   labelText: 'Email',
@@ -83,7 +82,7 @@ class Login_Form extends HookConsumerWidget {
                     return null;
                   },
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 CustomPasswordFormField(
                   controller: passwordController,
                   labelText: 'Password',
@@ -105,7 +104,7 @@ class Login_Form extends HookConsumerWidget {
                         size: 16,
                       )),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 CustomButton(
@@ -120,46 +119,28 @@ class Login_Form extends HookConsumerWidget {
                       .maybeWhen(orElse: () => false, loading: () => true),
                   onPressed: () async {
                     if (formKey.currentState?.validate() ?? false) {
-                      ref.read(authNotifierProvider.notifier).login(
+                      ref.read(authNotifierProvider.notifier).login(   // dang nhap voi email va mat khau
                             email: emailController.text,
                             password: passwordController.text,
                           );
                     }
                   },
                 ),
-                SizedBox(height: 40),
-                SmallText(
-                  text: "you don't have an account",
-                  color: Color.fromARGB(219, 255, 255, 255),
-                  size: 16,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SmallText(
-                      text: "please",
-                      color: Color.fromARGB(219, 255, 255, 255),
-                      size: 16,
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                          onPressed: () =>
-                              Navigator.pushNamed(context, '/sign_up'),
-                          child: SmallText(
-                            text: 'Register',
-                            color: Colors.white,
-                            size: 16,
-                          )),
-                    ),
-                  ],
+                const SizedBox(height: 40),
+                TextButton(
+                  onPressed: () => Navigator.pushNamed(context, '/sign_up'),  // dieu huong den trang dang ky
+                  child: SmallText(
+                    text: 'To Register >',
+                    color: Colors.white,
+                    size: 16,
+                  )
                 ),
                 SmallText(
                   text: 'Or continue with',
-                  color: Color.fromARGB(219, 255, 255, 255),
+                  color: const Color.fromARGB(219, 255, 255, 255),
                   size: 16,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Wrap(
@@ -178,7 +159,7 @@ class Login_Form extends HookConsumerWidget {
                           onPressed: () async {
                             ref
                                 .read(authNotifierProvider.notifier)
-                                .continueWithGoogle();
+                                .continueWithGoogle();  // dang nhap voi tai khoan Google
                           },
                           icon: const FaIcon(
                             FontAwesomeIcons.google,
@@ -197,7 +178,7 @@ class Login_Form extends HookConsumerWidget {
                           onPressed: () async {
                             ref
                                 .read(authNotifierProvider.notifier)
-                                .continueWithFacebook();
+                                .continueWithFacebook();  // dang nhap voi tai khoan Facebook
                           },
                           icon: const FaIcon(
                             FontAwesomeIcons.facebookF,

@@ -8,9 +8,11 @@ import 'package:travel_app/Views/sign_up_page.dart';
 import 'package:travel_app/repositories/route_transition.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:travel_app/services/firebase_options.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

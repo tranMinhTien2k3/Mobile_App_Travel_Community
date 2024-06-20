@@ -33,7 +33,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:travel_app/repositories/auth_controller.dart';
-import 'package:travel_app/repositories/auth_state.dart';
+import 'package:travel_app/models/auth_state.dart';
 
 final firebaseAuthProvider =
     Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);

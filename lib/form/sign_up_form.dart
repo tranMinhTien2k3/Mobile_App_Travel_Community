@@ -13,7 +13,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class SignUpForm extends HookConsumerWidget {
   const SignUpForm({super.key});
 
-  String? validateEmail(String? value) {
+  String? validateEmail(String? value) {   // chuoi Regex kiem tra dinh dang cua email
     const pattern = r"(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'"
         r'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-'
         r'\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*'
@@ -28,7 +28,7 @@ class SignUpForm extends HookConsumerWidget {
         : null;
   }
 
-  String? validatePasswordMatch(String? value, String? otherValue) {
+  String? validatePasswordMatch(String? value, String? otherValue) {  // Kiem tra mat khau co trung khop khong
     if (value != otherValue) {
       return 'Passwords do not match';
     }
@@ -59,7 +59,7 @@ class SignUpForm extends HookConsumerWidget {
       next.maybeWhen(
         orElse: () => null,
         authenticated: (user) {
-          Navigator.pushNamed(context, '/login');
+          Navigator.pushNamed(context, '/login');  // dieu huong den trang login khi dang ky thanh cong
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Create accont success!'),
@@ -174,17 +174,12 @@ class SignUpForm extends HookConsumerWidget {
                     }
                   },
                 ),
-                SizedBox(height: 40),
-                SmallText(
-                  text: "you have an account",
-                  color: Color.fromARGB(219, 255, 255, 255),
-                  size: 16,
-                ),
+                SizedBox(height: 30),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SmallText(
-                      text: "Go to the",
+                      text: "Go to ",
                       color: Color.fromARGB(219, 255, 255, 255),
                       size: 16,
                     ),
@@ -198,11 +193,6 @@ class SignUpForm extends HookConsumerWidget {
                             color: Colors.white,
                             size: 16,
                           )),
-                    ),
-                    SmallText(
-                      text: "page",
-                      color: Color.fromARGB(219, 255, 255, 255),
-                      size: 16,
                     ),
                   ],
                 ),
