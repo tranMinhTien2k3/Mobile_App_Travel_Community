@@ -34,6 +34,7 @@ class FavoriteController {
 
       await _firestore.collection('users').doc(user.uid).collection('favorites').add({
         'countryName': countryName,
+        'iso2': iso2,
         'timestamp': FieldValue.serverTimestamp(),
       });
     } catch (e) {

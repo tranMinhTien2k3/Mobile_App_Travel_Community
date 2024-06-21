@@ -62,9 +62,9 @@ class _ReviewSheetState extends State<ReviewSheet> {
     setState(() {
       _selectedCountry = country;
       typeAheadController.text = country.name;
-      // print(typeAheadController);
+      print(typeAheadController);
       countryIso2s = country.iso2;
-      // print(countryIso2s);
+      print(countryIso2s);
     });
 
    
@@ -76,6 +76,7 @@ class _ReviewSheetState extends State<ReviewSheet> {
 
   Future<List<City>> _getCitySuggestion(countryIso2s) async{
     List<City> cities = await _apiService.fetchCities(countryIso2s);
+    print(cities);
     return cities;
   }
 
@@ -106,59 +107,58 @@ class _ReviewSheetState extends State<ReviewSheet> {
                 child: TypeAheadField<Country>(
                   hideOnUnfocus: true,
                   builder: (context, controller, focusNode){
-                      return TextField(
-                        controller: typeAheadController,
-                        focusNode: focusNode,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Country'
-                        ),
-                      );
-                    },
-                    itemBuilder: (context, sugesstion){
-                      print('DATA COUNTRY: ${sugesstion.name}');
-                      return ListTile(
-                        title: Text(sugesstion.name),
-                      );
-                    } , 
-                    onSelected: (Country country){
-                      setState(() {
-                        FocusScope.of(context).unfocus();
-                        _conCountrySelected(country);
-                      });
+                    return TextField(
+                      controller: typeAheadController,
+                      focusNode: focusNode,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Country'
+                      ),
+                    );
+                  },
+                  itemBuilder: (context, sugesstion){
+                    print('DATA COUNTRY: ${sugesstion.name}');
+                    return ListTile(
+                      title: Text(sugesstion.name),
+                    );
+                  } , 
+                  onSelected: (Country country){
+                    setState(() {
+                      FocusScope.of(context).unfocus();
+                      _conCountrySelected(country);
+                    });
                       
-                    }, 
-                    suggestionsCallback: (parttern) => _getCountrySuggestion(parttern)
-                  ),
+                  }, 
+                  suggestionsCallback: (parttern) => _getCountrySuggestion(parttern)
                 ),
-                SizedBox(
-                  width: 40,
+              ),
+              SizedBox(
+                width: 40,
+              ),
+              Container(
+                width: 150,
+                child: TypeAheadField<City>(
+                  hideOnUnfocus: true,
+                  builder: (context, controller, focusNode) {
+                    return TextField(
+                      controller: cityChosseController,
+                      focusNode: cityFocusNode,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'City'
+                      ),
+                    );
+                  },
+                  itemBuilder: (context, suggestion){
+                    print('DATA CITY: ${suggestion.name}');
+                    return ListTile(
+                      title: Text(suggestion.name),
+                    );
+                  },
+                  onSelected: _oncitySelected,
+                  suggestionsCallback: (search) => _getCitySuggestion(search),
                 ),
-                Container(
-                  // margin: EdgeInsets.only(top: 100),
-                  width: 150,
-                  child: TypeAheadField(
-                    builder: (context, controller, focusNode){
-                      return TextField(
-                        controller: cityChosseController,
-                        focusNode: cityFocusNode,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'City'
-                        ),
-                      );
-                    },
-                    suggestionsCallback: (pattern) => _getCitySuggestion(pattern),
-                    itemBuilder: (context, sugesstion){
-                      print('DATA NE: ${sugesstion.name}');
-                      return ListTile(
-                        title: Text(sugesstion.name),
-                      );
-                    }, 
-                    onSelected: _oncitySelected,
-                    
-                  ),
-                )
+              )
               ],
             ),
             const SizedBox(
