@@ -31,11 +31,13 @@ class DrawerHome extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.person),
             title: const Text(' Profile '),
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, '/profile');
+            },
           ),
           ListTile(
-            leading: const Icon(Icons.calendar_month),
-            title: const Text(' My travel '),
+            leading: const Icon(Icons.luggage),
+            title: const Text('My travel'),
             onTap: () {},
           ),
           ListTile(
@@ -49,7 +51,7 @@ class DrawerHome extends StatelessWidget {
             onTap: () {},
           ),
           ListTile(
-            leading: const Icon(Icons.video_call),
+            leading: const Icon(Icons.trip_origin),
             title: const Text('Service'),
             onTap: () {},
           ),

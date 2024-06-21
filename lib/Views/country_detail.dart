@@ -564,33 +564,33 @@ class CountryDetail extends ConsumerWidget {
                                         size: 28,
                                       ),
                                       const SizedBox(height: 10),
-                                      RatingStars(
-                                        onValueChanged: (v) {},
-                                        starBuilder: (index, color) => Icon(
-                                          Icons.star,
-                                          color: color,
-                                        ),
-                                        starCount: 5,
-                                        starSize: 20,
-                                        valueLabelColor:
-                                            const Color(0xff9b9b9b),
-                                        valueLabelTextStyle: const TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 12.0,
-                                        ),
-                                        valueLabelRadius: 10,
-                                        starSpacing: 2,
-                                        animationDuration:
-                                            Duration(milliseconds: 1000),
-                                        valueLabelPadding: EdgeInsets.symmetric(
-                                            vertical: 1, horizontal: 8),
-                                        valueLabelMargin:
-                                            const EdgeInsets.only(right: 8),
-                                        starOffColor:
-                                            const Color(0xffe7e8ea),
-                                        starColor: Colors.yellow,
-                                      ),
+                                      // RatingStars(
+                                      //   onValueChanged: (v) {},
+                                      //   starBuilder: (index, color) => Icon(
+                                      //     Icons.star,
+                                      //     color: color,
+                                      //   ),
+                                      //   starCount: 5,
+                                      //   starSize: 20,
+                                      //   valueLabelColor:
+                                      //       const Color(0xff9b9b9b),
+                                      //   valueLabelTextStyle: const TextStyle(
+                                      //     color: Colors.white,
+                                      //     fontWeight: FontWeight.w400,
+                                      //     fontSize: 12.0,
+                                      //   ),
+                                      //   valueLabelRadius: 10,
+                                      //   starSpacing: 2,
+                                      //   animationDuration:
+                                      //       Duration(milliseconds: 1000),
+                                      //   valueLabelPadding: EdgeInsets.symmetric(
+                                      //       vertical: 1, horizontal: 8),
+                                      //   valueLabelMargin:
+                                      //       const EdgeInsets.only(right: 8),
+                                      //   starOffColor:
+                                      //       const Color(0xffe7e8ea),
+                                      //   starColor: Colors.yellow,
+                                      // ),
                                     ],
                                   ),
                                 ),
@@ -604,7 +604,7 @@ class CountryDetail extends ConsumerWidget {
                                           if (!isLiked) {
                                             await ref
                                                 .watch(favoriteManagerProvider)
-                                                .addToFavorites(
+                                                .addCountryToFavorites(
                                                   name,
                                                   iso2,
                                                   imageUrl,
@@ -639,7 +639,7 @@ class CountryDetail extends ConsumerWidget {
                                           if (!isLiked) {
                                             await ref
                                                 .watch(favoriteManagerProvider)
-                                                .addToFavorites(
+                                                .addCountryToFavorites(
                                                   name,
                                                   iso2,
                                                   imageUrl,

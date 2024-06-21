@@ -32,7 +32,7 @@ class CityListScreen extends ConsumerWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => CityDetailsScreen(city: city.name),
+                      builder: (context) => CityDetailsScreen(name: city.name, userId: '',),
                     ),
                   );
                 },
