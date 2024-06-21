@@ -35,7 +35,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       builder = (BuildContext context) => CityDetailsScreen(city: '');
       break;
     case '/country_infor':
-      builder = (BuildContext context) =>  CountryDetail(name: '', iso2: '',);
+      builder = (BuildContext context) =>  CountryDetail(name: '', iso2: '', userId: '',);
       break;
     default:
       throw Exception('Invalid route: ${settings.name}');

@@ -99,3 +99,9 @@ final authNotifierProvider =
         (ref) => AuthNotifier(
               ref.read(authControllerProvider),
             ));
+
+
+final userProvider = StreamProvider<User?>( (ref) {
+  final authService = ref.watch(authControllerProvider);
+  return authService.authStateChanges;
+});

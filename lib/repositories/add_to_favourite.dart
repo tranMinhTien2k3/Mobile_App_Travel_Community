@@ -89,4 +89,6 @@ class FavoriteController {
     final doc = await _firestore.collection('countries').doc(countryName).get();
     return doc.exists ? doc['favorites'] ?? 0 : 0;
   }
+
+  
 }

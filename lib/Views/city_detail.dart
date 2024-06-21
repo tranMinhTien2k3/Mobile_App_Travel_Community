@@ -50,18 +50,18 @@ class CityDetailsScreen extends ConsumerWidget {
                   top: 0,
                   left: 0,
                   right: 0,
-                  child: Image.asset(
-                    'lib/assets/image/dark_mountain.jpg',
-                    width: screenWidht,
-                    height: screenHeight*0.5,
-                    fit: BoxFit.cover,
-                  ),
-                  // child: Image.network(
-                  //   imageUrl,
+                  // child: Image.asset(
+                  //   'lib/assets/image/dark_mountain.jpg',
                   //   width: screenWidht,
-                  //   height: screenHeight * 0.45,
+                  //   height: screenHeight*0.5,
                   //   fit: BoxFit.cover,
                   // ),
+                  child: Image.network(
+                    imageUrl,
+                    width: screenWidht,
+                    height: screenHeight * 0.45,
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 Positioned(
                   top: 0,
