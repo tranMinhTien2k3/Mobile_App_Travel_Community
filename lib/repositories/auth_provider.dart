@@ -1,32 +1,4 @@
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:flutter/widgets.dart';
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:google_sign_in/google_sign_in.dart';
-// import 'package:travel_app/repositories/auth_controller.dart';
-// import 'package:travel_app/services/firebase_auth_services.dart';
 
-// // final authRepositoryProvider = Provider<AuthRepository>((ref) => AuthRepository(FirebaseAuth.instance));
-
-// final authRepositoryProvider = Provider<AuthRepository>((ref){
-//   final FirebaseAuth _auth = FirebaseAuth.instance;
-//   final BuildContext context = ref.watch(buildContextProvider);
-//   return AuthRepository(_auth, context);
-// });
-
-// final buildContextProvider = Provider<BuildContext>((ref) {
-//   final context = ref.watch(navigatorKeyProvider).currentContext;
-//   if (context == null) {
-//     throw Exception("BuildContext is null");
-//   }
-//   return context;
-// });
-
-// final navigatorKeyProvider = Provider<GlobalKey<NavigatorState>>((ref) => GlobalKey<NavigatorState>());
-// final authWithGoogle = Provider<GoogleSignIn>((ref) => GoogleSignIn());
-
-// final authStateProvider = StreamProvider<User?>((ref) =>
-//   ref.read(authRepositoryProvider).authStateChange
-// );
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -88,7 +60,17 @@ class AuthNotifier extends StateNotifier<AuthenticationState> {
         (error) => AuthenticationState.unauthenticated(message: error),
         (response) => AuthenticationState.authenticated(user: response));
   }
+
+  Future<void> signOut() async{
+    state = const AuthenticationState.loading();
+    final response = await _controller.signOut();
+    state = response.fold(
+      (error) => AuthenticationState.unauthenticated(message: error),
+      (response) => AuthenticationState.authenticated(user: response!),
+    );
+  }
 }
+
 
 final authControllerProvider = Provider<AuthController>(
   (ref) => AuthController(ref.read(firebaseAuthProvider), ref),
@@ -105,3 +87,4 @@ final userProvider = StreamProvider<User?>( (ref) {
   final authService = ref.watch(authControllerProvider);
   return authService.authStateChanges;
 });
+

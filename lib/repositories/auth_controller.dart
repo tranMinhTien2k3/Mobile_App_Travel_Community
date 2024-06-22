@@ -103,7 +103,18 @@ class AuthController {
     }
   }
 
+  Future<Either<String,  User?>> signOut() async{
+    try{
+      await _firebaseAuth.signOut();
+      return right(null);
+    }on FirebaseAuthException catch(e){
+      return left(e.message ?? 'Unknow Error');
+    }
+  }
+
   User?  gerCurrenrUser(){
     return _firebaseAuth.currentUser;
   }
+
+  
 }

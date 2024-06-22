@@ -64,20 +64,24 @@ class CountryListScreen extends ConsumerWidget {
                 itemCount: countries.length,
                 itemBuilder: (context, index) {
                   final country = countries[index];
-                  return ListTile(
-                    title: Text(country.name),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CountryDetail(
-                            name: country.name,
-                            iso2: country.iso2,
-                            userId: userId, // Truyền userId vào CountryDetail
+                  return Card(
+                    margin: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                    child: ListTile(
+                      title: Text(country.name),
+                      trailing: Icon(Icons.arrow_forward_ios),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CountryDetail(
+                              name: country.name,
+                              iso2: country.iso2,
+                              userId: userId, // Truyền userId vào CountryDetail
+                            ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   );
                 },
               );

@@ -26,16 +26,20 @@ class CityListScreen extends ConsumerWidget {
             itemCount: cities.length,
             itemBuilder: (context, index) {
               final city = cities[index];
-              return ListTile(
-                title: Text(city.name),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CityDetailsScreen(name: city.name, userId: '',),
-                    ),
-                  );
-                },
+              return Card(
+                margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                child: ListTile(
+                  title: Text(city.name),
+                  trailing: Icon(Icons.arrow_forward_ios),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CityDetailsScreen(name: city.name, userId: '',),
+                      ),
+                    );
+                  },
+                ),
               );
             },
           );

@@ -1,11 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:travel_app/Views/first_page.dart';
+import 'package:travel_app/repositories/auth_provider.dart';
 
-class DrawerHome extends StatelessWidget {
+class DrawerHome extends ConsumerWidget {
   DrawerHome({super.key});
   final user = FirebaseAuth.instance.currentUser;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Drawer(
       child: ListView(
         padding: const EdgeInsets.all(0),
@@ -57,8 +60,16 @@ class DrawerHome extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.login),
-            title: const Text('Log off'),
-            onTap: () {},
+            title: const Text('SignOut'),
+            onTap: () async {
+              final authController = ref.read(authControllerProvider);
+              await authController.signOut();
+              Navigator.pushAndRemoveUntil(
+                context, 
+                MaterialPageRoute(builder: (context) => Splast_Page()),
+                (route) => false)
+              ;
+            },
           )
         ],
       ),

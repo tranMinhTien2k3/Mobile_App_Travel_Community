@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        initialRoute: '/home_page',
+        initialRoute: '/',
         onGenerateRoute: generateRoute,
         // routes: {
         //   '/':(context) => Splast_Page(),
