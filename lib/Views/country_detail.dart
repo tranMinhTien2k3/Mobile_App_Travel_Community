@@ -362,6 +362,7 @@ import 'package:travel_app/Widgets/text_color.dart';
 import 'package:travel_app/form/rating_form.dart';
 import 'package:travel_app/repositories/api_provider.dart';
 import 'package:travel_app/repositories/favorite_provider.dart';
+import 'package:travel_app/repositories/get_firebase_data_provider.dart';
 
 class CountryDetail extends ConsumerWidget {
   final String name;
@@ -382,6 +383,8 @@ class CountryDetail extends ConsumerWidget {
       ref.read(wikiProvider(name).future),
       ref.read(imageProvider(name).future),
     ]);
+
+    final getDataController = ref.watch(getFirebaseDataProvider);
 
     return Scaffold(
       body: FutureBuilder<List<dynamic>>(
@@ -651,6 +654,7 @@ class CountryDetail extends ConsumerWidget {
                                             await ref
                                                 .read(favoriteManagerProvider)
                                                 .removeFromFavorite(name);
+                                            getDataController.getCountryFavorite(userId);
                                             showToast(
                                               message:
                                                   'Remove $name from favorites successful');

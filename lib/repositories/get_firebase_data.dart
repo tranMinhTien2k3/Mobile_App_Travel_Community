@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:travel_app/models/city_firebase_model.dart';
 import 'package:travel_app/models/country.dart';
 import 'package:travel_app/models/country_firebase_data_model.dart';
 
@@ -30,7 +31,7 @@ class GetFirebaseData{
       //   );
       // }).toList();
       // return favoritesCountries;
-      final querySnapshot = await _firestore.collection('users').doc(user.uid).collection('favorites').get();
+      final querySnapshot = await _firestore.collection('users').doc(user.uid).collection('favorites').doc('favorites').collection('countries').get();
       List<CountryFirebase> favoritesCountries = querySnapshot.docs.map((doc){
         return CountryFirebase.fromFirestore(doc);
       }).toList();
@@ -40,16 +41,15 @@ class GetFirebaseData{
     }
   }
 
-  Future<List<String>> getCityFavoriteList(String userId) async{
+  Future<List<CityFirebase>> getCityFavoriteList(String userId) async{
     final user = _auth.currentUser;
     if(user == null) throw Exception('User not logged in');
     try{
-      final documentSnapshot = await _firestore.collection('users').doc('userId').get();
-      final data = documentSnapshot.data();
-      if(data == null){
-        return [];
-      }
-      return List<String>.from(data['favorites']) ?? [];
+      final querySnapshot = await _firestore.collection('users').doc(user.uid).collection('favorites').doc('favorites').collection('cities').get();
+      List<CityFirebase> favoritesCities = querySnapshot.docs.map((doc){
+        return CityFirebase.fromFirestore(doc);
+      }).toList();
+      return favoritesCities;
     } catch (e){
       return [];
     }

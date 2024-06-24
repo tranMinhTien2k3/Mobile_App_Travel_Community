@@ -6,9 +6,12 @@ import 'package:travel_app/Widgets/big_text.dart';
 import 'package:travel_app/Widgets/notify.dart';
 import 'package:travel_app/Widgets/small_text.dart';
 import 'package:travel_app/Widgets/text_color.dart';
+import 'package:travel_app/models/city_firebase_model.dart';
 import 'package:travel_app/repositories/add_to_favourite.dart';
 import 'package:travel_app/repositories/api_provider.dart';
 import 'package:travel_app/repositories/favorite_provider.dart';
+import 'package:travel_app/repositories/get_firebase_data_provider.dart';
+
 
 class CityDetailsScreen extends ConsumerWidget {
   final String name;
@@ -31,6 +34,7 @@ class CityDetailsScreen extends ConsumerWidget {
       ref.read(imageProvider(name).future), // Đọc dữ liệu từ ImageProvider
     ]);
 
+    final getDataController = ref.watch(getFirebaseDataProvider);
     
 
     return Scaffold(
@@ -227,6 +231,7 @@ class CityDetailsScreen extends ConsumerWidget {
                                             );
                                           }else{
                                             await ref.read(favoriteManagerProvider).removeCityFromFavorite(name);
+                                            getDataController.getCityFavoriteList(userId);
                                             showToast(
                                               message: 'Remove $name from favorite successful'
                                             );
@@ -258,6 +263,7 @@ class CityDetailsScreen extends ConsumerWidget {
                                             );
                                           } else{
                                             await ref.read(favoriteManagerProvider).removeCityFromFavorite(name);
+                                            getDataController.getCityFavoriteList;
                                             showToast(
                                               message: 'Remove $name from favorite successful'
                                             );

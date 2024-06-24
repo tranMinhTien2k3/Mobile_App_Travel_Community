@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:travel_app/models/city_firebase_model.dart';
 import 'package:travel_app/models/country.dart';
 import 'package:travel_app/models/country_firebase_data_model.dart';
 import 'package:travel_app/repositories/favorite_provider.dart';
@@ -19,7 +20,7 @@ final getCountryFavoriteProvider = FutureProvider.family.autoDispose<List<Countr
   return manager.getCountryFavorite(userId);
 });
 
-final getCityFavoriteProvider = FutureProviderFamily<List<String>, String>((ref, userId) async{
+final getCityFavoriteProvider = FutureProvider.family.autoDispose<List<CityFirebase>, String>((ref, userId) async{
   final manager = ref.watch(getFirebaseDataProvider);
   return manager.getCityFavoriteList(userId);
 });

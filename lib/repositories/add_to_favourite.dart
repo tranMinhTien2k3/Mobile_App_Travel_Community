@@ -32,7 +32,7 @@ class FavoriteController {
         });
       }
 
-      await _firestore.collection('users').doc(user.uid).collection('favorites').add({
+      await _firestore.collection('users').doc(user.uid).collection('favorites').doc('favorites').collection('countries').add({
         'countryName': countryName,
         'iso2': iso2,
         'timestamp': FieldValue.serverTimestamp(),
@@ -63,6 +63,8 @@ class FavoriteController {
           .collection('users')
           .doc(user.uid)
           .collection('favorites')
+          .doc('favorites')
+          .collection('countries')
           .where('countryName', isEqualTo: countryName)
           .get();
 
@@ -82,6 +84,8 @@ class FavoriteController {
         .collection('users')
         .doc(user.uid)
         .collection('favorites')
+        .doc('favorites')
+        .collection('countries')
         .where('countryName', isEqualTo: countryName)
         .get();
 
@@ -117,7 +121,7 @@ class FavoriteController {
         });
       }
 
-      await _firestore.collection('users').doc(user.uid).collection('favorites').add({
+      await _firestore.collection('users').doc(user.uid).collection('favorites').doc('favorites').collection('cities').add({
         'cityName': cityName,
         'timestamp': FieldValue.serverTimestamp(),
       });
@@ -166,6 +170,8 @@ class FavoriteController {
         .collection('users')
         .doc(user.uid)
         .collection('favorites')
+        .doc('favorites')
+        .collection('cities')
         .where('cityName', isEqualTo: cityName)
         .get();
 
