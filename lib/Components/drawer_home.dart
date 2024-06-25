@@ -48,7 +48,9 @@ class DrawerHome extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.video_label),
             title: const Text('Experience'),
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, '/exp');
+            },
           ),
           ListTile(
             leading: const Icon(Icons.trip_origin),

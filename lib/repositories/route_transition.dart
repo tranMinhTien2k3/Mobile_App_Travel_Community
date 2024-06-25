@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:travel_app/Views/cities_list.dart';
 import 'package:travel_app/Views/city_detail.dart';
 import 'package:travel_app/Views/country_detail.dart';
+import 'package:travel_app/Views/exp_page.dart';
 import 'package:travel_app/Views/first_page.dart';
 import 'package:travel_app/Views/forgot_pass_page.dart';
 import 'package:travel_app/Views/home_page.dart';
@@ -45,7 +46,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
             iso2: '',
           );
       break;
-
+    case '/exp':
+      builder = (BuildContext context) => expPage();
+      break;
     default:
       throw Exception('Invalid route: ${settings.name}');
   }
