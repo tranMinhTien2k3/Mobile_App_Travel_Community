@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:travel_app/Components/tip_card.dart';
+import 'package:travel_app/Widgets/creat_tip.dart';
 
 class expPage extends StatefulWidget {
   const expPage({super.key});
@@ -17,9 +18,7 @@ class _expPageState extends State<expPage> {
         actions: [
           IconButton(
             icon: Icon(Icons.filter_list),
-            onPressed: () {
-              // Hành động khi nhấn vào nút bộ lọc
-            },
+            onPressed: () {},
           ),
         ],
       ),
@@ -38,7 +37,9 @@ class _expPageState extends State<expPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          showCreatePostDialog(context);
+        },
         child: Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
