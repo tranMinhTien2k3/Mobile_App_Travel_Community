@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_app/Components/tip_card.dart';
 import 'package:travel_app/Widgets/creat_tip.dart';
@@ -29,8 +30,9 @@ class _expPageState extends State<expPage> {
             content: 'Let`s go to point A and then point B',
             note: 'bring camera',
             author: 'Tác giả',
-            time: '1 giờ trước',
-            imageUrl: 'https://via.placeholder.com/150',
+            time: Timestamp.now(),
+            imageUrl:
+                'https://th.bing.com/th/id/OIP.jleFhbOD3BG8h1PeUIGdNAAAAA?rs=1&pid=ImgDetMain',
             likes: 10,
             comments: 5,
           ),

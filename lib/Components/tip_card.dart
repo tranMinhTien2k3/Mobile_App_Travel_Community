@@ -1,12 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class TipCard extends StatefulWidget {
   final String title;
   final String content;
   final String note;
   final String author;
-  final String time;
+  final Timestamp time;
   final String imageUrl;
   final int likes;
   final int comments;
@@ -55,7 +57,13 @@ class _TipCardState extends State<TipCard> {
                   ),
                 ),
                 Spacer(),
-                Text(widget.time),
+                Text(
+                  timeago.format(widget.time.toDate()),
+                  style: TextStyle(
+                    fontSize: 14.0,
+                    color: Colors.grey,
+                  ),
+                ),
               ],
             ),
           ),

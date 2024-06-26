@@ -21,14 +21,6 @@ class _ProfilePageState extends State<ProfilePage> {
   String documentId = "";
   String imageUrl = '';
 
-  bool _isLoggedIn() {
-    if (user != null) {
-      documentId = user!.uid;
-      return true;
-    } else
-      return false;
-  }
-
   Future<void> editProfile(String field) async {
     String newValue = "";
     await showDialog(
@@ -108,7 +100,7 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 Text("Thông tin cá nhân"),
                 Text(
-                  _isLoggedIn() ? user!.email! : "Please Sign In",
+                  user!.email!,
                   style: TextStyle(fontSize: 12),
                 ),
               ],
