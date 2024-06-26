@@ -54,7 +54,7 @@ class _CreateTipState extends State<CreateTip> {
                 });
               },
             ),
-            SizedBox(height: 20),
+            // SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 // Hành động khi chọn ảnh

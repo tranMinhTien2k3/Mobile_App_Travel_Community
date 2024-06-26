@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:travel_app/services/signout.dart';
 
 class DrawerHome extends StatelessWidget {
   DrawerHome({super.key});
@@ -60,7 +61,9 @@ class DrawerHome extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.login),
             title: const Text('Log off'),
-            onTap: () {},
+            onTap: () {
+              signOut(context);
+            },
           )
         ],
       ),

@@ -83,7 +83,7 @@ class _TipCardState extends State<TipCard> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Text(
-              'Note:' + widget.content,
+              'Note:' + widget.note,
               style: TextStyle(
                 fontSize: 14.0,
                 fontWeight: FontWeight.normal,
