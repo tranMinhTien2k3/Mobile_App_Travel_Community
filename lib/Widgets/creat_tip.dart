@@ -11,7 +11,7 @@ class _CreateTipState extends State<CreateTip> {
   String _content = '';
   String _notes = '';
   String _selectedTopic = '';
-  final List<String> _topics = ['Chủ đề 1', 'Chủ đề 2', 'Chủ đề 3'];
+  final List<String> _topics = ['theme 1', 'theme 2', 'theme 3'];
 
   @override
   Widget build(BuildContext context) {
@@ -22,26 +22,25 @@ class _CreateTipState extends State<CreateTip> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             TextFormField(
-              decoration: InputDecoration(labelText: 'Tiêu đề'),
+              decoration: InputDecoration(labelText: 'Enter a title'),
               onSaved: (value) {
                 _title = value!;
               },
             ),
             TextFormField(
-              decoration: InputDecoration(labelText: 'Nội dung'),
+              decoration: InputDecoration(labelText: 'Enter a content'),
               onSaved: (value) {
                 _content = value!;
               },
-              maxLines: 3,
             ),
             TextFormField(
-              decoration: InputDecoration(labelText: 'Ghi chú'),
+              decoration: InputDecoration(labelText: 'Enter a note'),
               onSaved: (value) {
                 _notes = value!;
               },
             ),
             DropdownButtonFormField<String>(
-              decoration: InputDecoration(labelText: 'Chủ đề'),
+              decoration: InputDecoration(labelText: 'Choose a theme'),
               items: _topics.map((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
@@ -54,13 +53,15 @@ class _CreateTipState extends State<CreateTip> {
                 });
               },
             ),
-            // SizedBox(height: 20),
+            SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                // Hành động khi chọn ảnh
-              },
-              child: Text('Chọn ảnh'),
-            ),
+                onPressed: () {
+                  // Hành động khi chọn ảnh
+                },
+                child: Row(children: [
+                  Icon(Icons.image),
+                  Text('Select a photo'),
+                ])),
           ],
         ),
       ),
@@ -73,17 +74,17 @@ void showCreatePostDialog(BuildContext context) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('Tạo bài viết mới'),
+        title: Text('Share tips with others'),
         content: CreateTip(),
         actions: <Widget>[
           TextButton(
-            child: Text('Hủy'),
+            child: Text('Cancel'),
             onPressed: () {
               Navigator.of(context).pop();
             },
           ),
           TextButton(
-            child: Text('Lưu'),
+            child: Text('Upload'),
             onPressed: () {
               // Hành động khi lưu bài viết
               Navigator.of(context).pop();
