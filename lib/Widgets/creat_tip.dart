@@ -33,8 +33,8 @@ class _CreateTipState extends State<CreateTip> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       String idUser = user!.uid;
-      List<String> likes = [];
-      List<String> comments = [];
+      List likes = [];
+      List comments = [];
       Map<dynamic, dynamic> dataToSend = {
         'id_name': idUser,
         'title': _title,

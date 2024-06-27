@@ -1,7 +1,14 @@
+import 'dart:ffi';
+
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:like_button/like_button.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:travel_app/Widgets/notify.dart';
+import 'package:travel_app/databases/databaseTip.dart';
 
 class TipCard extends StatefulWidget {
   final String title;
@@ -10,8 +17,9 @@ class TipCard extends StatefulWidget {
   final String author;
   final String time;
   final List<String> imageUrl;
-  final int likes;
+  final List likes;
   final int comments;
+  final String id;
 
   const TipCard(
       {super.key,
@@ -22,16 +30,20 @@ class TipCard extends StatefulWidget {
       required this.likes,
       required this.comments,
       required this.content,
-      required this.note});
+      required this.note,
+      required this.id});
 
   @override
   State<TipCard> createState() => _TipCardState();
 }
 
 class _TipCardState extends State<TipCard> {
+  final user = FirebaseAuth.instance.currentUser;
+  late String userId = "";
   @override
   Widget build(BuildContext context) {
     DateTime parsedDateTime = DateTime.parse(widget.time);
+    userId = user!.uid;
     return Card(
       margin: EdgeInsets.all(10.0),
       child: Column(
@@ -68,7 +80,7 @@ class _TipCardState extends State<TipCard> {
               ],
             ),
           ),
-          (widget.imageUrl.isNotEmpty || widget.imageUrl == Null)
+          (widget.imageUrl.isNotEmpty)
               ? Padding(
                   padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
                   child: CarouselSlider(
@@ -93,15 +105,6 @@ class _TipCardState extends State<TipCard> {
                       );
                     }).toList(),
                   ),
-                  //     Container(
-                  //   width: MediaQuery.of(context).size.width * 1.0,
-                  //   height: MediaQuery.of(context).size.height * 0.2,
-                  //   child: Image.network(
-                  //     widget.imageUrl[0],
-                  //     alignment: Alignment.center,
-                  //     fit: BoxFit.cover,
-                  //   ),
-                  // )
                 )
               : Padding(
                   padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
@@ -130,13 +133,20 @@ class _TipCardState extends State<TipCard> {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
-                IconButton(
-                  icon: Icon(FontAwesomeIcons.heart),
-                  onPressed: () {
-                    // Hành động khi nhấn nút tim
+                LikeButton(
+                  isLiked: widget.likes.contains(userId) ? true : false,
+                  onTap: (isLiked) async {
+                    if (!isLiked) {
+                      await addUserIdToLikes(widget.id, userId);
+                    } else {
+                      await removeUserIdFromLikes(widget.id, userId);
+                    }
+                    return !isLiked;
                   },
+                  likeCount: widget.likes.length,
+                  size: 40,
+                  countPostion: CountPostion.right,
                 ),
-                Text('${widget.likes}'),
                 SizedBox(width: 20),
                 IconButton(
                   icon: Icon(FontAwesomeIcons.comment),

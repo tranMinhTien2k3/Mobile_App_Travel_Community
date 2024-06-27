@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +54,11 @@ class _expPageState extends State<expPage> {
           final List<Map<dynamic, dynamic>> tips = [];
 
           tipsMap.forEach((key, value) {
-            tips.add(value as Map<dynamic, dynamic>);
+            if (value is Map<dynamic, dynamic>) {
+              Map<String, dynamic> tip = value.cast<String, dynamic>();
+              tip['id'] = key; // Thêm ID vào dữ liệu của tip
+              tips.add(tip);
+            }
           });
 
           return ListView.builder(
@@ -66,7 +69,6 @@ class _expPageState extends State<expPage> {
               //   subtitle: Text(tips[index]['content'] ?? ''),
               // );
               int comment = 3;
-              int like = 3;
               String author = "Name";
               List<String> img = [];
               if (tips[index]['image'] != null &&
@@ -74,6 +76,11 @@ class _expPageState extends State<expPage> {
                 img = tips[index]['image'].cast<String>();
               }
 
+              List like = [];
+              if (tips[index]['like'] != null &&
+                  tips[index]['like'] is List<dynamic>) {
+                like = tips[index]['like'].cast<String>();
+              }
               return TipCard(
                 title: tips[index]['title'],
                 content: tips[index]['content'],
@@ -83,6 +90,7 @@ class _expPageState extends State<expPage> {
                 imageUrl: img,
                 likes: like,
                 comments: comment,
+                id: tips[index]['id'],
               );
             },
           );
