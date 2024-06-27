@@ -56,7 +56,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
     if (newValue.trim().isNotEmpty) {
       await usersRef.child(documentId).update({field: newValue});
-      Navigator.pushNamed(context, '/profile');
     }
   }
 
@@ -91,6 +90,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    documentId = user!.uid;
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -113,12 +113,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   if (snapshot.connectionState == ConnectionState.done) {
                     if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
-                    }
-                    Map<dynamic, dynamic>? data =
-                        snapshot.data!.snapshot.value as Map<dynamic, dynamic>;
-                    Map<String, dynamic> convertedData =
-                        Map<String, dynamic>.from(data);
-                    if (data == null || data.isEmpty) {
+                    } else if (!snapshot.hasData ||
+                        snapshot.data!.snapshot.value == null) {
                       usersRef.child(documentId).set({
                         'first name': '',
                         'last name': '',
@@ -127,8 +123,13 @@ class _ProfilePageState extends State<ProfilePage> {
                         'age': '',
                         'email': user?.email,
                       });
-
-                      data = {
+                    }
+                    Map<dynamic, dynamic>? data =
+                        snapshot.data!.snapshot.value as Map<dynamic, dynamic>;
+                    Map<String, dynamic> convertedData =
+                        Map<String, dynamic>.from(data);
+                    if (data.isEmpty) {
+                      convertedData = {
                         'first name': '',
                         'last name': '',
                         'phone': '',
@@ -146,10 +147,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ImagePicker imagePicker = ImagePicker();
                                 XFile? file = await imagePicker.pickImage(
                                     source: ImageSource.gallery);
-                                print('${file?.path}');
 
                                 if (file == null) return;
-                                var uuid = Uuid();
+                                var uuid = const Uuid();
                                 var randomName = uuid.v4();
                                 Reference referenceRoot =
                                     FirebaseStorage.instance.ref();
@@ -168,7 +168,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   'image': imageUrl,
                                 });
                               },
-                              icon: Icon(Icons.camera_alt)),
+                              icon: Icon(Icons.image)),
                           tileColor: Colors.white,
                         ),
                         (data['image'] != null)
@@ -180,22 +180,29 @@ class _ProfilePageState extends State<ProfilePage> {
                             : CircleAvatar(
                                 radius: 80.0,
                                 backgroundImage:
-                                    AssetImage('assets/img/user.png'),
+                                    AssetImage('lib/assets/image/user.jpg'),
                               ),
                         const SizedBox(height: 20),
-                        itemProfile('First Name', '${data['first name']}',
-                            'first name', Icons.badge_outlined),
-                        const SizedBox(height: 10),
-                        itemProfile('Last Name', '${data['last name']}',
-                            'last name', Icons.badge),
+                        itemProfile(
+                            'First Name',
+                            '${convertedData['first name']}',
+                            'first name',
+                            Icons.badge_outlined),
                         const SizedBox(height: 10),
                         itemProfile(
-                            'Phone', '${data['phone']}', 'phone', Icons.phone),
+                            'Last Name',
+                            '${convertedData['last name']}',
+                            'last name',
+                            Icons.badge),
                         const SizedBox(height: 10),
-                        itemProfile('Address', '${data['address']}', 'address',
-                            Icons.place),
+                        itemProfile('Phone', '${convertedData['phone']}',
+                            'phone', Icons.phone),
                         const SizedBox(height: 10),
-                        itemProfile('Age', '${data['age']}', 'age', Icons.cake),
+                        itemProfile('Address', '${convertedData['address']}',
+                            'address', Icons.place),
+                        const SizedBox(height: 10),
+                        itemProfile('Age', '${convertedData['age']}', 'age',
+                            Icons.cake),
                         const SizedBox(
                           height: 20,
                         ),

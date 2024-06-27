@@ -40,7 +40,11 @@ class _expPageState extends State<expPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showCreatePostDialog(context);
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return CreateTip();
+              });
         },
         child: Icon(Icons.add),
       ),
