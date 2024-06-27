@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -8,8 +8,8 @@ class TipCard extends StatefulWidget {
   final String content;
   final String note;
   final String author;
-  final Timestamp time;
-  final String imageUrl;
+  final String time;
+  final List<String> imageUrl;
   final int likes;
   final int comments;
 
@@ -31,6 +31,7 @@ class TipCard extends StatefulWidget {
 class _TipCardState extends State<TipCard> {
   @override
   Widget build(BuildContext context) {
+    DateTime parsedDateTime = DateTime.parse(widget.time);
     return Card(
       margin: EdgeInsets.all(10.0),
       child: Column(
@@ -58,7 +59,7 @@ class _TipCardState extends State<TipCard> {
                 ),
                 Spacer(),
                 Text(
-                  timeago.format(widget.time.toDate()),
+                  timeago.format(parsedDateTime, locale: 'en'),
                   style: TextStyle(
                     fontSize: 14.0,
                     color: Colors.grey,
@@ -67,21 +68,48 @@ class _TipCardState extends State<TipCard> {
               ],
             ),
           ),
-          Padding(
-              padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
-              child: Container(
-                width: MediaQuery.of(context).size.width * 1.0,
-                height: MediaQuery.of(context).size.height * 0.2,
-                child: Image.network(
-                  widget.imageUrl,
-                  alignment: Alignment.center,
-                  fit: BoxFit.cover,
+          (widget.imageUrl.isNotEmpty || widget.imageUrl == Null)
+              ? Padding(
+                  padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
+                  child: CarouselSlider(
+                    options: CarouselOptions(
+                      autoPlay: true,
+                      autoPlayInterval: Duration(seconds: 3),
+                      autoPlayAnimationDuration: Duration(milliseconds: 300),
+                      autoPlayCurve: Curves.fastOutSlowIn,
+                      enableInfiniteScroll: true,
+                      viewportFraction: 0.9,
+                      aspectRatio: 16 / 9,
+                    ),
+                    items: (widget.imageUrl).map((imageUrl) {
+                      return SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height,
+                        child: Image.network(
+                          imageUrl,
+                          alignment: Alignment.center,
+                          fit: BoxFit.cover,
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                  //     Container(
+                  //   width: MediaQuery.of(context).size.width * 1.0,
+                  //   height: MediaQuery.of(context).size.height * 0.2,
+                  //   child: Image.network(
+                  //     widget.imageUrl[0],
+                  //     alignment: Alignment.center,
+                  //     fit: BoxFit.cover,
+                  //   ),
+                  // )
+                )
+              : Padding(
+                  padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
                 ),
-              )),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Text(
-              widget.content,
+              "Tip: " + widget.content,
               style: TextStyle(
                 fontSize: 16.0,
                 fontWeight: FontWeight.normal,
