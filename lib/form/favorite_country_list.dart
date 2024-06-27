@@ -13,7 +13,8 @@ class FavoriteCountryList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    final favoritesCountriesAsyncValue = ref.watch(getCountryFavoriteProvider(userId));
+    // final favoritesCountriesAsyncValue = ref.watch(getCountryFavoriteProvider(userId));
+    final favoritesCountriesAsyncValue = ref.watch(getCountriesFavoriteProvider(userId));
     final userAsyncValue = ref.watch(userProvider);
     final favoriteController = ref.watch(favoriteManagerProvider);
     

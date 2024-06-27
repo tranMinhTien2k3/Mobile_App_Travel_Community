@@ -15,12 +15,23 @@ final getFirebaseDataProvider = Provider<GetFirebaseData>((ref){
   return GetFirebaseData(firestore, auth);
 });
 
-final getCountryFavoriteProvider = FutureProvider.family.autoDispose<List<CountryFirebase>, String>((ref, userId) async{
+final getCountryFavoriteProvider = FutureProvider.family<List<CountryFirebase>, String>((ref, userId) async{
   final manager = ref.watch(getFirebaseDataProvider);
   return manager.getCountryFavorite(userId);
 });
 
-final getCityFavoriteProvider = FutureProvider.family.autoDispose<List<CityFirebase>, String>((ref, userId) async{
+final getCityFavoriteProvider = FutureProvider.family<List<CityFirebase>, String>((ref, userId) async{
   final manager = ref.watch(getFirebaseDataProvider);
   return manager.getCityFavoriteList(userId);
 });
+
+final getCountriesFavoriteProvider = StreamProvider.family<List<CountryFirebase>, String>((ref, userId) async*{
+  final manager = ref.watch(getFirebaseDataProvider);
+  yield* manager.getCountryFavoriteStream(userId);
+});
+
+final getCitiesFavoriteProvider = StreamProvider.family<List<CityFirebase>, String>((ref, userId) async*{
+  final manager = ref.watch(getFirebaseDataProvider);
+  yield* manager.getCityFavoritesStream(userId);
+});
+

@@ -54,4 +54,35 @@ class GetFirebaseData{
       return [];
     }
   }
+
+  Stream<List<CountryFirebase>> getCountryFavoriteStream(String userId) async*{
+    final user = _auth.currentUser;
+    if(user == null){
+      throw Exception('User not logged in!');
+    }
+     yield* _firestore
+      .collection('users')
+      .doc(user.uid)
+      .collection('favorites')
+      .doc('favorites')
+      .collection('countries')
+      .snapshots()
+      .map((querySnapshot) =>
+          querySnapshot.docs.map((doc) => CountryFirebase.fromFirestore(doc)).toList());
+  }
+
+  Stream<List<CityFirebase>> getCityFavoritesStream(String userId) async*{
+    final user =_auth.currentUser;
+    if(user == null) throw Exception('User not logged in!');
+
+    yield* _firestore
+      .collection('users')
+      .doc(user.uid)
+      .collection('favorites')
+      .doc('favorites')
+      .collection('cities')
+      .snapshots()
+      .map((querySnhapshot) =>
+          querySnhapshot.docs.map((doc) => CityFirebase.fromFirestore(doc)).toList());
+  }
 }

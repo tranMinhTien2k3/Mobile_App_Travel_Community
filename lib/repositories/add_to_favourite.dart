@@ -151,6 +151,8 @@ class FavoriteController {
           .collection('users')
           .doc(user.uid)
           .collection('favorites')
+          .doc('favorites')
+          .collection('cities')
           .where('cityName', isEqualTo: cityName)
           .get();
 
