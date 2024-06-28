@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:travel_app/Components/bottom_nav.dart';
 import 'package:travel_app/form/favorite_city_list.dart';
 import 'package:travel_app/form/favorite_country_list.dart';
+import 'package:travel_app/repositories/theme_notifier.dart';
 
 final selectedViewProvider = StateProvider<int>((ref) => 0);
 class FavoriteScreen extends ConsumerWidget {
@@ -12,6 +14,7 @@ class FavoriteScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
 
     final selectedIndex = ref.watch(selectedViewProvider);
+    final isDarkMode = ref.watch(themeNotifierProvider) == ThemeModeState.dark;
 
     final List<Widget> views = [
       FavoriteCountryList(userId: userId),
@@ -19,6 +22,9 @@ class FavoriteScreen extends ConsumerWidget {
     ];
 
     return Scaffold(
+      // appBar: AppBar(
+      //   // title: Text('Your favorites'),
+      // ),
       body: Column(
         children: [
           Container(
@@ -60,6 +66,7 @@ class FavoriteScreen extends ConsumerWidget {
           )
         ],
       ),
+      // bottomNavigationBar: BottomNav(),
     );
   }
 }

@@ -70,6 +70,11 @@ class DrawerHome extends ConsumerWidget {
                 (route) => false)
               ;
             },
+          ),
+          ListTile(
+            leading: const Icon(Icons.settings),
+            title: Text('Setting'),
+            onTap: () => Navigator.pushNamed(context, '/setting'),
           )
         ],
       ),

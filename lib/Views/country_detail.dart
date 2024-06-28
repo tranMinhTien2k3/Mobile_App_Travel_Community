@@ -363,6 +363,7 @@ import 'package:travel_app/form/rating_form.dart';
 import 'package:travel_app/repositories/api_provider.dart';
 import 'package:travel_app/repositories/favorite_provider.dart';
 import 'package:travel_app/repositories/get_firebase_data_provider.dart';
+import 'package:travel_app/repositories/theme_notifier.dart';
 
 class CountryDetail extends ConsumerWidget {
   final String name;
@@ -376,15 +377,13 @@ class CountryDetail extends ConsumerWidget {
     final double screenHeight = MediaQuery.of(context).size.height;
     final double screenWidth = MediaQuery.of(context).size.width;
 
-    final backgroundColor = ref.watch(colorProvider);
-    final textColor = getTextColorForBackground(backgroundColor);
-
     final combinedDataFuture = Future.wait([
       ref.read(wikiProvider(name).future),
       ref.read(imageProvider(name).future),
     ]);
 
     final getDataController = ref.watch(getFirebaseDataProvider);
+    final isDarkMode = ref.watch(themeNotifierProvider) == ThemeModeState.dark;
 
     return Scaffold(
       body: FutureBuilder<List<dynamic>>(
@@ -424,7 +423,7 @@ class CountryDetail extends ConsumerWidget {
                     elevation: 0,
                     title: SmallText(
                       text: '$name',
-                      color: textColor,
+                      color: isDarkMode ? Colors.black : ColorList.white70,
                       size: 20,
                     ),
                   ),
@@ -438,7 +437,7 @@ class CountryDetail extends ConsumerWidget {
                     height: screenHeight * 0.55,
                     width: screenWidth,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: isDarkMode ? ColorList.grey800 : ColorList.white70,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(25),
                         topRight: Radius.circular(25),
@@ -454,10 +453,10 @@ class CountryDetail extends ConsumerWidget {
                             Column(
                               children: <Widget>[
                                 SmallText(
-                                  text: 'Introducing:',
+                                  text: 'Introduction:',
                                   size: 20,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                                  color: isDarkMode ? ColorList.white70 : Colors.black,
                                 ),
                                 Divider(),
                                 Container(
@@ -468,7 +467,7 @@ class CountryDetail extends ConsumerWidget {
                                         : 'No data available from Wikipedia',
                                     size: 18,
                                     softWrap: true,
-                                    color: Colors.black,
+                                    color: isDarkMode ? ColorList.white70 : Colors.black,
                                   ),
                                 ),
                                 const Divider(),
@@ -534,10 +533,10 @@ class CountryDetail extends ConsumerWidget {
                     ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(35),
-                      color: Colors.white,
+                      color: isDarkMode ? ColorList.grey800 : ColorList.white70,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
+                          color: isDarkMode? Colors.white.withOpacity(0.1) : Colors.grey.withOpacity(0.5),
                           spreadRadius: 5,
                           blurRadius: 7,
                           offset: Offset(0, 3),
@@ -565,6 +564,7 @@ class CountryDetail extends ConsumerWidget {
                                       BigText(
                                         text: '$name',
                                         size: 28,
+                                        color: isDarkMode ? ColorList.white70 : Colors.black,
                                       ),
                                       const SizedBox(height: 10),
                                       // RatingStars(

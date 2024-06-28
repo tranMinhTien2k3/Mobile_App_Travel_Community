@@ -87,6 +87,7 @@ import 'package:travel_app/Widgets/notify.dart';
 import 'package:travel_app/repositories/auth_provider.dart';
 import 'package:travel_app/repositories/favorite_provider.dart';
 import 'package:travel_app/repositories/get_firebase_data_provider.dart';
+import 'package:travel_app/repositories/theme_notifier.dart';
 
 class FavoriteCityList extends ConsumerWidget {
   final String userId;
@@ -99,6 +100,7 @@ class FavoriteCityList extends ConsumerWidget {
     final favoritesCitiesAsyncValue = ref.watch(getCitiesFavoriteProvider(userId));
     final userAsyncValue = ref.watch(userProvider);
     final favoriteController = ref.watch(favoriteManagerProvider);
+    final isDarkMode = ref.watch(themeNotifierProvider) == ThemeModeState.dark;
     
     return Container(
       height: double.infinity,
@@ -132,7 +134,7 @@ class FavoriteCityList extends ConsumerWidget {
                         child: Card(
                           margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                           child: ListTile(
-                            title: Text(country.name),
+                            title: Text(country.name, style: TextStyle(color: isDarkMode? Colors.white : Colors.black),),
                             trailing: const Icon(Icons.arrow_forward_ios),
                             onTap:() => Navigator.push (
                               context,

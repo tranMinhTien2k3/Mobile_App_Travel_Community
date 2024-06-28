@@ -63,6 +63,7 @@ dependencies:
   image_picker: ^1.1.2
   floating_bottom_navigation_bar: ^1.5.2
   flutter_floating_bottom_bar: ^1.2.0
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_test:
