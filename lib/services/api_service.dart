@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:travel_app/models/city_model.dart';
@@ -66,6 +68,17 @@ class ApiService {
       // Xử lý lỗi và trả về danh sách rỗng
       print('Error: $e');
       return [];
+    }
+  }
+
+  Future<List<City>> fetchCities2(List<String> countryIso2s) async {
+    dio.options.headers['X-CSCAPI-KEY'] = countryStateApiKey;
+    final response = await dio.get('https://api.countrystatecity.in/v1/countries/$countryIso2s/states');
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.data) as List<dynamic>;
+      return data.map((cityData) => City.fromJson(cityData)).toList();
+    } else {
+      throw Exception('Failed to fetch cities: ${response.statusCode}');
     }
   }
 

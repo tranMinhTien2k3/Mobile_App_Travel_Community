@@ -56,11 +56,12 @@ dependencies:
   flutter_dotenv: ^5.1.0
   like_button: ^2.0.5
   flutter_rating_stars: ^1.1.0
+  flutter_rating_bar: ^4.0.1
+  flutter_typeahead: ^5.2.0
   firebase_database: ^11.0.1
   uuid: ^4.4.0
   image_picker: ^1.1.2
   palette_generator: ^0.3.3+3
-  timeago: ^3.6.1
 
 dev_dependencies:
   flutter_test:

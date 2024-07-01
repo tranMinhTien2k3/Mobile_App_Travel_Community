@@ -1,12 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:travel_app/services/signout.dart';
 
-class DrawerHome extends StatelessWidget {
+class DrawerHome extends ConsumerWidget {
   DrawerHome({super.key});
   final user = FirebaseAuth.instance.currentUser;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Drawer(
       child: ListView(
         padding: const EdgeInsets.all(0),
@@ -61,9 +60,7 @@ class DrawerHome extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.login),
             title: const Text('Log off'),
-            onTap: () {
-              signOut(context);
-            },
+            onTap: () {},
           )
         ],
       ),

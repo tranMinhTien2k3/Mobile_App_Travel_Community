@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:travel_app/repositories/add_to_favourite.dart';
 import 'package:travel_app/repositories/auth_provider.dart';
@@ -24,6 +25,18 @@ final favoriteStatusProvider = FutureProvider.family<bool, String>((ref, country
 final favoriteCountProvider = FutureProvider.family<int, String>((ref, countryName) async {
   final manager = ref.watch(favoriteManagerProvider);
   return manager.getFavoriteCount(countryName);
+});
+
+//Provider for favorite count of city
+final favoriteCityCountController = FutureProvider.family<int, String>((ref, cityName)async{
+  final manager = ref.watch(favoriteManagerProvider);
+  return manager.getCityFavoriteCount(cityName);
+});
+
+// Provider for favorite status of a city
+final favoriteCityStatusController = FutureProvider.family<bool, String>((ref, cityName) async{
+  final manager = ref.watch(favoriteManagerProvider);
+  return manager.isCityFavorite(cityName);
 });
 
 

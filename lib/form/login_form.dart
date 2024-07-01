@@ -27,12 +27,12 @@ class Login_Form extends HookConsumerWidget {
         orElse: () => null,
         authenticated: (user) {
           Navigator.pushNamed(context, '/home_page'); // dieu huong den trang chu
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('User Logged In'),
-              behavior: SnackBarBehavior.floating,
-            ),
-          );
+          // ScaffoldMessenger.of(context).showSnackBar(
+          //   const SnackBar(
+          //     content: Text('User Logged In'),
+          //     behavior: SnackBarBehavior.floating,
+          //   ),
+          // );
         },
         unauthenticated: (message) =>
             ScaffoldMessenger.of(context).showSnackBar(

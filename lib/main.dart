@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:travel_app/Views/first_page.dart';
-import 'package:travel_app/Views/forgot_pass_page.dart';
-import 'package:travel_app/Views/home_page.dart';
-import 'package:travel_app/Views/login_page.dart';
-import 'package:travel_app/Views/sign_up_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travel_app/repositories/route_transition.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:travel_app/repositories/theme_notifier.dart';
 import 'package:travel_app/services/firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -16,27 +13,37 @@ Future main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  final initialTheme = await _loadInitialTheme();
   runApp(
-    const ProviderScope(
+    ProviderScope(
+      overrides: [
+        themeNotifierProvider.overrideWith((ref) => ThemeNotifier()..setTheme(initialTheme))
+      ],
       child: MyApp(),
     ),
   );
 }
 
-class MyApp extends StatelessWidget {
+Future<ThemeModeState> _loadInitialTheme() async{
+  final prefs = await SharedPreferences.getInstance();
+  final isDarkMode = prefs.getBool('isDarkMode') ?? false;
+  return isDarkMode ? ThemeModeState.dark : ThemeModeState.light;
+}
+
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeNotifierProvider);
     return ProviderScope(
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
+        themeMode: themeMode == ThemeModeState.light ? ThemeMode.light : ThemeMode.dark,
+        theme: ThemeData.light(),
+        darkTheme: ThemeData.dark(),
         initialRoute: '/',
         onGenerateRoute: generateRoute,
         // routes: {
