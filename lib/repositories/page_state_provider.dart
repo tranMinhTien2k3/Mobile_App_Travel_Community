@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final currentPageProvider = StateProvider<int>((ref) => 0);
+final currentPageProvider = StateProvider<int>((ref) => 1);
 
 final pageControllerProvider = Provider<PageController>((ref) => PageController());
 

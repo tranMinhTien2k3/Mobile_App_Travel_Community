@@ -358,6 +358,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:like_button/like_button.dart';
+import 'package:travel_app/Components/bottom_nav.dart';
 import 'package:travel_app/Widgets/big_text.dart';
 import 'package:travel_app/Widgets/notify.dart';
 import 'package:travel_app/Widgets/small_text.dart';
@@ -641,6 +642,10 @@ class CityDetailsScreen extends ConsumerWidget {
                     ),
                   ),
                 ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: BottomNav(),
+                )
               ],
             );
           }
