@@ -2,6 +2,10 @@ import 'package:firebase_database/firebase_database.dart';
 
 final DatabaseReference userRef =
     FirebaseDatabase.instance.ref().child('Users');
+bool containsLetter(String input) {
+  RegExp letterRegExp = RegExp(r'[a-zA-Z]');
+  return letterRegExp.hasMatch(input);
+}
 
 Future<String> getName(String id_name) async {
   String name = "";
@@ -13,7 +17,7 @@ Future<String> getName(String id_name) async {
       name = firstName + " " + lastName;
     }
   });
-  if (name == "") {
+  if (name == " ") {
     return "Anonymous users";
   } else {
     return name;

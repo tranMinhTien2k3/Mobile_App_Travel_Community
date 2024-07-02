@@ -64,7 +64,7 @@ class _TipCardState extends State<TipCard> {
                   future: getName(widget.author),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Text(
+                      return const Text(
                         'Loading...', // Display a loading indicator or placeholder text
                         style: TextStyle(
                           fontStyle: FontStyle.italic,
@@ -82,19 +82,13 @@ class _TipCardState extends State<TipCard> {
                       String authorName = snapshot.data ?? 'Unknown';
                       return Text(
                         'By $authorName',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontStyle: FontStyle.italic,
                         ),
                       );
                     }
                   },
                 ),
-                // Text(
-                //   'By ${widget.author}',
-                //   style: TextStyle(
-                //     fontStyle: FontStyle.italic,
-                //   ),
-                // ),
                 Spacer(),
                 Text(
                   timeago.format(parsedDateTime, locale: 'en'),
