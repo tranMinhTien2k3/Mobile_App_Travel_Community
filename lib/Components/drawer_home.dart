@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:travel_app/services/signout.dart';
 
 class DrawerHome extends ConsumerWidget {
   DrawerHome({super.key});
@@ -61,7 +62,9 @@ class DrawerHome extends ConsumerWidget {
           ListTile(
             leading: const Icon(Icons.login),
             title: const Text('Log off'),
-            onTap: () {},
+            onTap: () {
+              signOut(context);
+            },
           )
         ],
       ),

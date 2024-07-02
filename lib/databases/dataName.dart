@@ -4,7 +4,7 @@ final DatabaseReference userRef =
     FirebaseDatabase.instance.ref().child('Users');
 
 Future<String> getName(String id_name) async {
-  var name = '';
+  String name = "";
   await userRef.child(id_name).once().then((event) {
     if (event.snapshot.value != null) {
       var userData = event.snapshot.value as Map<dynamic, dynamic>;
