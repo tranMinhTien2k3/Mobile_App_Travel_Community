@@ -13,6 +13,8 @@ class AuthController {
 
   AuthController(this._firebaseAuth, this._ref);
 
+  Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
+
   // Xu ly dang nhap dang ky voi email va mat khau
   Future<Either<String, User>> signUp(
       {required String email, required String password}) async {
@@ -100,4 +102,19 @@ class AuthController {
       return left(e.message ?? 'Unknown Error');
     }
   }
+
+  Future<Either<String,  User?>> signOut() async{
+    try{
+      await _firebaseAuth.signOut();
+      return right(null);
+    }on FirebaseAuthException catch(e){
+      return left(e.message ?? 'Unknow Error');
+    }
+  }
+
+  User?  gerCurrenrUser(){
+    return _firebaseAuth.currentUser;
+  }
+
+  
 }
