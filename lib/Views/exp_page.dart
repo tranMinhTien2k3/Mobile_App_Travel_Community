@@ -1,8 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_app/Components/tip_card.dart';
 import 'package:travel_app/Widgets/creat_tip.dart';
+import 'package:travel_app/databases/dataName.dart';
 
 class expPage extends StatefulWidget {
   const expPage({super.key});
@@ -12,11 +12,11 @@ class expPage extends StatefulWidget {
 }
 
 class _expPageState extends State<expPage> {
-  final user = FirebaseAuth.instance.currentUser;
   final DatabaseReference usersRef =
       FirebaseDatabase.instance.ref().child("Users");
   final DatabaseReference tipsRef =
       FirebaseDatabase.instance.ref().child("Tips");
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,12 +64,6 @@ class _expPageState extends State<expPage> {
           return ListView.builder(
             itemCount: tips.length,
             itemBuilder: (context, index) {
-              // return ListTile(
-              //   title: Text( ?? ''),
-              //   subtitle: Text(tips[index]['content'] ?? ''),
-              // );
-              int comment = 3;
-              String author = "Name";
               List<String> img = [];
               if (tips[index]['image'] != null &&
                   tips[index]['image'] is List<dynamic>) {
@@ -81,15 +75,21 @@ class _expPageState extends State<expPage> {
                   tips[index]['like'] is List<dynamic>) {
                 like = tips[index]['like'].cast<String>();
               }
+
+              List<String> comments = [];
+              if (tips[index]['comment'] != null &&
+                  tips[index]['comment'] is List<dynamic>) {
+                like = tips[index]['comment'].cast<String>();
+              }
               return TipCard(
                 title: tips[index]['title'],
                 content: tips[index]['content'],
                 note: tips[index]['notes'],
-                author: author,
+                author: tips[index]['id_name'],
                 time: tips[index]['datePublished'],
                 imageUrl: img,
                 likes: like,
-                comments: comment,
+                comments: comments,
                 id: tips[index]['id'],
               );
             },
