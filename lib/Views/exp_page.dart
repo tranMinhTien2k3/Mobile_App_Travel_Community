@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:travel_app/Components/drawer_home.dart';
 import 'package:travel_app/Components/tip_card.dart';
 import 'package:travel_app/Widgets/creat_tip.dart';
 
@@ -9,6 +10,8 @@ class expPage extends StatefulWidget {
 
   @override
   State<expPage> createState() => _expPageState();
+
+  
 }
 
 class _expPageState extends State<expPage> {
@@ -17,18 +20,54 @@ class _expPageState extends State<expPage> {
       FirebaseDatabase.instance.ref().child("Users");
   final DatabaseReference tipsRef =
       FirebaseDatabase.instance.ref().child("Tips");
+
+  Map<String, dynamic> userData = {};
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _fetchUserData();
+  }
+
+  void _fetchUserData(){
+    usersRef.once().then((DatabaseEvent event){
+      final DataSnapshot snapshot =event.snapshot;
+
+      if(snapshot.exists && snapshot.value != null){
+        setState((){
+          userData = Map<String, dynamic>.from(snapshot.value as Map);
+        });
+      }
+    }).catchError((error){
+      print('Error: $error');
+    });
+  }
+
+  String getAuthorName(String userId){
+    if(userData.containsKey(userId)){
+      Map<String, dynamic> user = userData[userId];
+      if(user.containsKey('name') && user['name'] != null && user['name'].toString().isNotEmpty){
+        return user['name'];
+      }else{
+        return user['email'];
+      }
+    }
+    return 'Unknown';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Travel Tips"),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.filter_list),
-            onPressed: () {},
-          ),
-        ],
-      ),
+      // appBar: AppBar(
+      //   leading: IconButton(icon: Icon(Icons.menu), onPressed: () => DrawerHome.new,),
+      //   title: Text("Travel Tips"),
+      //   actions: [
+      //     IconButton(
+      //       icon: Icon(Icons.filter_list),
+      //       onPressed: () {},
+      //     ),
+      //   ],
+      // ),
       body: StreamBuilder<DatabaseEvent>(
         stream: tipsRef.onValue,
         builder: (context, snapshot) {
@@ -68,8 +107,10 @@ class _expPageState extends State<expPage> {
               //   title: Text( ?? ''),
               //   subtitle: Text(tips[index]['content'] ?? ''),
               // );
+              
               int comment = 3;
-              String author = "Name";
+              final authorId = tips[index]['id_name'];
+              String author = 'Name';
               List<String> img = [];
               if (tips[index]['image'] != null &&
                   tips[index]['image'] is List<dynamic>) {
@@ -106,7 +147,7 @@ class _expPageState extends State<expPage> {
         },
         child: Icon(Icons.add),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

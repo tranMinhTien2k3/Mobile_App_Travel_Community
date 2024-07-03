@@ -77,7 +77,7 @@ class _ProfilePageState extends State<ProfilePage> {
         subtitle: Text(subtitle),
         leading: Icon(iconData),
         trailing: IconButton(
-          icon: Icon(Icons.settings),
+          icon: Icon(Icons.edit),
           color: Colors.grey.shade400,
           onPressed: () {
             editProfile(n);
