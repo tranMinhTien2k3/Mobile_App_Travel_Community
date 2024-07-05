@@ -12,5 +12,5 @@ final tickerProvider = Provider<TickerProvider>((ref){
 final tabControllerProvider = Provider.autoDispose<TabController>((ref){
   final TickerProvider vsync = ref.watch(tickerProvider);
   final currentPage = ref.watch(currentPageProvider.notifier).state;
-  return TabController(length: 4, vsync: vsync);
+  return TabController(length: 5, vsync: vsync);
 });

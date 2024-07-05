@@ -24,7 +24,7 @@ Future<void> signOut(BuildContext context) async {
           TextButton(
             onPressed: () async {
               await FirebaseAuth.instance.signOut();
-              Navigator.pushNamed(context, '/');
+              Navigator.pushNamedAndRemoveUntil(context, '/', (context) => false);
             },
             child: Text('Agree'),
           ),

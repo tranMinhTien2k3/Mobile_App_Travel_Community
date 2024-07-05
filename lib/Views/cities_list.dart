@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:travel_app/Components/bottom_nav.dart';
 import 'package:travel_app/Views/city_detail.dart';
+import 'package:travel_app/Widgets/big_text.dart';
+import 'package:travel_app/Widgets/text_color.dart';
 import 'package:travel_app/repositories/api_provider.dart';
 import 'package:travel_app/repositories/auth_provider.dart';
 import 'package:travel_app/repositories/route_transition.dart';
+import 'package:travel_app/repositories/theme_notifier.dart';
 
 class CityListScreen extends ConsumerWidget {
   final String iso2;
@@ -15,8 +19,13 @@ class CityListScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final citiesAsyncValue = ref.watch(citiesProvider(name));
     final userAsyncValue = ref.watch(userProvider);
+    final isDarkMode = ref.watch(themeNotifierProvider) == ThemeModeState.dark;
 
     return Scaffold(
+      appBar: AppBar(
+        title: BigText(text: 'City List', color: isDarkMode ? ColorList.white70 : Colors.black,),
+        automaticallyImplyLeading: false,
+      ),
       body: userAsyncValue.when(
         data: (user) {
           final userId = user?.uid ?? ''; // Lấy userId từ userProvider

@@ -441,7 +441,7 @@ class CityDetailsScreen extends ConsumerWidget {
                     height: screenHeight * 0.55,
                     width: screenWidth,
                     decoration: BoxDecoration(
-                      color: isDarkMode ? ColorList.grey800 : ColorList.white70,
+                      color: isDarkMode ? ColorList.darkMode : ColorList.white70,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(25),
                         topRight: Radius.circular(25),
@@ -457,7 +457,7 @@ class CityDetailsScreen extends ConsumerWidget {
                             Column(
                               children: <Widget>[
                                 SmallText(
-                                  text: 'Introducing:',
+                                  text: 'Introduction:',
                                   size: 20,
                                   fontWeight: FontWeight.bold,
                                   color: isDarkMode ? ColorList.white70 : Colors.black,
@@ -501,7 +501,7 @@ class CityDetailsScreen extends ConsumerWidget {
                     ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(35),
-                      color: isDarkMode ? ColorList.grey800 : ColorList.white70,
+                      color: isDarkMode ? ColorList.darkMode : ColorList.white70,
                       boxShadow: [
                         BoxShadow(
                           color: isDarkMode? Colors.white.withOpacity(0.1) : Colors.grey.withOpacity(0.5),
@@ -642,10 +642,10 @@ class CityDetailsScreen extends ConsumerWidget {
                     ),
                   ),
                 ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: BottomNav(),
-                )
+                // Align(
+                //   alignment: Alignment.bottomCenter,
+                //   child: BottomNav(),
+                // )
               ],
             );
           }

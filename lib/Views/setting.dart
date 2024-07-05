@@ -1,10 +1,22 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:travel_app/Widgets/text_color.dart';
+import 'package:travel_app/form/change_pass_form.dart';
 import 'package:travel_app/repositories/theme_notifier.dart';
+import 'package:travel_app/services/signout.dart';
 
 class SettingPage extends ConsumerWidget {
   const SettingPage({super.key});
+
+  void _showChangePasswordSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return ChangePassForm() ; 
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,6 +32,7 @@ class SettingPage extends ConsumerWidget {
             color: isDarkMode ? Colors.white : Colors.black 
           ),
         ),
+        automaticallyImplyLeading: false,
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
@@ -27,7 +40,7 @@ class SettingPage extends ConsumerWidget {
           children: [
             Card(
               child: ListTile(
-                title: Text('Theme', style: TextStyle(color: isDarkMode ? Colors.white : Colors.black),),
+                title: Text('Theme', style: TextStyle(color: isDarkMode ? ColorList.white70 : Colors.black),),
                 trailing: Switch(
                   value: isDarkMode,
                   onChanged: (value){
@@ -35,6 +48,28 @@ class SettingPage extends ConsumerWidget {
                   },
                 ),
               ),
+            ),
+            const SizedBox(height: 30,),
+            Card(
+              child: GestureDetector(
+                child: ListTile(
+                  title: Text('Log out', style: TextStyle(color: isDarkMode? ColorList.white70 : Colors.black),),
+                  trailing: Icon(Icons.logout, size: 30, color: isDarkMode ? ColorList.white70 : Colors.black,),
+                ),
+                onTap: () {
+                  signOut(context);
+                },
+              ),
+            ),
+            const SizedBox(height: 30,),
+            GestureDetector(
+              child: Card(
+                child: ListTile(
+                  title: Text('Change Password',style: TextStyle(color: isDarkMode ? ColorList.white70 : Colors.black),),
+                  trailing: Icon(Icons.edit, color: isDarkMode ?  ColorList.white70 : Colors.black,),
+                ),
+              ),
+              onTap: () => _showChangePasswordSheet,
             )
           ],
         )

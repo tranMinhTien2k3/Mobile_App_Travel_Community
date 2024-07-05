@@ -1,13 +1,10 @@
-import 'dart:ffi';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:like_button/like_button.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:travel_app/Widgets/notify.dart';
+import 'package:travel_app/databases/dataName.dart';
 import 'package:travel_app/databases/databaseTip.dart';
 
 class TipCard extends StatefulWidget {
@@ -18,7 +15,7 @@ class TipCard extends StatefulWidget {
   final String time;
   final List<String> imageUrl;
   final List likes;
-  final int comments;
+  final List<String> comments;
   final String id;
 
   const TipCard(
@@ -63,11 +60,34 @@ class _TipCardState extends State<TipCard> {
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Row(
               children: [
-                Text(
-                  'By ${widget.author}',
-                  style: TextStyle(
-                    fontStyle: FontStyle.italic,
-                  ),
+                FutureBuilder<String>(
+                  future: getName(widget.author),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Text(
+                        'Loading...', // Display a loading indicator or placeholder text
+                        style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                        ),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text(
+                        'Error: ${snapshot.error}',
+                        style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          color: Colors.red,
+                        ),
+                      );
+                    } else {
+                      String authorName = snapshot.data ?? 'Unknown';
+                      return Text(
+                        'By $authorName',
+                        style: const TextStyle(
+                          fontStyle: FontStyle.italic,
+                        ),
+                      );
+                    }
+                  },
                 ),
                 Spacer(),
                 Text(
@@ -144,9 +164,10 @@ class _TipCardState extends State<TipCard> {
                     return !isLiked;
                   },
                   likeCount: widget.likes.length,
-                  size: 40,
+                  size: 30,
                   countPostion: CountPostion.right,
                 ),
+                Text(" Like"),
                 SizedBox(width: 20),
                 IconButton(
                   icon: Icon(FontAwesomeIcons.comment),
@@ -154,7 +175,8 @@ class _TipCardState extends State<TipCard> {
                     // Hành động khi nhấn nút bình luận
                   },
                 ),
-                Text('${widget.comments}'),
+                Text('${widget.comments.length}'),
+                Text(" Comment"),
                 Spacer(),
                 IconButton(
                   icon: Icon(FontAwesomeIcons.share),
