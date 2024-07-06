@@ -11,11 +11,26 @@ class SettingPage extends ConsumerWidget {
 
   void _showChangePasswordSheet(BuildContext context) {
     showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return ChangePassForm() ; 
-      },
-    );
+    context: context,
+    isScrollControlled: true,
+    builder: (BuildContext context){
+      final double sheetHeight = MediaQuery.of(context).size.height * 0.41;
+
+      return MediaQuery.removeViewInsets(
+        context: context,
+        removeBottom: true,
+        child: SingleChildScrollView(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom
+          ),
+          child: Container(
+            height: sheetHeight,
+            child: ChangePassForm(),
+          ),
+        ),
+      );
+    }
+  );
   }
 
   @override
@@ -28,9 +43,9 @@ class SettingPage extends ConsumerWidget {
       appBar: AppBar(
         title: Text(
           'Setting',
-          style: TextStyle(
-            color: isDarkMode ? Colors.white : Colors.black 
-          ),
+          // style: TextStyle(
+          //   color: isDarkMode ? Colors.white : Colors.black 
+          // ),
         ),
         automaticallyImplyLeading: false,
       ),
@@ -40,7 +55,7 @@ class SettingPage extends ConsumerWidget {
           children: [
             Card(
               child: ListTile(
-                title: Text('Theme', style: TextStyle(color: isDarkMode ? ColorList.white70 : Colors.black),),
+                title: Text('Dark Mode'),//, style: TextStyle(color: isDarkMode ? ColorList.white70 : Colors.black),),
                 trailing: Switch(
                   value: isDarkMode,
                   onChanged: (value){
@@ -53,8 +68,8 @@ class SettingPage extends ConsumerWidget {
             Card(
               child: GestureDetector(
                 child: ListTile(
-                  title: Text('Log out', style: TextStyle(color: isDarkMode? ColorList.white70 : Colors.black),),
-                  trailing: Icon(Icons.logout, size: 30, color: isDarkMode ? ColorList.white70 : Colors.black,),
+                  title: Text('Log out', ),//style: TextStyle(color: isDarkMode? ColorList.white70 : Colors.black),),
+                  trailing: Icon(Icons.logout, size: 30,) //color: isDarkMode ? ColorList.white70 : Colors.black,),
                 ),
                 onTap: () {
                   signOut(context);
@@ -65,11 +80,11 @@ class SettingPage extends ConsumerWidget {
             GestureDetector(
               child: Card(
                 child: ListTile(
-                  title: Text('Change Password',style: TextStyle(color: isDarkMode ? ColorList.white70 : Colors.black),),
-                  trailing: Icon(Icons.edit, color: isDarkMode ?  ColorList.white70 : Colors.black,),
+                  title: Text('Change Password'),//style: TextStyle(color: isDarkMode ? ColorList.white70 : Colors.black),),
+                  trailing: Icon(Icons.edit)//, color: isDarkMode ?  ColorList.white70 : Colors.black,),
                 ),
               ),
-              onTap: () => _showChangePasswordSheet,
+              onTap: () => _showChangePasswordSheet(context),
             )
           ],
         )
