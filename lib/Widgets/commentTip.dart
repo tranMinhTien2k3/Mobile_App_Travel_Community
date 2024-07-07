@@ -131,6 +131,7 @@ class _CommentTipState extends State<CommentTip> {
                 if (formKey.currentState!.validate()) {
                   String comment = commentController.text;
                   setState(() {
+                    Navigator.pushNamed(context, '/exp');
                     PostComment(widget.post, widget.id, comment);
                   });
                   commentController.clear();

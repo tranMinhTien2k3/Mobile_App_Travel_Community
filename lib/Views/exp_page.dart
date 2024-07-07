@@ -1,7 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:travel_app/Components/tip_card.dart';
 import 'package:travel_app/Widgets/creat_tip.dart';
+import 'package:travel_app/databases/dataName.dart';
 
 class expPage extends StatefulWidget {
   const expPage({super.key});
@@ -78,17 +78,57 @@ class _expPageState extends State<expPage> {
               if (tips[index]['comments'] != null) {
                 comment = tips[index]['comments'];
               }
-              return TipCard(
-                title: tips[index]['title'],
-                content: tips[index]['content'],
-                note: tips[index]['notes'],
-                author: tips[index]['id_name'],
-                time: tips[index]['datePublished'],
-                imageUrl: img,
-                likes: like,
-                comments: comment,
-                id: tips[index]['id'],
+              return Padding(
+                padding: EdgeInsets.all(8.0),
+                child: ListTile(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/exp_detail', arguments: {
+                      'title': tips[index]['title'],
+                      'content': tips[index]['content'],
+                      'note': tips[index]['notes'],
+                      'author': tips[index]['id_name'],
+                      'time': tips[index]['datePublished'],
+                      'imageUrl': img,
+                      'likes': like,
+                      'comments': comment,
+                      'id': tips[index]['id'],
+                    });
+                  },
+                  title: Text(tips[index]['title']),
+                  subtitle: FutureBuilder<String>(
+                    future: getName(tips[index]['id_name']),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Text(
+                          'Loading...',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text(
+                          'Error: ${snapshot.error}',
+                          style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            color: Colors.red,
+                          ),
+                        );
+                      } else {
+                        String authorName = snapshot.data ?? 'Unknown';
+                        return Text(
+                          'By $authorName',
+                          style: const TextStyle(
+                            fontStyle: FontStyle.italic,
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ),
               );
+              // TipCard(
+              //
+              // );
             },
           );
         },
