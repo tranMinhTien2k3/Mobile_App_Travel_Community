@@ -2,7 +2,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_app/Components/tip_card.dart';
 import 'package:travel_app/Widgets/creat_tip.dart';
-import 'package:travel_app/databases/dataName.dart';
 
 class expPage extends StatefulWidget {
   const expPage({super.key});
@@ -75,11 +74,9 @@ class _expPageState extends State<expPage> {
                   tips[index]['like'] is List<dynamic>) {
                 like = tips[index]['like'].cast<String>();
               }
-
-              List<String> comments = [];
-              if (tips[index]['comment'] != null &&
-                  tips[index]['comment'] is List<dynamic>) {
-                like = tips[index]['comment'].cast<String>();
+              List comment = [];
+              if (tips[index]['comments'] != null) {
+                comment = tips[index]['comments'];
               }
               return TipCard(
                 title: tips[index]['title'],
@@ -89,7 +86,7 @@ class _expPageState extends State<expPage> {
                 time: tips[index]['datePublished'],
                 imageUrl: img,
                 likes: like,
-                comments: comments,
+                comments: comment,
                 id: tips[index]['id'],
               );
             },
@@ -101,7 +98,7 @@ class _expPageState extends State<expPage> {
           showDialog(
               context: context,
               builder: (BuildContext context) {
-                return CreateTip();
+                return const CreateTip();
               });
         },
         child: Icon(Icons.add),

@@ -33,3 +33,27 @@ Future<void> addUserIdToLikes(String postId, String userId) async {
     await likesRef.set([userId]);
   }
 }
+
+Future<void> PostComment(
+    String postId, String userId, String commentMessage) async {
+  DatabaseReference commentsRef = FirebaseDatabase.instance
+      .ref()
+      .child('Tips')
+      .child(postId)
+      .child('comments');
+  DataSnapshot snapshot = await commentsRef.get();
+  DateTime now = DateTime.now();
+  Map<String, dynamic> newComment = {
+    'id': userId,
+    'date': now.toIso8601String(),
+    'message': commentMessage,
+  };
+  if (snapshot.exists) {
+    List<dynamic> rawList = List.from(snapshot.value as Iterable);
+    List commentsList = rawList.toList();
+    commentsList.add(newComment);
+    await commentsRef.set(commentsList);
+  } else {
+    await commentsRef.set([newComment]);
+  }
+}

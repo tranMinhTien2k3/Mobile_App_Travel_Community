@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:like_button/like_button.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:travel_app/Widgets/commentTip.dart';
 import 'package:travel_app/databases/dataName.dart';
 import 'package:travel_app/databases/databaseTip.dart';
 
@@ -15,7 +16,7 @@ class TipCard extends StatefulWidget {
   final String time;
   final List<String> imageUrl;
   final List likes;
-  final List<String> comments;
+  final List comments;
   final String id;
 
   const TipCard(
@@ -168,22 +169,30 @@ class _TipCardState extends State<TipCard> {
                   countPostion: CountPostion.right,
                 ),
                 Text(" Like"),
-                SizedBox(width: 20),
+                SizedBox(width: 100),
                 IconButton(
                   icon: Icon(FontAwesomeIcons.comment),
                   onPressed: () {
-                    // Hành động khi nhấn nút bình luận
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return CommentTip(
+                            id: userId,
+                            post: widget.id,
+                            comments: widget.comments,
+                          );
+                        });
                   },
                 ),
-                Text('${widget.comments.length}'),
+                Text('${widget.comments.length} '),
                 Text(" Comment"),
-                Spacer(),
-                IconButton(
-                  icon: Icon(FontAwesomeIcons.share),
-                  onPressed: () {
-                    // Hành động khi nhấn nút chia sẻ
-                  },
-                ),
+                // Spacer(),
+                // IconButton(
+                //   icon: Icon(FontAwesomeIcons.share),
+                //   onPressed: () {
+                //     // Hành động khi nhấn nút chia sẻ
+                //   },
+                // ),
               ],
             ),
           ),
