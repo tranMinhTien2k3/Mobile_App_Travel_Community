@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:comment_box/comment/comment.dart';
+import 'package:travel_app/Widgets/notify.dart';
 import 'package:travel_app/databases/dataName.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:travel_app/databases/databaseTip.dart';
@@ -158,6 +159,8 @@ class _CommentTipState extends State<CommentTip> {
                   setState(() {
                     String comment = commentController.text;
                     PostComment(widget.post, widget.id, comment);
+                    Navigator.pushNamed(context, '/exp');
+                    showToast(message: 'Success Comments');
                   });
                   commentController.clear();
                   FocusScope.of(context).unfocus();
