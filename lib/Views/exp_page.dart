@@ -24,7 +24,38 @@ class _expPageState extends State<expPage> {
         actions: [
           IconButton(
             icon: Icon(Icons.filter_list),
-            onPressed: () {},
+            onPressed: () {
+              // showDialog(
+              //   context: context,
+              //   builder: (BuildContext context) {
+              //     return AlertDialog(
+              //       title: Text("Filter by Topic"),
+              //       content: SingleChildScrollView(
+              //         child: ListBody(
+              //           children: <Widget>[
+              //             // Tạo các tùy chọn lọc
+              //             ListTile(
+              //               title: Text('Food'),
+              //               onTap: () {
+              //                 updateFilter('food');
+              //                 Navigator.of(context).pop();
+              //               },
+              //             ),
+              //             ListTile(
+              //               title: Text('Adventure'),
+              //               onTap: () {
+              //                 updateFilter('adventure');
+              //                 Navigator.of(context).pop();
+              //               },
+              //             ),
+              //             // Thêm các tùy chọn chủ đề khác
+              //           ],
+              //         ),
+              //       ),
+              //     );
+              //   },
+              // );
+            },
           ),
         ],
       ),
