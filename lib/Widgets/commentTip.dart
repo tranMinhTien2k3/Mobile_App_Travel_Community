@@ -30,11 +30,14 @@ class _CommentTipState extends State<CommentTip> {
         ),
       );
     } else {
-      return ListView.builder(
-        itemCount: data.length,
-        itemBuilder: (context, index) {
-          DateTime parsedDateTime = DateTime.parse(data[index]['date']);
-          return Padding(
+      return SizedBox(
+        width: double.maxFinite,
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: data.length,
+          itemBuilder: (context, index) {
+            DateTime parsedDateTime = DateTime.parse(data[index]['date']);
+            return Padding(
               padding: EdgeInsets.all(8.0),
               child: ListTile(
                 contentPadding: EdgeInsets.all(10),
@@ -50,49 +53,50 @@ class _CommentTipState extends State<CommentTip> {
                 //   ),
                 // ),
                 title: Text(data[index]['message']),
-                subtitle: Align(
-                  alignment: Alignment.centerRight,
-                  child: Column(children: [
-                    FutureBuilder<String>(
-                      future: getName(widget.comments[index]['id']),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Text(
-                            'Loading...',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          );
-                        } else if (snapshot.hasError) {
-                          return Text(
-                            'Error: ${snapshot.error}',
-                            style: TextStyle(
-                              fontStyle: FontStyle.italic,
-                              color: Colors.red,
-                            ),
-                          );
-                        } else {
-                          String authorName = snapshot.data ?? 'Unknown';
-                          return Text(
-                            'By $authorName',
-                            style: const TextStyle(
-                              fontStyle: FontStyle.italic,
-                            ),
-                          );
-                        }
-                      },
-                    ),
-                    SizedBox(
-                        child: Text(
-                          timeago.format(parsedDateTime, locale: 'en'),
-                          style: TextStyle(fontSize: 12),
-                        ),
-                        height: 20.0),
-                  ]),
-                ),
-              ));
-        },
+                subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      FutureBuilder<String>(
+                        future: getName(widget.comments[index]['id']),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Text(
+                              'Loading...',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text(
+                              'Error: ${snapshot.error}',
+                              style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                                color: Colors.red,
+                              ),
+                            );
+                          } else {
+                            String authorName = snapshot.data ?? 'Unknown';
+                            return Text(
+                              'By $authorName',
+                              style: const TextStyle(
+                                fontStyle: FontStyle.italic,
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                      SizedBox(
+                          child: Text(
+                            timeago.format(parsedDateTime, locale: 'en'),
+                            style: TextStyle(fontSize: 12),
+                          ),
+                          height: 20.0),
+                    ]),
+              ),
+            );
+          },
+        ),
       );
     }
   }
