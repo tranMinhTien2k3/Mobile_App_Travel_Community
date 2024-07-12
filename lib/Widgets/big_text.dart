@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class BigText extends StatelessWidget {
   final Color? color;
   final String text;
   final double size;
   final TextOverflow overflow;
-  final TextAlign textAlign; // Thêm thuộc tính textAlign
+  final TextAlign textAlign;
+  final FontWeight fontWeight;
 
   BigText({
     Key? key,
@@ -14,6 +16,7 @@ class BigText extends StatelessWidget {
     this.size = 20,
     this.overflow = TextOverflow.ellipsis,
     this.textAlign = TextAlign.start, // Giá trị mặc định của textAlign
+    this.fontWeight = FontWeight.normal
   }) : super(key: key);
 
   @override
@@ -25,7 +28,6 @@ class BigText extends StatelessWidget {
       style: TextStyle(
         color: color,
         fontSize: size,
-        fontWeight: FontWeight.w400,
       ),
     );
   }

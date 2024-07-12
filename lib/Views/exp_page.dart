@@ -29,95 +29,128 @@ class _expPageState extends ConsumerState<expPage> {
     final isDarkMode = ref.watch(themeNotifierProvider) == ThemeModeState.dark;
     return Scaffold(
       appBar: AppBar(
-        title: BigText(text: 'Home', color: isDarkMode ?  ColorList.white70: Colors.black,),
+        title: BigText(text: 'Home', fontWeight: FontWeight.bold, color: isDarkMode ?  ColorList.white70: Colors.black,),
         automaticallyImplyLeading: false,
       ),
-      body:
-          StreamBuilder<DatabaseEvent>(
-            stream: tipsRef.onValue,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Center(child: Text('Something went wrong'));
+      body: StreamBuilder<DatabaseEvent>(
+        stream: tipsRef.onValue,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(child: Text('Something went wrong'));
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+          if (!snapshot.hasData || snapshot.data!.snapshot.value == null) {
+            return Center(child: Text('No data available'));
+          }
+
+          final Map<dynamic, dynamic>? tipsMap =
+              snapshot.data!.snapshot.value as Map<dynamic, dynamic>?;
+
+          if (tipsMap == null) {
+            return Center(child: Text('Data format error'));
+          }
+
+          final List<Map<dynamic, dynamic>> tips = [];
+
+          tipsMap.forEach((key, value) {
+            if (value is Map<dynamic, dynamic>) {
+              Map<String, dynamic> tip = value.cast<String, dynamic>();
+              tip['id'] = key; // Thêm ID vào dữ liệu của tip
+              tips.add(tip);
+            }
+          });
+
+          return ListView.builder(
+            itemCount: tips.length,
+            itemBuilder: (context, index) {
+              List<String> img = [];
+              if (tips[index]['image'] != null &&
+                  tips[index]['image'] is List<dynamic>) {
+                img = tips[index]['image'].cast<String>();
               }
-          
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
+
+              List like = [];
+              if (tips[index]['like'] != null &&
+                  tips[index]['like'] is List<dynamic>) {
+                like = tips[index]['like'].cast<String>();
               }
-          
-              if (!snapshot.hasData || snapshot.data!.snapshot.value == null) {
-                return Center(child: Text('No data available'));
+              List comment = [];
+              if (tips[index]['comments'] != null) {
+                comment = tips[index]['comments'];
               }
-          
-              final Map<dynamic, dynamic>? tipsMap =
-                  snapshot.data!.snapshot.value as Map<dynamic, dynamic>?;
-          
-              if (tipsMap == null) {
-                return Center(child: Text('Data format error'));
-              }
-          
-              final List<Map<dynamic, dynamic>> tips = [];
-          
-              tipsMap.forEach((key, value) {
-                if (value is Map<dynamic, dynamic>) {
-                  Map<String, dynamic> tip = value.cast<String, dynamic>();
-                  tip['id'] = key; // Thêm ID vào dữ liệu của tip
-                  tips.add(tip);
-                }
-              });
-          
-              return ListView.builder(
-                itemCount: tips.length,
-                itemBuilder: (context, index) {
-                  // return ListTile(
-                  //   title: Text( ?? ''),
-                  //   subtitle: Text(tips[index]['content'] ?? ''),
-                  // );
-                  int comment = 3;
-                  String author = "Name";
-                  List<String> img = [];
-                  if (tips[index]['image'] != null &&
-                      tips[index]['image'] is List<dynamic>) {
-                    img = tips[index]['image'].cast<String>();
-                  }
-          
-                  List like = [];
-                  if (tips[index]['like'] != null &&
-                      tips[index]['like'] is List<dynamic>) {
-                    like = tips[index]['like'].cast<String>();
-                  }
-          
-                  List<String> comments = [];
-                  if (tips[index]['comment'] != null &&
-                      tips[index]['comment'] is List<dynamic>) {
-                    like = tips[index]['comment'].cast<String>();
-                  }
-                  return TipCard(
-                    title: tips[index]['title'],
-                    content: tips[index]['content'],
-                    note: tips[index]['notes'],
-                    author: tips[index]['id_name'],
-                    time: tips[index]['datePublished'],
-                    imageUrl: img,
-                    likes: like,
-                    comments: comments,
-                    id: tips[index]['id'],
-                  );
-                },
+              return Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Card(
+                  child: ListTile(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/exp_detail', arguments: {
+                        'title': tips[index]['title'],
+                        'content': tips[index]['content'],
+                        'note': tips[index]['notes'],
+                        'author': tips[index]['id_name'],
+                        'time': tips[index]['datePublished'],
+                        'imageUrl': img,
+                        'likes': like,
+                        'comments': comment,
+                        'id': tips[index]['id'],
+                      });
+                    },
+                    title: Text(tips[index]['title']),
+                    trailing: const Icon(Icons.call_made_rounded),
+                    subtitle: FutureBuilder<String>(
+                      future: getName(tips[index]['id_name']),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Text(
+                            'Loading...',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text(
+                            'Error: ${snapshot.error}',
+                            style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                              color: Colors.red,
+                            ),
+                          );
+                        } else {
+                          String authorName = snapshot.data ?? 'Unknown';
+                          return Text(
+                            'By $authorName',
+                            style: const TextStyle(
+                              fontStyle: FontStyle.italic,
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                ),
               );
+              // TipCard(
+              //
+              // );
             },
-          ),
-          
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     showDialog(
-      //         context: context,
-      //         builder: (BuildContext context) {
-      //           return CreateTip();
-      //         });
-      //   },
-      //   child: Icon(Icons.add),
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return const CreateTip();
+              });
+        },
+        child: Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat
     );
   }
 }

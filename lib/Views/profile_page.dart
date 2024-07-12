@@ -49,7 +49,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('cancel', style: TextStyle(color: Colors.redAccent),)),
+              child: Text('Cancel', style: TextStyle(color: Colors.redAccent),)),
           TextButton(
               onPressed: () {
                 Navigator.of(context).pop(newValue);
@@ -63,16 +63,23 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     }
   }
 
-  Widget itemProfile(
+  
+
+  @override
+  Widget build(BuildContext context) {
+    final isDarkMode = ref.watch(themeNotifierProvider) == ThemeMode.dark;
+    documentId = user!.uid;
+
+    Widget itemProfile(
       String title, String subtitle, String n, IconData iconData) {
     return Container(
       decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
+        color: isDarkMode ? ColorList.grey800 : Colors.white,
+          borderRadius: isDarkMode? BorderRadius.circular(20) : BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
                 offset: Offset(0, 5),
-                color: Colors.deepOrange.withOpacity(.2),
+                color: isDarkMode? Colors.white70.withOpacity(0.2) : Colors.deepOrange.withOpacity(.2),
                 spreadRadius: 2,
                 blurRadius: 10)
           ]),
@@ -92,10 +99,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final isDarkMode = ref.watch(themeNotifierProvider) == ThemeMode.dark;
-    documentId = user!.uid;
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(

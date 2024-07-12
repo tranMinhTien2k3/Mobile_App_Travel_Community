@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:travel_app/Views/cities_list.dart';
 import 'package:travel_app/Views/city_detail.dart';
 import 'package:travel_app/Views/country_detail.dart';
+import 'package:travel_app/Views/detailExp.dart';
 import 'package:travel_app/Views/exp_page.dart';
 import 'package:travel_app/Views/favorite_screen.dart';
 import 'package:travel_app/Views/first_page.dart';
@@ -40,10 +41,17 @@ Route<dynamic> generateRoute(RouteSettings settings) {
           CityListScreen(name: countryName, iso2: iso2);
       break;
     case '/city_detail':
-      builder = (BuildContext context) => CityDetailsScreen(name: '', userId: '',);
+      builder = (BuildContext context) => CityDetailsScreen(
+            name: '',
+            userId: '',
+          );
       break;
     case '/country_infor':
-      builder = (BuildContext context) =>  CountryDetail(name: '', iso2: '', userId: '',);
+      builder = (BuildContext context) => CountryDetail(
+            name: '',
+            iso2: '',
+            userId: '',
+          );
       break;
     case '/favorite_page':
       builder = (BuildContext context) => FavoriteScreen(userId: '');
@@ -53,6 +61,21 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       break;
     case '/exp':
       builder = (BuildContext context) => expPage();
+      break;
+    case '/exp_detail':
+      final Map<String, dynamic> args =
+          settings.arguments as Map<String, dynamic>;
+      builder = (BuildContext context) => DetailExp(
+            title: args['title'] as String,
+            content: args['content'] as String,
+            note: args['note'] as String,
+            author: args['author'] as String,
+            time: args['time'] as String,
+            imageUrl: args['imageUrl'] as List<String>,
+            likes: args['likes'] as List,
+            comments: args['comments'] as List,
+            id: args['id'] as String,
+          );
       break;
 
     default:

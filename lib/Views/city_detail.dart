@@ -427,7 +427,7 @@ class CityDetailsScreen extends ConsumerWidget {
                     elevation: 0,
                     title: SmallText(
                       text: '$name',
-                      color: isDarkMode? ColorList.white70 : Colors.black,
+                      color: isDarkMode? Colors.white : Colors.black,
                       size: 20,
                     ),
                   ),
@@ -441,7 +441,7 @@ class CityDetailsScreen extends ConsumerWidget {
                     height: screenHeight * 0.55,
                     width: screenWidth,
                     decoration: BoxDecoration(
-                      color: isDarkMode ? ColorList.darkMode : ColorList.white70,
+                      color: isDarkMode ? ColorList.darkMode : Colors.white,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(25),
                         topRight: Radius.circular(25),
@@ -460,7 +460,7 @@ class CityDetailsScreen extends ConsumerWidget {
                                   text: 'Introduction:',
                                   size: 20,
                                   fontWeight: FontWeight.bold,
-                                  color: isDarkMode ? ColorList.white70 : Colors.black,
+                                  color: isDarkMode ? Colors.white : Colors.black,
                                 ),
                                 Divider(),
                                 Container(
@@ -471,7 +471,7 @@ class CityDetailsScreen extends ConsumerWidget {
                                         : 'No data available from Wikipedia',
                                     size: 18,
                                     softWrap: true,
-                                    color: isDarkMode ? ColorList.white70 : Colors.black,
+                                    color: isDarkMode ? Colors.white : Colors.black,
                                   ),
                                 ),
                                 const Divider(),
@@ -501,13 +501,13 @@ class CityDetailsScreen extends ConsumerWidget {
                     ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(35),
-                      color: isDarkMode ? ColorList.darkMode : ColorList.white70,
+                      color: isDarkMode ? ColorList.darkMode : Colors.white,
                       boxShadow: [
                         BoxShadow(
-                          color: isDarkMode? Colors.white.withOpacity(0.1) : Colors.grey.withOpacity(0.5),
+                          color: isDarkMode? Colors.white.withOpacity(0.5) : Colors.grey.withOpacity(0.5),
                           spreadRadius: 5,
                           blurRadius: 7,
-                          offset: Offset(0, 3),
+                          offset: Offset(0,3),
                         ),
                       ],
                     ),

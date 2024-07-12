@@ -23,3 +23,18 @@ Future<String> getName(String id_name) async {
     return name;
   }
 }
+
+// Future<String> getAvt(String id_name) async {
+//   String avt = "";
+//   await userRef.child(id_name).once().then((event) {
+//     if (event.snapshot.value != null) {
+//       var userData = event.snapshot.value as Map<dynamic, dynamic>;
+//       avt = userData['image'] ?? "";
+//     }
+//   });
+//   if (avt == "") {
+//     return 'lib/assets/image/user.jpg';
+//   } else {
+//     return avt;
+//   }
+// }
