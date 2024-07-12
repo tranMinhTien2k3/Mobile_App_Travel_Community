@@ -437,7 +437,7 @@ class CountryDetail extends ConsumerWidget {
                     height: screenHeight * 0.55,
                     width: screenWidth,
                     decoration: BoxDecoration(
-                      color: isDarkMode ? ColorList.grey800 : ColorList.white70,
+                      color: isDarkMode ? ColorList.grey800 : Colors.white,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(25),
                         topRight: Radius.circular(25),
@@ -456,7 +456,7 @@ class CountryDetail extends ConsumerWidget {
                                   text: 'Introduction:',
                                   size: 20,
                                   fontWeight: FontWeight.bold,
-                                  color: isDarkMode ? ColorList.white70 : Colors.black,
+                                  color: isDarkMode ? Colors.white : Colors.black,
                                 ),
                                 Divider(),
                                 Container(
@@ -467,7 +467,7 @@ class CountryDetail extends ConsumerWidget {
                                         : 'No data available from Wikipedia',
                                     size: 18,
                                     softWrap: true,
-                                    color: isDarkMode ? ColorList.white70 : Colors.black,
+                                    color: isDarkMode ? Colors.white : Colors.black,
                                   ),
                                 ),
                                 const Divider(),
@@ -533,10 +533,10 @@ class CountryDetail extends ConsumerWidget {
                     ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(35),
-                      color: isDarkMode ? ColorList.grey800 : ColorList.white70,
+                      color: isDarkMode ? ColorList.grey800 : Colors.white,
                       boxShadow: [
                         BoxShadow(
-                          color: isDarkMode? Colors.white.withOpacity(0.1) : Colors.grey.withOpacity(0.5),
+                          color: isDarkMode? Colors.white.withOpacity(0.5) : Colors.grey.withOpacity(0.5),
                           spreadRadius: 5,
                           blurRadius: 7,
                           offset: Offset(0, 3),

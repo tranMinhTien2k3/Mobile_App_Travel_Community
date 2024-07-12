@@ -4,17 +4,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:travel_app/Widgets/text_color.dart';
+import 'package:travel_app/repositories/theme_notifier.dart';
 import 'package:uuid/uuid.dart';
 import 'package:image_picker/image_picker.dart';
 
-class ProfilePage extends StatefulWidget {
+class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  ConsumerState<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageState extends ConsumerState<ProfilePage> {
   final user = FirebaseAuth.instance.currentUser;
   final DatabaseReference usersRef =
       FirebaseDatabase.instance.ref().child("Users");
@@ -23,18 +26,19 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> editProfile(String field) async {
     String newValue = "";
+    final isDarkMode = ref.watch(themeNotifierProvider) == ThemeMode.dark;
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: Color.fromARGB(255, 220, 255, 231),
+        backgroundColor: isDarkMode ? ColorList.grey800 : ColorList.white70,
         title: Text("Edit: " + field),
         content: TextField(
           autofocus: true,
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(color: isDarkMode ? ColorList.white70 : Colors.black, fontWeight: FontWeight.bold),
           decoration: InputDecoration(
               hintText: "Enter new $field",
               hintStyle: TextStyle(
-                  color: Color.fromARGB(57, 45, 45, 109),
+                  color: isDarkMode ? ColorList.white70 : Colors.grey,
                   fontWeight: FontWeight.bold)),
           onChanged: (value) {
             newValue = value;
@@ -45,12 +49,12 @@ class _ProfilePageState extends State<ProfilePage> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('cancel')),
+              child: Text('Cancel', style: TextStyle(color: Colors.redAccent),)),
           TextButton(
               onPressed: () {
                 Navigator.of(context).pop(newValue);
               },
-              child: Text('Save'))
+              child: Text('Save', style: TextStyle(color: Colors.blue),))
         ],
       ),
     );
@@ -59,16 +63,23 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  Widget itemProfile(
+  
+
+  @override
+  Widget build(BuildContext context) {
+    final isDarkMode = ref.watch(themeNotifierProvider) == ThemeMode.dark;
+    documentId = user!.uid;
+
+    Widget itemProfile(
       String title, String subtitle, String n, IconData iconData) {
     return Container(
       decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
+        color: isDarkMode ? ColorList.grey800 : Colors.white,
+          borderRadius: isDarkMode? BorderRadius.circular(20) : BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
                 offset: Offset(0, 5),
-                color: Colors.deepOrange.withOpacity(.2),
+                color: isDarkMode? Colors.white70.withOpacity(0.2) : Colors.deepOrange.withOpacity(.2),
                 spreadRadius: 2,
                 blurRadius: 10)
           ]),
@@ -77,7 +88,7 @@ class _ProfilePageState extends State<ProfilePage> {
         subtitle: Text(subtitle),
         leading: Icon(iconData),
         trailing: IconButton(
-          icon: Icon(Icons.settings),
+          icon: Icon(Icons.edit),
           color: Colors.grey.shade400,
           onPressed: () {
             editProfile(n);
@@ -88,9 +99,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    documentId = user!.uid;
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -169,7 +177,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 });
                               },
                               icon: Icon(Icons.image)),
-                          tileColor: Colors.white,
+                          tileColor: isDarkMode ? ColorList.white70 : Colors.black,
                         ),
                         (data['image'] != null)
                             ? CircleAvatar(

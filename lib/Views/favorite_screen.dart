@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:travel_app/Components/bottom_nav.dart';
+import 'package:travel_app/Widgets/big_text.dart';
+import 'package:travel_app/Widgets/text_color.dart';
 import 'package:travel_app/form/favorite_city_list.dart';
 import 'package:travel_app/form/favorite_country_list.dart';
 import 'package:travel_app/repositories/theme_notifier.dart';
@@ -22,9 +24,10 @@ class FavoriteScreen extends ConsumerWidget {
     ];
 
     return Scaffold(
-      // appBar: AppBar(
-      //   // title: Text('Your favorites'),
-      // ),
+      appBar: AppBar(
+        title: BigText(text: 'Your favorites', color: isDarkMode? ColorList.white70 : Colors.black,),
+        automaticallyImplyLeading: false,
+      ),
       body: Column(
         children: [
           Container(
@@ -66,7 +69,6 @@ class FavoriteScreen extends ConsumerWidget {
           )
         ],
       ),
-      // bottomNavigationBar: BottomNav(),
     );
   }
 }

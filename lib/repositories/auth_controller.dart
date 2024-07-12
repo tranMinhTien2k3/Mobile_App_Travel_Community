@@ -103,6 +103,17 @@ class AuthController {
     }
   }
 
+  Future<Either<String, User>> changePass({required String password}) async{
+    try{
+      final user = _firebaseAuth.currentUser;
+      if(user == null) return left('Have some error, please try again');
+      await user.updatePassword(password);
+      return right(user);
+    } catch (e){
+      return left('Error: $e');
+    }
+  }
+
   Future<Either<String,  User?>> signOut() async{
     try{
       await _firebaseAuth.signOut();
@@ -115,6 +126,7 @@ class AuthController {
   User?  gerCurrenrUser(){
     return _firebaseAuth.currentUser;
   }
+
 
   
 }

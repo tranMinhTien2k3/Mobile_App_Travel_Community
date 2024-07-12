@@ -43,17 +43,26 @@
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:travel_app/Widgets/big_text.dart';
+import 'package:travel_app/Widgets/small_text.dart';
+import 'package:travel_app/Widgets/text_color.dart';
 import 'package:travel_app/repositories/api_provider.dart';
 import 'package:travel_app/Views/country_detail.dart';
 import 'package:travel_app/repositories/auth_provider.dart';
+import 'package:travel_app/repositories/theme_notifier.dart';
 
 class CountryListScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final countriesAsyncValue = ref.watch(countriesProvider);
     final userAsyncValue = ref.watch(userProvider);
+    final isDarkMode = ref.watch(themeNotifierProvider) == ThemeModeState.dark;
 
     return Scaffold(
+      appBar: AppBar(
+        title: BigText(text: 'Country List', color: isDarkMode ? ColorList.white70 : Colors.black,),
+        automaticallyImplyLeading: false,
+      ),
       body: userAsyncValue.when(
         data: (user) {
           final userId = user?.uid ?? ''; // Lấy userId từ userProvider
@@ -61,6 +70,7 @@ class CountryListScreen extends ConsumerWidget {
           return countriesAsyncValue.when(
             data: (countries) {
               return ListView.builder(
+                padding: EdgeInsets.only(top: 20),
                 itemCount: countries.length,
                 itemBuilder: (context, index) {
                   final country = countries[index];

@@ -1,6 +1,7 @@
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -67,6 +68,15 @@ class AuthNotifier extends StateNotifier<AuthenticationState> {
     state = response.fold(
       (error) => AuthenticationState.unauthenticated(message: error),
       (response) => AuthenticationState.authenticated(user: response!),
+    );
+  }
+
+  Future<void> changePass() async{
+    state = const AuthenticationState.loading();
+    final response = await _controller.changePass(password: '');
+    state = response.fold(
+      (error) => AuthenticationState.unauthenticated(message: error),
+      (response) => AuthenticationState.authenticated(user: response)
     );
   }
 }

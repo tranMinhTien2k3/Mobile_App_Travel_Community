@@ -1,23 +1,32 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:travel_app/Components/bottom_nav.dart';
+import 'package:travel_app/Components/drawer_home.dart';
+import 'package:travel_app/Components/tip_card.dart';
+import 'package:travel_app/Widgets/big_text.dart';
 import 'package:travel_app/Widgets/creat_tip.dart';
+import 'package:travel_app/Widgets/text_color.dart';
 import 'package:travel_app/databases/dataName.dart';
+import 'package:travel_app/repositories/theme_notifier.dart';
 
-class expPage extends StatefulWidget {
+class expPage extends ConsumerStatefulWidget {
   const expPage({super.key});
 
   @override
-  State<expPage> createState() => _expPageState();
+  ConsumerState<expPage> createState() => _expPageState();
+
+  
 }
 
-class _expPageState extends State<expPage> {
+class _expPageState extends ConsumerState<expPage> {
   final DatabaseReference usersRef =
       FirebaseDatabase.instance.ref().child("Users");
   final DatabaseReference tipsRef =
       FirebaseDatabase.instance.ref().child("Tips");
-
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = ref.watch(themeNotifierProvider) == ThemeModeState.dark;
     return Scaffold(
       appBar: AppBar(
         title: Text("Travel Tips"),
@@ -111,49 +120,52 @@ class _expPageState extends State<expPage> {
               }
               return Padding(
                 padding: EdgeInsets.all(8.0),
-                child: ListTile(
-                  onTap: () {
-                    Navigator.pushNamed(context, '/exp_detail', arguments: {
-                      'title': tips[index]['title'],
-                      'content': tips[index]['content'],
-                      'note': tips[index]['notes'],
-                      'author': tips[index]['id_name'],
-                      'time': tips[index]['datePublished'],
-                      'imageUrl': img,
-                      'likes': like,
-                      'comments': comment,
-                      'id': tips[index]['id'],
-                    });
-                  },
-                  title: Text(tips[index]['title']),
-                  subtitle: FutureBuilder<String>(
-                    future: getName(tips[index]['id_name']),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Text(
-                          'Loading...',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        );
-                      } else if (snapshot.hasError) {
-                        return Text(
-                          'Error: ${snapshot.error}',
-                          style: TextStyle(
-                            fontStyle: FontStyle.italic,
-                            color: Colors.red,
-                          ),
-                        );
-                      } else {
-                        String authorName = snapshot.data ?? 'Unknown';
-                        return Text(
-                          'By $authorName',
-                          style: const TextStyle(
-                            fontStyle: FontStyle.italic,
-                          ),
-                        );
-                      }
+                child: Card(
+                  child: ListTile(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/exp_detail', arguments: {
+                        'title': tips[index]['title'],
+                        'content': tips[index]['content'],
+                        'note': tips[index]['notes'],
+                        'author': tips[index]['id_name'],
+                        'time': tips[index]['datePublished'],
+                        'imageUrl': img,
+                        'likes': like,
+                        'comments': comment,
+                        'id': tips[index]['id'],
+                      });
                     },
+                    title: Text(tips[index]['title']),
+                    trailing: const Icon(Icons.call_made_rounded),
+                    subtitle: FutureBuilder<String>(
+                      future: getName(tips[index]['id_name']),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Text(
+                            'Loading...',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text(
+                            'Error: ${snapshot.error}',
+                            style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                              color: Colors.red,
+                            ),
+                          );
+                        } else {
+                          String authorName = snapshot.data ?? 'Unknown';
+                          return Text(
+                            'By $authorName',
+                            style: const TextStyle(
+                              fontStyle: FontStyle.italic,
+                            ),
+                          );
+                        }
+                      },
+                    ),
                   ),
                 ),
               );
@@ -174,7 +186,7 @@ class _expPageState extends State<expPage> {
         },
         child: Icon(Icons.add),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat
     );
   }
 }
