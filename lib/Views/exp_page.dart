@@ -30,6 +30,7 @@ class _expPageState extends ConsumerState<expPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Travel Tips"),
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(
             icon: Icon(Icons.filter_list),

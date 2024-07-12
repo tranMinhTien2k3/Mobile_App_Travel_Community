@@ -18,19 +18,6 @@ class GetFirebaseData{
     final user = _auth.currentUser;
     if(user == null) throw Exception('User not logged in');
     try{
-      // final documentSnapshot = await _firestore.collection('users').doc(user.uid).get();
-      // final data = documentSnapshot.data();
-      // if(data == null){
-      //   return [];
-      // }
-      // final List<dynamic> favorites = data['favorites'];
-      // List<Country> favoritesCountries = favorites.map((favorites){
-      //   return Country(
-      //     name: favorites['countryName'] ?? '',
-      //     iso2: favorites['iso2'] ?? ''
-      //   );
-      // }).toList();
-      // return favoritesCountries;
       final querySnapshot = await _firestore.collection('users').doc(user.uid).collection('favorites').doc('favorites').collection('countries').get();
       List<CountryFirebase> favoritesCountries = querySnapshot.docs.map((doc){
         return CountryFirebase.fromFirestore(doc);
