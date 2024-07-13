@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:travel_app/repositories/favorite_provider.dart';
 
-Future<void> signOut(BuildContext context) async {
+Future<void> signOut(BuildContext context, WidgetRef ref) async {
   return showDialog<void>(
     context: context,
     barrierDismissible: false,
@@ -23,7 +25,7 @@ Future<void> signOut(BuildContext context) async {
           ),
           TextButton(
             onPressed: () async {
-              await FirebaseAuth.instance.signOut();
+              await ref.read(authProvider).signOut();
               Navigator.pushNamedAndRemoveUntil(context, '/', (context) => false);
             },
             child: Text('Agree'),

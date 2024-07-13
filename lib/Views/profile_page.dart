@@ -67,7 +67,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = ref.watch(themeNotifierProvider) == ThemeMode.dark;
+    final isDarkMode = ref.watch(themeNotifierProvider) == ThemeModeState.dark;
     documentId = user!.uid;
 
     Widget itemProfile(
@@ -79,7 +79,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           boxShadow: [
             BoxShadow(
                 offset: Offset(0, 5),
-                color: isDarkMode? Colors.white70.withOpacity(0.2) : Colors.deepOrange.withOpacity(.2),
+                color: isDarkMode? Colors.white70.withOpacity(0.1) : Colors.deepOrange.withOpacity(.2),
                 spreadRadius: 2,
                 blurRadius: 10)
           ]),
@@ -89,12 +89,12 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         leading: Icon(iconData),
         trailing: IconButton(
           icon: Icon(Icons.edit),
-          color: Colors.grey.shade400,
+          color: isDarkMode ?  Colors.grey.shade400 : ColorList.darkMode,
           onPressed: () {
             editProfile(n);
           },
         ),
-        tileColor: Colors.white,
+        // tileColor: Colors.white,
       ),
     );
   }
@@ -102,7 +102,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-            backgroundColor: Colors.green[200],
+          automaticallyImplyLeading: false,
+            // backgroundColor: Colors.green[200],
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -177,7 +178,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                 });
                               },
                               icon: Icon(Icons.image)),
-                          tileColor: isDarkMode ? ColorList.white70 : Colors.black,
+                          // tileColor: isDarkMode ? ColorList.white70 : Colors.black,
                         ),
                         (data['image'] != null)
                             ? CircleAvatar(
@@ -196,19 +197,19 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                             '${convertedData['first name']}',
                             'first name',
                             Icons.badge_outlined),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 15),
                         itemProfile(
                             'Last Name',
                             '${convertedData['last name']}',
                             'last name',
                             Icons.badge),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 15),
                         itemProfile('Phone', '${convertedData['phone']}',
                             'phone', Icons.phone),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 15),
                         itemProfile('Address', '${convertedData['address']}',
                             'address', Icons.place),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 15),
                         itemProfile('Age', '${convertedData['age']}', 'age',
                             Icons.cake),
                         const SizedBox(

@@ -59,14 +59,14 @@ class DrawerHome extends ConsumerWidget {
             title: const Text('Service'),
             onTap: () {},
           ),
-          ListTile(
-            leading: const Icon(Icons.login),
-            title: const Text('Log off'),
+          // ListTile(
+          //   leading: const Icon(Icons.login),
+          //   title: const Text('Log off'),
 
-            onTap: () {
-              signOut(context);
-            },
-          ),
+          //   onTap: () {
+          //     signOut(context);
+          //   },
+          // ),
           ListTile(
             leading: const Icon(Icons.settings),
             title: const Text('Setting'),

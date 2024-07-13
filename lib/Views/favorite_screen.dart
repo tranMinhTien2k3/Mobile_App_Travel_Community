@@ -35,8 +35,8 @@ class FavoriteScreen extends ConsumerWidget {
             child: ToggleButtons(
               // borderColor: Colors.blue.shade800,
               // selectedBorderColor: Colors.blue.shade800,
-              fillColor: Colors.white,
-              selectedColor: Colors.lightBlueAccent,
+              // fillColor: Colors.white,
+              // selectedColor: Colors.lightBlueAccent,
               borderRadius: BorderRadius.circular(10),
               isSelected: [selectedIndex == 0, selectedIndex == 1],
               onPressed: (int index){

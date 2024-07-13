@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:travel_app/Widgets/text_color.dart';
 import 'package:travel_app/form/change_pass_form.dart';
+import 'package:travel_app/repositories/auth_provider.dart';
 import 'package:travel_app/repositories/theme_notifier.dart';
 import 'package:travel_app/services/signout.dart';
 
@@ -72,7 +73,8 @@ class SettingPage extends ConsumerWidget {
                   trailing: Icon(Icons.logout, size: 30,) //color: isDarkMode ? ColorList.white70 : Colors.black,),
                 ),
                 onTap: () {
-                  signOut(context);
+                  signOut(context, ref);
+                  // ref.watch(authControllerProvider).signOut();
                 },
               ),
             ),
