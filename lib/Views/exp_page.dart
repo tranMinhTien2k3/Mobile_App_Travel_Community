@@ -29,8 +29,45 @@ class _expPageState extends ConsumerState<expPage> {
     final isDarkMode = ref.watch(themeNotifierProvider) == ThemeModeState.dark;
     return Scaffold(
       appBar: AppBar(
-        title: BigText(text: 'Home', fontWeight: FontWeight.bold, color: isDarkMode ?  ColorList.white70: Colors.black,),
+        title: Text("Travel Tips"),
         automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.filter_list),
+            onPressed: () {
+              // showDialog(
+              //   context: context,
+              //   builder: (BuildContext context) {
+              //     return AlertDialog(
+              //       title: Text("Filter by Topic"),
+              //       content: SingleChildScrollView(
+              //         child: ListBody(
+              //           children: <Widget>[
+              //             // Tạo các tùy chọn lọc
+              //             ListTile(
+              //               title: Text('Food'),
+              //               onTap: () {
+              //                 updateFilter('food');
+              //                 Navigator.of(context).pop();
+              //               },
+              //             ),
+              //             ListTile(
+              //               title: Text('Adventure'),
+              //               onTap: () {
+              //                 updateFilter('adventure');
+              //                 Navigator.of(context).pop();
+              //               },
+              //             ),
+              //             // Thêm các tùy chọn chủ đề khác
+              //           ],
+              //         ),
+              //       ),
+              //     );
+              //   },
+              // );
+            },
+          ),
+        ],
       ),
       body: StreamBuilder<DatabaseEvent>(
         stream: tipsRef.onValue,
