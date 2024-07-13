@@ -174,9 +174,12 @@
 // }
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:travel_app/Widgets/notify.dart';
+import 'package:travel_app/form/login_form.dart';
 import 'package:travel_app/repositories/auth_provider.dart';
 import 'package:travel_app/repositories/chagne_pass_provider.dart';
 import 'package:travel_app/repositories/theme_notifier.dart';
@@ -189,8 +192,10 @@ class ChangePassForm extends HookConsumerWidget {
     final TextEditingController _oldPasswordController = useTextEditingController();
     final TextEditingController _newPasswordController = useTextEditingController();
     final TextEditingController _confirmPasswordController = useTextEditingController();
+    final obscureTextProvider = StateProvider<bool>((ref) => true);
     final _formKey = useMemoized(() => GlobalKey<FormState>());
     final isDarkMode = ref.watch(themeNotifierProvider) == ThemeModeState.dark;
+    final bool obscureText = ref.watch(obscureTextProvider);
     
 
     void changePass() async {
@@ -217,13 +222,20 @@ class ChangePassForm extends HookConsumerWidget {
       padding: EdgeInsets.fromLTRB(20, 20, 20, MediaQuery.of(context).viewInsets.bottom),
       child: Form(
         key: _formKey,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             TextFormField(
               controller: _oldPasswordController,
-              obscureText: true,
               decoration: InputDecoration(
+                suffixIcon: IconButton(
+                  icon: Icon(ref.watch(obscureTextProvider.notifier).state? Icons.visibility : Icons.visibility_off),
+                  onPressed: (){
+                    ref.read(obscureTextProvider.notifier).state = !obscureText;
+                    print(ref.watch(obscureTextProvider.notifier).state);
+                  },
+                ),
                 labelText: 'Current Password',
                 // errorText: ref.watch(isOldPasswordCorrectProvider) ? null : 'Current Password is not correct',
                 border: OutlineInputBorder(
@@ -231,48 +243,57 @@ class ChangePassForm extends HookConsumerWidget {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
+              obscureText: obscureText,
               validator: (value) {
-                ref.read(currentPasswordProvider.notifier).state = value ?? '';
                 if (value == null || value.isEmpty) {
                   return 'Please enter your Password';
                 }
                 return null;
               },
             ),
-            const SizedBox(height: 20,),
+            const SizedBox(height: 10,),
             TextFormField(
               controller: _newPasswordController,
-              obscureText: true,
+              obscureText: ref.watch(obscureTextProvider),
               decoration: InputDecoration(
                 labelText: 'New Password',
+                suffixIcon: Icon(ref.watch(obscureTextProvider.notifier).state? Icons.visibility : Icons.visibility_off),
                 border: OutlineInputBorder(
                   borderSide: const BorderSide(width: 1),
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
               validator: (value) {
-                ref.read(newPasswordProvider.notifier).state = value ?? null;
+                // ref.read(newPasswordProvider.notifier).state = value ?? null;
                 if (value == null || value.isEmpty) {
                   return 'Please enter your new Password';
+                }else if(!isStrongPass(value)){
+                  return 'Your password is not strong enough';
                 }
                 return null;
               },
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             TextFormField(
               controller: _confirmPasswordController,
               obscureText: true,
               decoration: InputDecoration(
                 labelText: 'Confirm Password',
+                suffixIcon: 
+                  Icon(ref.watch(obscureTextProvider.notifier).state? Icons.visibility :  Icons.visibility_off,
+                  
+                ),
                 border: OutlineInputBorder(
                   borderSide: const BorderSide(width: 1),
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
               validator: (value) {
-                ref.read(confirmPasswordProvider.notifier).state = value ?? '';
+                // ref.read(confirmPasswordProvider.notifier).state = value ?? '';
                 if (value == null || value.isEmpty) {
                   return 'Please confirm your password';
+                }else if(!isStrongPass(value)){
+                  return 'Your password is not strong enough';
                 }
                 if (value != _newPasswordController.text) {
                   return 'Your Passwords do not match';
@@ -280,12 +301,21 @@ class ChangePassForm extends HookConsumerWidget {
                 return null;
               },
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             Align(
               alignment: Alignment.centerRight,
               child: ElevatedButton(
                 onPressed: () async {
-                  changePass();
+                  final oldPass = isOldPass(_oldPasswordController.text);
+                  if(await oldPass){
+                    if(_formKey.currentState?.validate() ?? false){
+                      changePass();
+                      showToast(message: 'Change Password successful');
+                    }
+                    showToast(message: 'Change password failed');
+                  }else{
+                    showToast(message: 'Your old password is not correct');
+                  }
                 },
                 child: Text('Change Password'),
               ),
