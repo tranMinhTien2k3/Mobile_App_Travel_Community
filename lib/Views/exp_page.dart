@@ -23,11 +23,11 @@ class _expPageState extends ConsumerState<expPage> {
       FirebaseDatabase.instance.ref().child("Users");
   final DatabaseReference tipsRef =
       FirebaseDatabase.instance.ref().child("Tips");
-  String selectedFilter = '';
+  String selectedFilter = 'All';
 
   void showFilterDialog() async {
     List<String> themes = await getAllThemes();
-
+    themes.insert(0, "All");
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -90,14 +90,26 @@ class _expPageState extends ConsumerState<expPage> {
             }
 
             final List<Map<dynamic, dynamic>> tips = [];
-
-            tipsMap.forEach((key, value) {
-              if (value is Map<dynamic, dynamic>) {
-                Map<String, dynamic> tip = value.cast<String, dynamic>();
-                tip['id'] = key; // Thêm ID vào dữ liệu của tip
-                tips.add(tip);
-              }
-            });
+            if (selectedFilter == "All") {
+              tipsMap.forEach((key, value) {
+                if (value is Map<dynamic, dynamic>) {
+                  Map<String, dynamic> tip = value.cast<String, dynamic>();
+                  tip['id'] = key; // Thêm ID vào dữ liệu của tip
+                  tips.add(tip);
+                }
+              });
+            } else {
+              tipsMap.forEach((key, value) {
+                if (value is Map<dynamic, dynamic>) {
+                  Map<String, dynamic> tip = value.cast<String, dynamic>();
+                  tip['id'] = key;
+                  if (selectedFilter.isEmpty ||
+                      tip['theme'] == selectedFilter) {
+                    tips.add(tip);
+                  }
+                }
+              });
+            }
 
             return ListView.builder(
               itemCount: tips.length,
