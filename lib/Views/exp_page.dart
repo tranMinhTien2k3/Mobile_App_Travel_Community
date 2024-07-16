@@ -24,6 +24,7 @@ class _expPageState extends ConsumerState<expPage> {
   final DatabaseReference tipsRef =
       FirebaseDatabase.instance.ref().child("Tips");
   String selectedFilter = 'All';
+  String searchKeyword = '';
 
   void showFilterDialog() async {
     List<String> themes = await getAllThemes();
@@ -53,13 +54,36 @@ class _expPageState extends ConsumerState<expPage> {
     );
   }
 
+  void onSearchTextChanged(String text) {
+    setState(() {
+      searchKeyword = text.toLowerCase();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDarkMode = ref.watch(themeNotifierProvider) == ThemeModeState.dark;
     return Scaffold(
         appBar: AppBar(
-          title: Text("Travel Tips"),
           automaticallyImplyLeading: false,
+          title: Row(
+            children: [
+              const Text("Travel Tips"),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 50.0), // Điều chỉnh khoảng cách ở đây
+                  child: TextField(
+                    onChanged: onSearchTextChanged,
+                    decoration: InputDecoration(
+                      hintText: 'Search in ${selectedFilter}',
+                      border: UnderlineInputBorder(),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
           actions: [
             IconButton(
               icon: Icon(Icons.filter_list),
@@ -111,23 +135,28 @@ class _expPageState extends ConsumerState<expPage> {
               });
             }
 
+            List<Map<dynamic, dynamic>> filteredTips = tips.where((tip) {
+              // Kiểm tra từ khóa tìm kiếm trong title
+              return tip['title'].toLowerCase().contains(searchKeyword);
+            }).toList();
+
             return ListView.builder(
-              itemCount: tips.length,
+              itemCount: filteredTips.length,
               itemBuilder: (context, index) {
                 List<String> img = [];
-                if (tips[index]['image'] != null &&
-                    tips[index]['image'] is List<dynamic>) {
-                  img = tips[index]['image'].cast<String>();
+                if (filteredTips[index]['image'] != null &&
+                    filteredTips[index]['image'] is List<dynamic>) {
+                  img = filteredTips[index]['image'].cast<String>();
                 }
 
                 List like = [];
-                if (tips[index]['like'] != null &&
-                    tips[index]['like'] is List<dynamic>) {
-                  like = tips[index]['like'].cast<String>();
+                if (filteredTips[index]['like'] != null &&
+                    filteredTips[index]['like'] is List<dynamic>) {
+                  like = filteredTips[index]['like'].cast<String>();
                 }
                 List comment = [];
-                if (tips[index]['comments'] != null) {
-                  comment = tips[index]['comments'];
+                if (filteredTips[index]['comments'] != null) {
+                  comment = filteredTips[index]['comments'];
                 }
                 return Padding(
                   padding: EdgeInsets.all(8.0),
@@ -135,21 +164,21 @@ class _expPageState extends ConsumerState<expPage> {
                     child: ListTile(
                       onTap: () {
                         Navigator.pushNamed(context, '/exp_detail', arguments: {
-                          'title': tips[index]['title'],
-                          'content': tips[index]['content'],
-                          'note': tips[index]['notes'],
-                          'author': tips[index]['id_name'],
-                          'time': tips[index]['datePublished'],
+                          'title': filteredTips[index]['title'],
+                          'content': filteredTips[index]['content'],
+                          'note': filteredTips[index]['notes'],
+                          'author': filteredTips[index]['id_name'],
+                          'time': filteredTips[index]['datePublished'],
                           'imageUrl': img,
                           'likes': like,
                           'comments': comment,
-                          'id': tips[index]['id'],
+                          'id': filteredTips[index]['id'],
                         });
                       },
-                      title: Text(tips[index]['title']),
+                      title: Text(filteredTips[index]['title']),
                       trailing: const Icon(Icons.call_made_rounded),
                       subtitle: FutureBuilder<String>(
-                        future: getName(tips[index]['id_name']),
+                        future: getName(filteredTips[index]['id_name']),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
