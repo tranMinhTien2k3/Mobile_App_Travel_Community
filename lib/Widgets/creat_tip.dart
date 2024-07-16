@@ -4,6 +4,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:travel_app/Widgets/notify.dart';
+import 'package:travel_app/databases/dataTheme.dart';
 import 'package:uuid/uuid.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
@@ -27,8 +28,7 @@ class _CreateTipState extends State<CreateTip> {
   String _notes = '';
   String _selectedTopic = '';
   List<String> imageUrls = [];
-  final List<String> _topics = ['theme 1', 'theme 2', 'theme 3'];
-
+  final TextEditingController _newTopicController = TextEditingController();
   void _saveForm() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
@@ -99,24 +99,100 @@ class _CreateTipState extends State<CreateTip> {
                   _notes = value!;
                 },
               ),
-              DropdownButtonFormField<String>(
-                decoration: InputDecoration(labelText: 'Choose a theme'),
-                items: _topics.map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please select a theme';
+              FutureBuilder<List<String>>(
+                future: getAllThemes(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error fetching themes'));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return Center(child: Text('No themes available'));
+                  } else {
+                    return Column(
+                      children: [
+                        DropdownButtonFormField<String>(
+                          decoration: InputDecoration(
+                            labelText: _selectedTopic.isNotEmpty
+                                ? _selectedTopic
+                                : 'Choose a theme',
+                          ),
+                          items: [
+                            ...snapshot.data!.map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }),
+                            const DropdownMenuItem<String>(
+                              value: 'New Topic',
+                              child: Text('Add new topic...'),
+                            ),
+                          ],
+                          validator: (value) {
+                            if (_selectedTopic.isEmpty) {
+                              return 'Please select a theme';
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            setState(() {
+                              if (value == 'New Topic') {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('Enter New Topic'),
+                                      content: TextFormField(
+                                        controller: _newTopicController,
+                                        decoration: InputDecoration(
+                                            labelText: 'Enter new topic'),
+                                        validator: (value) {
+                                          if (value == null || value.isEmpty) {
+                                            return 'Please enter a new topic';
+                                          }
+                                          return null;
+                                        },
+                                        onSaved: (value) {
+                                          // No need for onSaved here
+                                        },
+                                      ),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          child: Text('Cancel'),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: Text('Save'),
+                                          onPressed: () {
+                                            if (_newTopicController
+                                                .text.isNotEmpty) {
+                                              setState(() {
+                                                _selectedTopic =
+                                                    _newTopicController.text;
+                                              });
+                                              Navigator.of(context).pop();
+                                            }
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              } else {
+                                _selectedTopic = value!;
+                              }
+                            });
+                          },
+                          onSaved: (value) {
+                            _selectedTopic = value!;
+                          },
+                        ),
+                      ],
+                    );
                   }
-                  return null;
-                },
-                onChanged: (value) {
-                  setState(() {
-                    _selectedTopic = value!;
-                  });
                 },
               ),
               SizedBox(height: 20),
