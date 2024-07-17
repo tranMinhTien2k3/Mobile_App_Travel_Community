@@ -38,6 +38,7 @@ class TipCard extends StatefulWidget {
 class _TipCardState extends State<TipCard> {
   final user = FirebaseAuth.instance.currentUser;
   late String userId = "";
+  int _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     DateTime parsedDateTime = DateTime.parse(widget.time);
@@ -104,27 +105,53 @@ class _TipCardState extends State<TipCard> {
           (widget.imageUrl.isNotEmpty)
               ? Padding(
                   padding: const EdgeInsets.fromLTRB(30, 10, 30, 10),
-                  child: CarouselSlider(
-                    options: CarouselOptions(
-                      autoPlay: true,
-                      autoPlayInterval: Duration(seconds: 3),
-                      autoPlayAnimationDuration: Duration(milliseconds: 300),
-                      autoPlayCurve: Curves.fastOutSlowIn,
-                      enableInfiniteScroll: true,
-                      viewportFraction: 0.9,
-                      aspectRatio: 16 / 9,
-                    ),
-                    items: (widget.imageUrl).map((imageUrl) {
-                      return SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height,
-                        child: Image.network(
-                          imageUrl,
-                          alignment: Alignment.center,
-                          fit: BoxFit.cover,
+                  child: Stack(
+                    children: [
+                      CarouselSlider(
+                        options: CarouselOptions(
+                          autoPlay: true,
+                          autoPlayInterval: Duration(seconds: 5),
+                          autoPlayAnimationDuration:
+                              Duration(milliseconds: 300),
+                          autoPlayCurve: Curves.fastOutSlowIn,
+                          enableInfiniteScroll: true,
+                          viewportFraction: 0.9,
+                          aspectRatio: 16 / 9,
+                          onPageChanged: (index, reason) {
+                            setState(() {
+                              _currentIndex = index;
+                            });
+                          },
                         ),
-                      );
-                    }).toList(),
+                        items: widget.imageUrl.map((imageUrl) {
+                          return SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height,
+                            child: Image.network(
+                              imageUrl,
+                              alignment: Alignment.center,
+                              fit: BoxFit.cover,
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                      Positioned(
+                        top: 10,
+                        right: 10,
+                        child: Container(
+                          padding:
+                              EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                          decoration: BoxDecoration(
+                            color: Colors.black54,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            '${_currentIndex + 1} / ${widget.imageUrl.length}',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 )
               : Padding(
@@ -147,6 +174,7 @@ class _TipCardState extends State<TipCard> {
               style: TextStyle(
                 fontSize: 14.0,
                 fontWeight: FontWeight.normal,
+                color: Colors.lightBlue,
               ),
             ),
           ),
@@ -186,13 +214,6 @@ class _TipCardState extends State<TipCard> {
                 ),
                 Text('${widget.comments.length} '),
                 Text(" Comment"),
-                // Spacer(),
-                // IconButton(
-                //   icon: Icon(FontAwesomeIcons.share),
-                //   onPressed: () {
-                //     // Hành động khi nhấn nút chia sẻ
-                //   },
-                // ),
               ],
             ),
           ),
