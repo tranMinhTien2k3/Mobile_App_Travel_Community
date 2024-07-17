@@ -184,6 +184,10 @@ import 'package:travel_app/repositories/auth_provider.dart';
 import 'package:travel_app/repositories/chagne_pass_provider.dart';
 import 'package:travel_app/repositories/theme_notifier.dart';
 
+
+final oldPassObscureTextProvider = StateProvider<bool>((ref) => true);
+final newPassObscureTextProvider = StateProvider<bool>((ref) => true);
+final confirmPassObscureTextProvider = StateProvider<bool>((ref) => true);
 class ChangePassForm extends HookConsumerWidget {
   const ChangePassForm({Key? key}) : super(key: key);
 
@@ -192,10 +196,14 @@ class ChangePassForm extends HookConsumerWidget {
     final TextEditingController _oldPasswordController = useTextEditingController();
     final TextEditingController _newPasswordController = useTextEditingController();
     final TextEditingController _confirmPasswordController = useTextEditingController();
-    final obscureTextProvider = StateProvider<bool>((ref) => true);
     final _formKey = useMemoized(() => GlobalKey<FormState>());
+    final FocusNode oldPassFocus = FocusNode();
+    final FocusNode newPassFocus = FocusNode();
+    final FocusNode confirmPassFocus = FocusNode();
     final isDarkMode = ref.watch(themeNotifierProvider) == ThemeModeState.dark;
-    final bool obscureText = ref.watch(obscureTextProvider);
+    final bool newObscureText = ref.watch(newPassObscureTextProvider);
+    final bool oldObsercureText = ref.watch(oldPassObscureTextProvider);
+    final bool confirmObsercureText = ref.watch(confirmPassObscureTextProvider);
     
 
     void changePass() async {
@@ -228,12 +236,13 @@ class ChangePassForm extends HookConsumerWidget {
           children: <Widget>[
             TextFormField(
               controller: _oldPasswordController,
+              focusNode: oldPassFocus,
               decoration: InputDecoration(
                 suffixIcon: IconButton(
-                  icon: Icon(ref.watch(obscureTextProvider.notifier).state? Icons.visibility : Icons.visibility_off),
+                  icon: Icon(ref.watch(oldPassObscureTextProvider.notifier).state? Icons.visibility : Icons.visibility_off),
                   onPressed: (){
-                    ref.read(obscureTextProvider.notifier).state = !obscureText;
-                    print(ref.watch(obscureTextProvider.notifier).state);
+                    ref.read(oldPassObscureTextProvider.notifier).update((state) => !state);
+                    // print(ref.watch(obscureTextProvider.notifier).state);
                   },
                 ),
                 labelText: 'Current Password',
@@ -243,7 +252,7 @@ class ChangePassForm extends HookConsumerWidget {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              obscureText: obscureText,
+              obscureText: oldObsercureText,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter your Password';
@@ -254,11 +263,17 @@ class ChangePassForm extends HookConsumerWidget {
             const SizedBox(height: 10,),
             TextFormField(
               controller: _newPasswordController,
-              obscureText: ref.watch(obscureTextProvider),
+              focusNode: newPassFocus,
+              obscureText: newObscureText,
               decoration: InputDecoration(
                 labelText: 'New Password',
-                suffixIcon: Icon(ref.watch(obscureTextProvider.notifier).state? Icons.visibility : Icons.visibility_off),
-                border: OutlineInputBorder(
+                suffixIcon: IconButton(
+                  icon: Icon(ref.watch(newPassObscureTextProvider.notifier).state? Icons.visibility : Icons.visibility_off),
+                  onPressed: (){
+                    ref.read(newPassObscureTextProvider.notifier).update((state) => !state);
+                    // print(ref.watch(obscureTextProvider.notifier).state);
+                  },
+                ),                border: OutlineInputBorder(
                   borderSide: const BorderSide(width: 1),
                   borderRadius: BorderRadius.circular(20.0),
                 ),
@@ -276,12 +291,16 @@ class ChangePassForm extends HookConsumerWidget {
             const SizedBox(height: 10),
             TextFormField(
               controller: _confirmPasswordController,
-              obscureText: true,
+              focusNode: confirmPassFocus,
+              obscureText: confirmObsercureText,
               decoration: InputDecoration(
                 labelText: 'Confirm Password',
-                suffixIcon: 
-                  Icon(ref.watch(obscureTextProvider.notifier).state? Icons.visibility :  Icons.visibility_off,
-                  
+                suffixIcon: IconButton(
+                  icon: Icon(ref.watch(confirmPassObscureTextProvider.notifier).state? Icons.visibility : Icons.visibility_off),
+                  onPressed: (){
+                    ref.read(confirmPassObscureTextProvider.notifier).update((state) => !state);
+                    // print(ref.watch(obscureTextProvider.notifier).state);
+                  },
                 ),
                 border: OutlineInputBorder(
                   borderSide: const BorderSide(width: 1),
