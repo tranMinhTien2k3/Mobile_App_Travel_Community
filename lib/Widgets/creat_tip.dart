@@ -187,7 +187,7 @@ class _CreateTipState extends State<CreateTip> {
                             });
                           },
                           onSaved: (value) {
-                            _selectedTopic = value!;
+                            _selectedTopic = value ?? _selectedTopic;
                           },
                         ),
                       ],
