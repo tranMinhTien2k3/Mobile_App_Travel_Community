@@ -62,7 +62,7 @@ class SignUpForm extends HookConsumerWidget {
           Navigator.pushNamed(context, '/login');  // dieu huong den trang login khi dang ky thanh cong
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Create accont success!'),
+              content: Text('Create account success!'),
               behavior: SnackBarBehavior.floating,
             ),
           );

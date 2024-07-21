@@ -15,11 +15,13 @@ class Forgot_pass extends HookConsumerWidget {
     final email = useTextEditingController();
         final formKey = useMemoized(() => GlobalKey<FormState>());
 
-
-    ref.listen(authNotifierProvider, (previous, next) {
+    final authState = ref.watch(authNotifierProvider);
+    
+    useEffect((){
+      ref.listen(authNotifierProvider, (previous, next) {
       next.maybeWhen(
         orElse: () => null,
-        authenticated: (user) {
+        passwordResetSuccess: () {
           Navigator.pushNamed(context, '/login');
           // Navigate to any screen
           ScaffoldMessenger.of(context).showSnackBar(
@@ -38,6 +40,9 @@ class Forgot_pass extends HookConsumerWidget {
         ),
       );
     });
+    return null;
+    },[authState]);
+    
 
     return Scaffold(
       body: Container(

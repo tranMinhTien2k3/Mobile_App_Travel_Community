@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "701950421308-9d1th036hvkm21dmn7kjdslbitdofl3g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.travel_app",
+            "certificate_hash": "5d18d45df4b74a908ee34d21d14876769908c707"
+          }
+        },
+        {
           "client_id": "701950421308-matlil4pcfu1fm5ipntfsbq1rfu9f44f.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -38,6 +46,13 @@
             {
               "client_id": "701950421308-i9gn13qjtniqqmsqkp4h22bdr39blg92.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "701950421308-bjsjjkb4rj01l3lcerkkvte3b7clba88.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.travelApp"
+              }
             }
           ]
         }

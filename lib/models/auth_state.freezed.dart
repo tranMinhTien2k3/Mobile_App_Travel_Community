@@ -22,6 +22,7 @@ mixin _$AuthenticationState {
     required TResult Function() loading,
     required TResult Function(String? message) unauthenticated,
     required TResult Function(User user) authenticated,
+    required TResult Function() passwordResetSuccess,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -30,6 +31,7 @@ mixin _$AuthenticationState {
     TResult? Function()? loading,
     TResult? Function(String? message)? unauthenticated,
     TResult? Function(User user)? authenticated,
+    TResult? Function()? passwordResetSuccess,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -38,6 +40,7 @@ mixin _$AuthenticationState {
     TResult Function()? loading,
     TResult Function(String? message)? unauthenticated,
     TResult Function(User user)? authenticated,
+    TResult Function()? passwordResetSuccess,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -47,6 +50,7 @@ mixin _$AuthenticationState {
     required TResult Function(_Loading value) loading,
     required TResult Function(_UnAuthentication value) unauthenticated,
     required TResult Function(_Authenticated value) authenticated,
+    required TResult Function(_PasswordResetSuccess value) passwordResetSuccess,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -55,6 +59,7 @@ mixin _$AuthenticationState {
     TResult? Function(_Loading value)? loading,
     TResult? Function(_UnAuthentication value)? unauthenticated,
     TResult? Function(_Authenticated value)? authenticated,
+    TResult? Function(_PasswordResetSuccess value)? passwordResetSuccess,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -63,6 +68,7 @@ mixin _$AuthenticationState {
     TResult Function(_Loading value)? loading,
     TResult Function(_UnAuthentication value)? unauthenticated,
     TResult Function(_Authenticated value)? authenticated,
+    TResult Function(_PasswordResetSuccess value)? passwordResetSuccess,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -104,12 +110,18 @@ class __$$InitialImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$InitialImpl implements _Initial {
+class _$InitialImpl with DiagnosticableTreeMixin implements _Initial {
   const _$InitialImpl();
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'AuthenticationState.initial()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('type', 'AuthenticationState.initial'));
   }
 
   @override
@@ -128,6 +140,7 @@ class _$InitialImpl implements _Initial {
     required TResult Function() loading,
     required TResult Function(String? message) unauthenticated,
     required TResult Function(User user) authenticated,
+    required TResult Function() passwordResetSuccess,
   }) {
     return initial();
   }
@@ -139,6 +152,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function()? loading,
     TResult? Function(String? message)? unauthenticated,
     TResult? Function(User user)? authenticated,
+    TResult? Function()? passwordResetSuccess,
   }) {
     return initial?.call();
   }
@@ -150,6 +164,7 @@ class _$InitialImpl implements _Initial {
     TResult Function()? loading,
     TResult Function(String? message)? unauthenticated,
     TResult Function(User user)? authenticated,
+    TResult Function()? passwordResetSuccess,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -165,6 +180,7 @@ class _$InitialImpl implements _Initial {
     required TResult Function(_Loading value) loading,
     required TResult Function(_UnAuthentication value) unauthenticated,
     required TResult Function(_Authenticated value) authenticated,
+    required TResult Function(_PasswordResetSuccess value) passwordResetSuccess,
   }) {
     return initial(this);
   }
@@ -176,6 +192,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function(_Loading value)? loading,
     TResult? Function(_UnAuthentication value)? unauthenticated,
     TResult? Function(_Authenticated value)? authenticated,
+    TResult? Function(_PasswordResetSuccess value)? passwordResetSuccess,
   }) {
     return initial?.call(this);
   }
@@ -187,6 +204,7 @@ class _$InitialImpl implements _Initial {
     TResult Function(_Loading value)? loading,
     TResult Function(_UnAuthentication value)? unauthenticated,
     TResult Function(_Authenticated value)? authenticated,
+    TResult Function(_PasswordResetSuccess value)? passwordResetSuccess,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -218,12 +236,18 @@ class __$$LoadingImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$LoadingImpl implements _Loading {
+class _$LoadingImpl with DiagnosticableTreeMixin implements _Loading {
   const _$LoadingImpl();
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'AuthenticationState.loading()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('type', 'AuthenticationState.loading'));
   }
 
   @override
@@ -242,6 +266,7 @@ class _$LoadingImpl implements _Loading {
     required TResult Function() loading,
     required TResult Function(String? message) unauthenticated,
     required TResult Function(User user) authenticated,
+    required TResult Function() passwordResetSuccess,
   }) {
     return loading();
   }
@@ -253,6 +278,7 @@ class _$LoadingImpl implements _Loading {
     TResult? Function()? loading,
     TResult? Function(String? message)? unauthenticated,
     TResult? Function(User user)? authenticated,
+    TResult? Function()? passwordResetSuccess,
   }) {
     return loading?.call();
   }
@@ -264,6 +290,7 @@ class _$LoadingImpl implements _Loading {
     TResult Function()? loading,
     TResult Function(String? message)? unauthenticated,
     TResult Function(User user)? authenticated,
+    TResult Function()? passwordResetSuccess,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -279,6 +306,7 @@ class _$LoadingImpl implements _Loading {
     required TResult Function(_Loading value) loading,
     required TResult Function(_UnAuthentication value) unauthenticated,
     required TResult Function(_Authenticated value) authenticated,
+    required TResult Function(_PasswordResetSuccess value) passwordResetSuccess,
   }) {
     return loading(this);
   }
@@ -290,6 +318,7 @@ class _$LoadingImpl implements _Loading {
     TResult? Function(_Loading value)? loading,
     TResult? Function(_UnAuthentication value)? unauthenticated,
     TResult? Function(_Authenticated value)? authenticated,
+    TResult? Function(_PasswordResetSuccess value)? passwordResetSuccess,
   }) {
     return loading?.call(this);
   }
@@ -301,6 +330,7 @@ class _$LoadingImpl implements _Loading {
     TResult Function(_Loading value)? loading,
     TResult Function(_UnAuthentication value)? unauthenticated,
     TResult Function(_Authenticated value)? authenticated,
+    TResult Function(_PasswordResetSuccess value)? passwordResetSuccess,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -347,15 +377,25 @@ class __$$UnAuthenticationImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$UnAuthenticationImpl implements _UnAuthentication {
+class _$UnAuthenticationImpl
+    with DiagnosticableTreeMixin
+    implements _UnAuthentication {
   const _$UnAuthenticationImpl({this.message});
 
   @override
   final String? message;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'AuthenticationState.unauthenticated(message: $message)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'AuthenticationState.unauthenticated'))
+      ..add(DiagnosticsProperty('message', message));
   }
 
   @override
@@ -383,6 +423,7 @@ class _$UnAuthenticationImpl implements _UnAuthentication {
     required TResult Function() loading,
     required TResult Function(String? message) unauthenticated,
     required TResult Function(User user) authenticated,
+    required TResult Function() passwordResetSuccess,
   }) {
     return unauthenticated(message);
   }
@@ -394,6 +435,7 @@ class _$UnAuthenticationImpl implements _UnAuthentication {
     TResult? Function()? loading,
     TResult? Function(String? message)? unauthenticated,
     TResult? Function(User user)? authenticated,
+    TResult? Function()? passwordResetSuccess,
   }) {
     return unauthenticated?.call(message);
   }
@@ -405,6 +447,7 @@ class _$UnAuthenticationImpl implements _UnAuthentication {
     TResult Function()? loading,
     TResult Function(String? message)? unauthenticated,
     TResult Function(User user)? authenticated,
+    TResult Function()? passwordResetSuccess,
     required TResult orElse(),
   }) {
     if (unauthenticated != null) {
@@ -420,6 +463,7 @@ class _$UnAuthenticationImpl implements _UnAuthentication {
     required TResult Function(_Loading value) loading,
     required TResult Function(_UnAuthentication value) unauthenticated,
     required TResult Function(_Authenticated value) authenticated,
+    required TResult Function(_PasswordResetSuccess value) passwordResetSuccess,
   }) {
     return unauthenticated(this);
   }
@@ -431,6 +475,7 @@ class _$UnAuthenticationImpl implements _UnAuthentication {
     TResult? Function(_Loading value)? loading,
     TResult? Function(_UnAuthentication value)? unauthenticated,
     TResult? Function(_Authenticated value)? authenticated,
+    TResult? Function(_PasswordResetSuccess value)? passwordResetSuccess,
   }) {
     return unauthenticated?.call(this);
   }
@@ -442,6 +487,7 @@ class _$UnAuthenticationImpl implements _UnAuthentication {
     TResult Function(_Loading value)? loading,
     TResult Function(_UnAuthentication value)? unauthenticated,
     TResult Function(_Authenticated value)? authenticated,
+    TResult Function(_PasswordResetSuccess value)? passwordResetSuccess,
     required TResult orElse(),
   }) {
     if (unauthenticated != null) {
@@ -494,15 +540,25 @@ class __$$AuthenticatedImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AuthenticatedImpl implements _Authenticated {
+class _$AuthenticatedImpl
+    with DiagnosticableTreeMixin
+    implements _Authenticated {
   const _$AuthenticatedImpl({required this.user});
 
   @override
   final User user;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'AuthenticationState.authenticated(user: $user)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'AuthenticationState.authenticated'))
+      ..add(DiagnosticsProperty('user', user));
   }
 
   @override
@@ -529,6 +585,7 @@ class _$AuthenticatedImpl implements _Authenticated {
     required TResult Function() loading,
     required TResult Function(String? message) unauthenticated,
     required TResult Function(User user) authenticated,
+    required TResult Function() passwordResetSuccess,
   }) {
     return authenticated(user);
   }
@@ -540,6 +597,7 @@ class _$AuthenticatedImpl implements _Authenticated {
     TResult? Function()? loading,
     TResult? Function(String? message)? unauthenticated,
     TResult? Function(User user)? authenticated,
+    TResult? Function()? passwordResetSuccess,
   }) {
     return authenticated?.call(user);
   }
@@ -551,6 +609,7 @@ class _$AuthenticatedImpl implements _Authenticated {
     TResult Function()? loading,
     TResult Function(String? message)? unauthenticated,
     TResult Function(User user)? authenticated,
+    TResult Function()? passwordResetSuccess,
     required TResult orElse(),
   }) {
     if (authenticated != null) {
@@ -566,6 +625,7 @@ class _$AuthenticatedImpl implements _Authenticated {
     required TResult Function(_Loading value) loading,
     required TResult Function(_UnAuthentication value) unauthenticated,
     required TResult Function(_Authenticated value) authenticated,
+    required TResult Function(_PasswordResetSuccess value) passwordResetSuccess,
   }) {
     return authenticated(this);
   }
@@ -577,6 +637,7 @@ class _$AuthenticatedImpl implements _Authenticated {
     TResult? Function(_Loading value)? loading,
     TResult? Function(_UnAuthentication value)? unauthenticated,
     TResult? Function(_Authenticated value)? authenticated,
+    TResult? Function(_PasswordResetSuccess value)? passwordResetSuccess,
   }) {
     return authenticated?.call(this);
   }
@@ -588,6 +649,7 @@ class _$AuthenticatedImpl implements _Authenticated {
     TResult Function(_Loading value)? loading,
     TResult Function(_UnAuthentication value)? unauthenticated,
     TResult Function(_Authenticated value)? authenticated,
+    TResult Function(_PasswordResetSuccess value)? passwordResetSuccess,
     required TResult orElse(),
   }) {
     if (authenticated != null) {
@@ -605,4 +667,134 @@ abstract class _Authenticated implements AuthenticationState {
   @JsonKey(ignore: true)
   _$$AuthenticatedImplCopyWith<_$AuthenticatedImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$PasswordResetSuccessImplCopyWith<$Res> {
+  factory _$$PasswordResetSuccessImplCopyWith(_$PasswordResetSuccessImpl value,
+          $Res Function(_$PasswordResetSuccessImpl) then) =
+      __$$PasswordResetSuccessImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$PasswordResetSuccessImplCopyWithImpl<$Res>
+    extends _$AuthenticationStateCopyWithImpl<$Res, _$PasswordResetSuccessImpl>
+    implements _$$PasswordResetSuccessImplCopyWith<$Res> {
+  __$$PasswordResetSuccessImplCopyWithImpl(_$PasswordResetSuccessImpl _value,
+      $Res Function(_$PasswordResetSuccessImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$PasswordResetSuccessImpl
+    with DiagnosticableTreeMixin
+    implements _PasswordResetSuccess {
+  const _$PasswordResetSuccessImpl();
+
+  @override
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'AuthenticationState.passwordResetSuccess()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty(
+        'type', 'AuthenticationState.passwordResetSuccess'));
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$PasswordResetSuccessImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function(String? message) unauthenticated,
+    required TResult Function(User user) authenticated,
+    required TResult Function() passwordResetSuccess,
+  }) {
+    return passwordResetSuccess();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function(String? message)? unauthenticated,
+    TResult? Function(User user)? authenticated,
+    TResult? Function()? passwordResetSuccess,
+  }) {
+    return passwordResetSuccess?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function(String? message)? unauthenticated,
+    TResult Function(User user)? authenticated,
+    TResult Function()? passwordResetSuccess,
+    required TResult orElse(),
+  }) {
+    if (passwordResetSuccess != null) {
+      return passwordResetSuccess();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_UnAuthentication value) unauthenticated,
+    required TResult Function(_Authenticated value) authenticated,
+    required TResult Function(_PasswordResetSuccess value) passwordResetSuccess,
+  }) {
+    return passwordResetSuccess(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_UnAuthentication value)? unauthenticated,
+    TResult? Function(_Authenticated value)? authenticated,
+    TResult? Function(_PasswordResetSuccess value)? passwordResetSuccess,
+  }) {
+    return passwordResetSuccess?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_UnAuthentication value)? unauthenticated,
+    TResult Function(_Authenticated value)? authenticated,
+    TResult Function(_PasswordResetSuccess value)? passwordResetSuccess,
+    required TResult orElse(),
+  }) {
+    if (passwordResetSuccess != null) {
+      return passwordResetSuccess(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _PasswordResetSuccess implements AuthenticationState {
+  const factory _PasswordResetSuccess() = _$PasswordResetSuccessImpl;
 }

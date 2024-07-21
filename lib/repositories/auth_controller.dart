@@ -42,7 +42,7 @@ class AuthController {
 
 
   // Xu ly dang nhap voi tai khoan Google
-  Future<Either<String, User>> continueWithGoogle() async {
+  Future<Either<String, User?>> continueWithGoogle() async {
     try {
       final googleSignIn = GoogleSignIn();
       final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
@@ -94,12 +94,22 @@ class AuthController {
 
 
   // Xu ly quen mat khau
-  Future<Either<String, User>> forgotPass({required String email}) async {
+  Future<Either<String, Unit>> forgotPass({required String email}) async {
     try {
-      await _firebaseAuth.sendPasswordResetEmail(email: email);
-      return right(_firebaseAuth.currentUser!);
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      
+      return right(unit);
     } on FirebaseAuthException catch (e) {
-      return left(e.message ?? 'Unknown Error');
+      switch (e.code) {
+        case 'user-not-found':
+          return left('No user found for that email.');
+        case 'invalid-email':
+          return left('The email address is badly formatted.');
+        default:
+          return left(e.message ?? 'An unknown error occurred.');
+      }
+    } catch (e) {
+      return left('An unexpected error occurred.');
     }
   }
 

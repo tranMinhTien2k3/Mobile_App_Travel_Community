@@ -30,7 +30,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: isDarkMode ? ColorList.grey800 : ColorList.white70,
+        // backgroundColor: isDarkMode ? ColorList.grey800 : ColorList.white70,
         title: Text("Edit: " + field),
         content: TextField(
           autofocus: true,
@@ -107,7 +107,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Thông tin cá nhân"),
+                Text("Your profile"),
                 Text(
                   user!.email!,
                   style: TextStyle(fontSize: 12),
@@ -116,10 +116,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             )),
         body: Padding(
             padding: EdgeInsets.symmetric(horizontal: 30.0),
-            child: FutureBuilder<DatabaseEvent>(
-                future: usersRef.child(documentId).once(),
+            child: StreamBuilder<DatabaseEvent>(
+                stream: usersRef.child(documentId).onValue,
                 builder: ((context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.connectionState == ConnectionState.active) {
                     if (snapshot.hasError) {
                       return Text('Error: ${snapshot.error}');
                     } else if (!snapshot.hasData ||

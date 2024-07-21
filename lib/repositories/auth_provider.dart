@@ -1,6 +1,7 @@
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -59,7 +60,7 @@ class AuthNotifier extends StateNotifier<AuthenticationState> {
     final response = await _controller.forgotPass(email: email);
     state = response.fold(
         (error) => AuthenticationState.unauthenticated(message: error),
-        (response) => AuthenticationState.authenticated(user: response));
+        (response) => AuthenticationState.passwordResetSuccess());
   }
 
   Future<void> signOut() async{
